@@ -12,14 +12,15 @@ const storageEngine = multer.diskStorage({
 
 const upload =  multer({
   storage: storageEngine,
-  limits: { fileSize : 200000 },
-  fileFilter: (req, file, callback) => {
-    validateFile(/jpeg|jpg|png|gif/ || /epub/ || /pdf/, file, callback)
-  }
-}).fields([
-    { name: 'cover', maxCount: 1 }, 
-    { name: 'epub', maxCount: 1 },
-    { name: 'pdf', maxCount: 1 },
-])
+  limits: { fileSize : 2000000 },
+  // fileFilter: (req, file, callback) => {
+  //   validateFile(/jpeg|jpg|png|gif/ || /epub/ || /pdf/, file, callback)
+  // }
+})
+// .fields([
+//     { name: 'cover', maxCount: 1 }, 
+//     { name: 'epub', maxCount: 1 },
+//     { name: 'pdf', maxCount: 1 },
+// ])
 
 export default upload;

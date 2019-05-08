@@ -6,16 +6,24 @@ import { validateFile } from './utils'
 const storageEngine = multer.diskStorage({
   destination: './public/upload/image',
   filename: (req, file, fn) => {
-    fn(null,  `${new Date().getTime().toString()}-${file.fieldname+path.extname(file.originalname)}`);
+    fn(null,  `${new Date().getTime().toString()}-${file.fieldname+path.extname(file.originalname)}`)
   }
 }); 
 
 const upload =  multer({
   storage: storageEngine,
-  limits: { fileSize : 200000 },
+  limits: { fileSize : 2000000 },
+  // fileFilter: (req, file, callback) => {
+  //   validateFile('image', file, callback)
+  // }
   fileFilter: (req, file, callback) => {
-    validateFile(/jpeg|jpg|png|gif/, file, callback);
+  	if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  		callback(null, true)
+  	} else {
+  		callback(null, false)
+  	}
   }
-}).single('photo');
+});
+// }).single('photo');
 
 export default upload;

@@ -13,7 +13,11 @@ const genreByID = async (req, res, next, id) => {
 
 const findAll = async (req, res) => {
     try {
-        const genre = await Genre.find().exec()
+        const query = {}
+        if(req.query.search) {
+            query.name = {$regex: req.query.search, $options: "i"}
+        }
+        const genre = await Genre.find(query).exec()
         res.json(genre)
     } catch (error) {
         res.status(400).json(error)

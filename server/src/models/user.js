@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
+import slug from 'slug'
 
 const Schema = mongoose.Schema
 
@@ -18,13 +19,28 @@ const UserSchema = new Schema(
             max: 50,
             required: "Password is required"
         },
+        profile: {type: Schema.Types.ObjectId, ref: 'Profile'},
         role: {type: String, required: true, enum: ['ADMIN', 'USER', 'SUPER_ADMIN'], default: 'USER'},
-        photo: String,
+        // photo: {
+        //     data: Buffer,
+        //     contentType: String
+        // },
+        slug: {type: String,trim: true,lowercase: true},
+
         createdAt: {type: Date,default: Date.now},
         updatedAt: {type: Date}
     }
 )
 
+UserSchema.pre('validate', function (next) {
+    this._slugify()
+    next()
+})
+UserSchema.methods = {
+    _slugify() {
+        this.slug = slug(`${this.name}`)
+    }
+}
 // UserSchema.pre('save', next => {
 //     if (this.isModified('password')) {
 //         this.password = thsi._hashPassword(this.password)

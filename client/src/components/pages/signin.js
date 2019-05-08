@@ -6,12 +6,15 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
 
 import SigninForm from '../forms/signin';
 
 import { signin } from '../../redux/actions/authentication';
+import { Typography } from '@material-ui/core';
 
-const styles = {
+const styles = theme => ({
 	card: {
     borderRadius: 2,
     paddingTop: 2
@@ -26,10 +29,26 @@ const styles = {
   },
   cardContent: {
     marginTop: 0
-  }
-};
+  },
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  buttonLink: {
+    textTransform: 'lowercase',
+    color: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: 'transparent'
+    }
+  },
+  
+});
 
 class Signin extends React.PureComponent {
+  onClick = (e) => {
+    e.preventDefault();
+    this.props.history.push('/signup');
+  }
   onSubmit = (form) => {
     this.props.signin(form.email, form.password)
   }
@@ -47,6 +66,16 @@ class Signin extends React.PureComponent {
               <CardContent  className={classes.cardContent}>
                 <SigninForm onSubmit={this.onSubmit} />
               </CardContent>
+              <CardActions  className={classes.cardActions}>
+                <Typography>Pas encore enregistré?</Typography>
+                <Button 
+                  color="inherit"
+                  className={classes.buttonLink}
+                  onClick={this.onClick}>
+                    Créer votre compte
+                </Button>
+              </CardActions>
+
             </Card>
           </Col>
         </Row>

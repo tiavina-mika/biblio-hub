@@ -32,11 +32,6 @@ const styles = {
 class Signup extends React.PureComponent {
   onSubmit = (form) => {
 		this.props.signup(form.name, form.email, form.password)
-			.then(result => {
-				if (result) {
-					this.props.history.push(`/signin`);
-				}
-			});
   }
   render() {
     const { classes } = this.props;

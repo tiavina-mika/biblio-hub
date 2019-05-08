@@ -8,12 +8,12 @@ const signup = async (req, res) => {
   try {
       const { isValid, errors } = validateSignup(req.body)
       if(!isValid) {
-          return res.status(400).json(errors)
+          return res.status(400).json(Object.keys(errors))
       }
       const user = await User.findOne({email : req.body.email})
       if (user) {
-        errors.email = 'Email was used!'
-        return res.status(400).json(errors)
+        errors.EMAIL_WAS_USED = 'Email was used!'
+        return res.status(400).json(Object.keys(errors))
       }
       bcrypt.genSalt(10, async (err, salt) => {
         bcrypt.hash(req.body.password, salt, async (err, hash) => {
@@ -23,11 +23,11 @@ const signup = async (req, res) => {
             newUser.role = 'ADMIN'
           }
           const result = await newUser.save()
-          res.json(result)
+          res.status(200).json(result)
         })
       })
   } catch (error) {
-      res.status(400).json(error)
+      res.status(401).json(error)
   }
 }
 
@@ -36,32 +36,33 @@ const signin = async (req, res) => {
   try {
       const { isValid, errors } = validateSignin(req.body)
       if(!isValid) {
-          return res.status(400).json(errors)
+          return res.status(400).json(Object.keys(errors))
       }
       const user = req.user
       // const user = await User.findOne({email : req.body.email})
-      if (user) {
-        const isMatch = await bcrypt.compare(req.body.password, user.password)
-          if (isMatch) {
-            // const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-
-            return res.json({
-              success: true,
-              token: token,
-              isAdmin: user.role ==="ADMIN" ? true : false,
-              user: {id: user._id, name: user.name, email: user.email }
-            })
-          } else {
-            errors.INCORRECT_PASSWORD = 'Password is incorrect'
-            return res.status(404).json(Object.keys(errors))
-          }
-      } else {
+      if(!user) {
         errors.USER_NOT_FOUND = 'User not found'
-        return res.status(404).json(errors)
+        return res.status(400).json(Object.keys(errors))
       }
+      const isMatch = await bcrypt.compare(req.body.password, user.password)
+      if (isMatch) {
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+
+        return res.json({
+          success: true,
+          token: token,
+          isAdmin: user.role ==="ADMIN" ? true : false,
+          user: {id: user._id, name: user.name, email: user.email }
+        })
+      } else {
+        errors.INCORRECT_PASSWORD = 'Password is incorrect'
+        return res.status(400).json(Object.keys(errors))
+      }
+
   } catch (error) {
-      res.status(400).json(error)
+    // const errors = {INVALID_CREDENTIALS: 'Invalid credentials'}
+    //   res.status(400).json(Object.keys(errors))
+    res.status(401).json(error)
   }
 }
 const signout = (req, res) => {

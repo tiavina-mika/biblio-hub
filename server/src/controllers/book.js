@@ -1,19 +1,12 @@
+import fs from 'fs'
+import moment from 'moment'
 import Book from "../models/book"
 import {validateBook} from '../utils/validation'
 import upload from '../utils/book-files-upload'
 
-// {
-// 	"title": "title 7",
-// 	"summary": "samury 5",
-// 	"date_publication": "1983",
-// 	"epub": "cool.epub",
-// 	"author": "5cb810e502f38d775c76c5d7",
-// 	"genre": ["5cb811e802f38d775c76c5db", "5cb811ee02f38d775c76c5dc"]
-// }
-
 const bookByID = async (req, res, next, id) => {
     try {
-        const book = await Book.findById(id).populate('genre').populate('author').exec()
+        const book = await Book.findById(id).populate('genres').populate('author').exec()
         req.book = book
         next()
     } catch (error) {
@@ -27,7 +20,7 @@ const findAll = async (req, res) => {
         if(req.query.search) {
             query.title = {$regex: req.query.search, $options: "i"}
         }
-        const book = await Book.find(query).populate('genre').exec()
+        const book = await Book.find(query).populate('genres').populate('author').exec()
         res.json(book)
     } catch (error) {
         res.status(400).json(error)
@@ -36,9 +29,15 @@ const findAll = async (req, res) => {
 
 const findOne = async (req, res) => {
     try {
-        // const book = await req.book
-        const book = await Book.findByIdAndUpdate(req.book, {$inc: {"views": 1}}, {new: true})
-        res.json(book)
+        const book = await req.book
+        // const book = await Book.findById(req.book._id).populate('genres').populate('author').exec()
+
+        // const book = await Book.findByIdAndUpdate(req.book, {$inc: {"views": 1}}, {new: true}).populate('genres').populate('author')
+        // const book = await Book.findById(req.book).populate('genres').populate('author')
+        book.views++
+        // book.populate('genres').populate('author'))
+        const result = await book.save()
+        res.json(result)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -46,24 +45,33 @@ const findOne = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        upload(req, res,async (err) => {
-            if(err) {
-                res.status(400).json(err)
-            } else {
-                const { isValid, errors } = validateBook(req.body)
-                if(!isValid) {
-                    return res.status(400).json(errors)
-                }
-                const book = new Book(req.body)
-
-                book.epub = req.files && req.files['epub'][0] && `upload/book/${req.files['epub'][0].filename}`
-                book.pdf = req.files && req.files['pdf'][0] && `upload/book/${req.files['pdf'][0].filename}`
-                book.cover = req.files && req.files['cover'][0] && `upload/book/${req.files['cover'][0].filename}`
-
-                const result = await book.save()
-                res.json(result)
+        const { isValid, errors } = validateBook(req.body)
+        if(!isValid) {
+            return res.status(400).json(Object.keys(errors))
+        }
+        const book = new Book(req.body)
+        // console.log('req', req.body)
+        console.log('req.mod',  moment(req.body.date_publication).format('DD MMMM YYYY'))
+        book.genres = [...req.body.genres.split(',')]
+        // book.date_publication =
+        // book.publish = typeof(req.body.publish) === 'undefined' ? false : req.body.publish
+        if(req.files) {
+            if(req.files['epub']) {
+                book.epub.data = fs.readFileSync(req.files['epub'][0].path)
+                book.epub.contentType = req.files['epub'][0].mimetype
             }
-        })
+            if(req.files['pdf']){
+               book.pdf.data = fs.readFileSync(req.files['pdf'][0].path)
+                book.pdf.contentType = req.files['pdf'][0].mimetype             
+            }
+            if(req.files['photo']){
+                book.photo.data = fs.readFileSync(req.files['photo'][0].path)
+                book.photo.contentType = req.files['photo'][0].mimetype           
+            }
+
+        }
+        const result = await book.save()
+        res.json(result)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -99,52 +107,44 @@ const create = async (req, res) => {
 // }
 
 
-// const create = async (req, res) => {
-//     try {
-//         const book = new Book(req.fields)
-//         const result = await book.save()
-//         res.json(result)
-//     } catch (error) {
-//         res.status(400).json(error)
-//     }
-// }
-
-// const edit = async (req, res) => {
-//     try {
-//         const book = await req.book
-//         book.set(req.body)
-//         book.updatedAt = Date.now()
-//         book.epub = req.files && req.files['epub'][0] && `upload/book/${req.files['epub'][0].filename}`
-//         book.pdf = req.files && req.files['pdf'][0] && `upload/book/${req.files['pdf'][0].filename}`
-//         book.cover = req.files && req.files['cover'][0] && `upload/book/${req.files['cover'][0].filename}`
-//         const result = await book.save()
-//         res.json(result)
-//     } catch (error) {
-//         res.status(400).json("error"+error)
-//     }
-// }
-
 const edit = async (req, res) => {
     try {
-        upload(req, res,async (err) => {
-            if(err) {
-                res.status(400).json(err)
-            } else {
-                const { isValid, errors } = validateBook(req.body)
-                if(!isValid) {
-                    return res.status(400).json(errors)
-                }
-                const book = await req.book
-                book.set(req.body)
-                book.updatedAt = Date.now()
-                book.epub = req.files && req.files['epub'][0] && `upload/book/${req.files['epub'][0].filename}`
-                book.pdf = req.files && req.files['pdf'][0] && `upload/book/${req.files['pdf'][0].filename}`
-                book.cover = req.files && req.files['cover'][0] && `upload/book/${req.files['cover'][0].filename}`
 
-                const result = await book.save()
-                res.json(result)
+        const { isValid, errors } = validateBook(req.body)
+        if(!isValid) {
+            return res.status(400).json(Object.keys(errors))
+        }
+        const book = await req.book
+        book.set(req.body)
+        book.updatedAt = Date.now()
+        book.date_publication = moment(req.body.date_publication).format('DD MMMM YYYY')
+        book.genres = [...new Set(req.body.genres.split(','))]
+        // book.genres = [...req.body.genres.split(',').filter(n => !!n && !/\W/g.test(n))]
+        // book.genres = req.body.genres.map(n => typeof(n) === 'object' ? n._id : n)
+        // book.author = req.body.author.map(n => typeof(n) === 'object' ? n._id : n)
+        // book.genres = [... req.body.genres]
+        // book.author = req.body.author ? req.body.author : book.author
+        console.log('genres', req.body.genres)
+        // console.log('author', req.body.author)
+        // console.log('reqMod2', [...req.body.genres.split(',').filter(n => !!n && !/\W/g.test(n))])
+        book.publish = typeof(req.body.publish) === 'undefined' ? false : req.body.publish
+         if(req.files) {
+            if(req.files['epub']) {
+                book.epub.data = fs.readFileSync(req.files['epub'][0].path)
+                book.epub.contentType = req.files['epub'][0].mimetype
             }
-        })
+            if(req.files['pdf']){
+               book.pdf.data = fs.readFileSync(req.files['pdf'][0].path)
+                book.pdf.contentType = req.files['pdf'][0].mimetype             
+            }
+            if(req.files['photo']){
+                book.photo.data = fs.readFileSync(req.files['photo'][0].path)
+                book.photo.contentType = req.files['photo'][0].mimetype           
+            }
+
+        }
+        const result = await book.save()
+        res.json(result)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -164,7 +164,7 @@ const remove = async (req, res) => {
 
 const listByGenre = async (req, res) => {
     try {
-        const books = await Book.find({genre: req.genre})
+        const books = await Book.find({genres: req.genre}).populate('author').exec()
         res.json(books)
     } catch (error) {
         res.status(400).json(error)
@@ -173,11 +173,24 @@ const listByGenre = async (req, res) => {
 
 const listByAuthor = async (req, res) => {
     try {
-        const books = await Book.find({author: req.author})
+        const books = await Book.find({author: req.author}).populate('author').exec()
         res.json(books)
     } catch (error) {
         res.status(400).json(error)
     }
+}
+
+const photo = (req, res, next) => {
+    res.set("Content-Type", req.book.photo.contentType)
+    return res.send(req.book.photo.data)
+}
+const pdf = (req, res, next) => {
+    res.set("Content-Type", req.book.pdf.contentType)
+    return res.send(req.book.pdf.data)
+}
+const epub = (req, res, next) => {
+    res.set("Content-Type", req.book.epub.contentType)
+    return res.send(req.book.epub.data)
 }
 
 export default {
@@ -188,5 +201,8 @@ export default {
     remove,
     listByGenre,
     listByAuthor,
+    photo,
+    pdf,
+    epub,
     bookByID
 }

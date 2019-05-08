@@ -1,14 +1,34 @@
-const validateFile = (fileTypes, file, cb ) => {
-    allowedFileTypes =  fileTypes
+import path from 'path'
+
+export const validateFile = (fileTypes, file, cb ) => {
+	let allowedFileTypes
+	if(fileTypes === 'image') {
+		allowedFileTypes = /jpeg|jpg|png|gif/
+	} else if (fileTypes === 'epub') {
+		allowedFileTypes = /epub/	
+	} else if (fileTypes === 'pdf') {
+		allowedFileTypes = /pdf/	
+	} else {
+		cb(null, false)
+	}
     const extension = allowedFileTypes.test(path.extname(file.originalname).toLowerCase())
     const mimeType  = allowedFileTypes.test(file.mimetype);
+
     if(extension && mimeType){
-      return cb(null, true)
+       cb(null, true)
     }else{
-      cb("Invalid file type.")
+       cb(null, false)
     }
 }
 
-export default {
-    validateFile
-}
+// export const validateFile = (file, cb) => {
+// 	if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//   		cb(null, true)
+//   	} else {
+//   		cb(null, false)
+//   	}
+// }
+
+// export default {
+//     validateFile
+// }

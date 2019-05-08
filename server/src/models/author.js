@@ -4,16 +4,20 @@ import slug from 'slug'
 const Schema = mongoose.Schema
 
 const AuthorSchema = new Schema(
-{
-    first_name: {type: String, required: true, max: 100},
-    family_name: {type: String, required: true, max: 100},
-    date_of_birth: {type: Date},
-    date_of_death: {type: Date},
-    photo: String,
-    slug: {type: String,trim: true,lowercase: true},
-    createdAt: {type: Date,default: Date.now},
-    updatedAt: {type: Date}
-}
+    {
+        first_name: {type: String, required: true, max: 100},
+        family_name: {type: String, required: true, max: 100},
+        date_of_birth: {type: Date},
+        date_of_death: {type: Date},
+        photo: {
+            data: Buffer,
+            contentType: String
+        },
+        slug: {type: String,trim: true,lowercase: true},
+        description: {type: String},
+        createdAt: {type: Date,default: Date.now},
+        updatedAt: {type: Date}
+    }
 )
 
 AuthorSchema.pre('validate', function (next) {

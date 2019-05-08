@@ -22,7 +22,7 @@ const initialState = {
     : false,
     id: getStorage('id') || '',
     email: getStorage('email') || '',
-    isAdmin: getStorage('isAdmin') || '',
+    isAdmin: Boolean(getStorage('isAdmin')) || '',
   })
 };
 

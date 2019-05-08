@@ -4,16 +4,16 @@ export const validateBook = (data) => {
     let errors = {}
 
     if(validator.isEmpty(data.title)) {
-        errors.title = "Title is empty"
+        errors.EMPTY_TITLE = "Title is empty"
     }
     if(validator.isEmpty(data.summary)) {
-        errors.summary = "Summary is empty"
+        errors.EMPTY_SUMMARY = "Summary is empty"
     }
-    if(validator.isEmpty(data.author)) {
-        errors.author = "Author is empty"
-    }
+    // if(validator.isEmpty(data.author)) {
+    //     errors.author = "Author is empty"
+    // }
     if(!validator.isLength(data.title, {max: 100})) {
-        errors.title = "Family name must be under 100 caracters"
+        errors.TITLE_LENGTH = "Title must be under 100 caracters"
     }
     return {
         errors,
@@ -25,16 +25,16 @@ export const validateAuthor = (data) => {
     let errors = {}
 
     if(validator.isEmpty(data.first_name)) {
-        errors.first_name = "First name is empty"
+        errors.EMPTY_FIRST_NAME = "First name is empty"
     }
     if(!validator.isLength(data.first_name, {max: 100})) {
-        errors.first_name = "First name must be under 100 caracters"
+        errors.LENGTH_FIRST_NAME = "First name must be under 100 caracters"
     }
     if(validator.isEmpty(data.family_name)) {
-        errors.family_name = "Family name is empty"
+        errors.EMPTY_FAMILY_NAME = "Family name is empty"
     }
     if(!validator.isLength(data.family_name, {max: 100})) {
-        errors.family_name = "Family name must be under 100 caracters"
+        errors.LENGTH_FAMILY_NAME = "Family name must be under 100 caracters"
     }
     return {
         errors,
@@ -46,10 +46,10 @@ export const validateGenre = (data) => {
     let errors = {}
 
     if(validator.isEmpty(data.name)) {
-        errors.name = "Genre name is empty"
+        errors.EMPTY_GENRE = "Genre name is empty"
     }
     if(!validator.isLength(data.name, {min: 3, max: 50})) {
-        errors.name = "Genre name must be between 3 and 50 caracters"
+        errors.GENRE_NAME_LENGTH = "Genre name must be between 3 and 50 caracters"
     }
     return {
         errors,
@@ -61,16 +61,16 @@ export const validateSignup = (data) => {
     let errors = {}
 
     if(validator.isEmpty(data.name)) {
-        errors.name = "User name is empty"
+        errors.EMPTY_NAME = "User name is empty"
     }
-    if(!validator.isLength(data.name, {max: 100})) {
-        errors.name = "User name must be between 3 and 50 caracters"
+    if(!validator.isLength(data.name, {min: 5, max: 100})) {
+        errors.NAME_LENGTH = "User name must be between 5 and 100 caracters"
     }
     if(validator.isEmpty(data.email)) {
-        errors.email = "Email is required"
+        errors.EMPTY_EMAIL = "Email is required"
     }
     if(!validator.isEmail(data.email)) {
-        errors.email = "Email is invalid"
+        errors.INVALID_EMAIL = "Email is invalid"
     }
 
     return {
@@ -78,6 +78,29 @@ export const validateSignup = (data) => {
         isValid: Object.keys(errors).length === 0
     }
 }
+
+export const validateUser = (data) => {
+    let errors = {}
+
+    if(validator.isEmpty(data.name)) {
+        errors.EMPTY_NAME = "User name is empty"
+    }
+    if(!validator.isLength(data.name, {min: 5, max: 100})) {
+        errors.NAME_LENGTH = "User name must be between 5 and 100 caracters"
+    }
+    if(validator.isEmpty(data.email)) {
+        errors.EMPTY_EMAIL = "Email is required"
+    }
+    if(!validator.isEmail(data.email)) {
+        errors.INVALID_EMAIL = "Email is invalid"
+    }
+
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
+
 
 export const validateSignin = (data) => {
     let errors = {}

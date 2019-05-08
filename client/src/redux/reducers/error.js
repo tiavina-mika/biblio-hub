@@ -14,5 +14,3 @@ const error = (state = null, action) => {
 };
 
 export default error;
-
-// export const getErrorMessage = state => state;

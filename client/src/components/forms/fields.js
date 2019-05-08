@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import SelectField from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
-// import Select from 'react-select-plus';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Checkbox from '@material-ui/core/Checkbox';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const styles = {
   placeholder: {
@@ -21,16 +32,25 @@ export class fileUpload extends React.Component {
   }
 
   render() {
-    const { input, type, inputStyle, accept } = this.props;
+    const { input, type, label, inputStyle, accept, variant, helperText, meta: { touched, error } , ...custom} = this.props;
 
     delete input.value;
 
     return (
-      <div>
-        <label htmlFor={input.name}>
-          <input ref={this.setRef} {...input} type={type} style={inputStyle} accept={accept} />
-        </label>
-      </div>
+      <div style={{textAlign: 'left', marginTop: 5}}>
+          <InputLabel>{label}</InputLabel>
+          <TextField
+            ref={this.setRef} 
+            {...input} 
+            {...custom}
+            variant={variant}
+            margin="normal"
+            helperText={touched ? error : helperText}
+            type={type} 
+            style={{...inputStyle, marginTop: 5}}
+            error={touched && error}
+            accept={accept} />
+       </div>
     );
   }
 }
@@ -40,6 +60,8 @@ const renderCustomTextField = ({
   input,
   placeholder,
   label,
+  helperText,
+  variant,
   meta: { touched, error },
   ...custom
 }) =>
@@ -47,7 +69,7 @@ const renderCustomTextField = ({
     error={touched && error}
     label={label}
     placeholder={placeholder}
-    helperText={touched && error}
+    helperText={touched ? error : helperText}
     {...input}
     {...custom}
     margin="normal"
@@ -56,9 +78,10 @@ const renderCustomTextField = ({
         root: classes.placeholder,
       },
     }}
+    variant={variant}
     InputProps={{
       style: {
-        paddingBottom: 0,
+        // paddingBottom: 0,
         '&:hover': {
           borderBottomColor: 'rgba(0, 0, 0, .5)',
         },
@@ -71,58 +94,91 @@ renderCustomTextField.propTypes = {
   
 export const renderTextField = withStyles(styles)(renderCustomTextField);
 
-export const renderSelectField = ({
-  input: { onChange, onBlur, value, ...restInput },
-  placeholder,
+export const renderSelect = ({
+  input: { value, onChange },
+  label,
+  children,
+  meta: { touched, error },
+  onFieldChange,
+  required = false,
+  rootClass = '',
+}) => (
+  <TextField
+    required={required}
+    classes={{root: rootClass}}
+    select
+    label={label}
+    variant='outlined'
+    value={value}
+    selected={value ? true : false}
+    onChange={e => {
+      onChange(e.target.value)
+      onFieldChange && onFieldChange(e.target.value)
+    }}
+    fullWidth
+    helperText={touched && error}
+  >
+    {children}
+  </TextField>
+)
+
+
+export const renderMultipleCheckboxSelect = withStyles(() => ({
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    marginRight: 3,
+  },
+}))(({
+  input: { value, onChange, id },
+  label,
+  children,
+  meta: { touched, error },
+  onFieldChange,
+  required = false,
+  multiple,
+  classes,
+  rootClass = '',
+}) => ([
+      <InputLabel>{label}</InputLabel>,
+      <SelectField
+          multiple
+          fullWidth
+          value={value}
+          input={<OutlinedInput/>}
+          selected={value ? true : false}
+
+          MenuProps={MenuProps}
+          onChange={e => {
+            onChange(e.target.value)
+            onFieldChange && onFieldChange(e.target.value)
+          }}
+        >
+          {children}
+        </SelectField>
+    ]
+));
+
+export const renderCheckBox = ({
+  input: { value, onChange },
   label,
   meta: { touched, error },
-  ...custom
-}) =>
-	<FormControl error={touched && error}>
-		<InputLabel hstyle={{padding: '5px 16px'}}>{label}</InputLabel>
-		<SelectField
-			onChange={(event, index, value) => {
-				onChange([value]);
-				if (custom.onChangeFromField) {
-				custom.onChangeFromField(value);
-				}
-			}}
-			onBlur={value => onBlur(value)}
-			value={value}
-			{...restInput}
-			{...custom}
-			>
-			{custom.children}
-		</SelectField>
-		<FormHelperText>{touched && error}</FormHelperText>
-	</FormControl>;
-
-// export const renderSelectPlusField = (props) => {
-//   if (props.meta.touched && props.meta.error) {
-//     return [
-//       <Select
-//         key="select"
-//         className="react-select-plus-error"
-//         {...props}
-//         value={props.input.value}
-//         onChange={(value) => props.input.onChange(value)}
-//         onBlur={() => props.input.onBlur(props.input.value)}
-//         options={props.options} />,
-//       <div
-//         key="error"
-//         style={{
-//           marginTop: 6,
-//           fontSize: 12,
-//           lineHeight: '12px',
-//           color: 'rgb(244, 67, 54)',
-//           transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
-//         }}>{props.meta.error}</div>
-//     ];
-//   }
-//   return <Select
-//     {...props}
-//     value={props.input.value}
-//     onChange={(value) => props.input.onChange(value)}
-//     onBlur={() => props.input.onBlur(props.input.value)}
-//     options={props.options} />;
-// };
+  required = false,
+}) => (
+    <FormControlLabel
+      style={{float: 'left'}}
+      required={required}
+      error={!!(touched && error)}
+      control={
+        <Checkbox
+          color="primary"
+          checked={value ? true : false}
+          onChange={onChange}
+          value={value ? true : false}
+        />
+      }
+      label={label}
+      />
+)
