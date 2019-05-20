@@ -124,3 +124,27 @@ export const validateSignin = (data) => {
     }
 }
 
+export const validateContact = (data) => {
+    let errors = {}
+
+    if(validator.isEmpty(data.email)) {
+        errors.EMPTY_EMAIL = "User email is empty"
+    }
+    if(!validator.isEmail(data.email)) {
+        errors.INVALID_EMAIL = "Email is invalid"
+    }
+    if(validator.isEmpty(data.name)) {
+        errors.EMPTY_CONTACT_NAME = "Name is empty"
+    }
+    if(validator.isEmpty(data.message)) {
+        errors.EMPTY_CONTACT_MESSAGE = "Message is empty"
+    }
+    if(!validator.isLength(data.message, {min: 10, max: 2000})) {
+        errors.CONTACT_NAME_LENGTH = "User name must be between 10 and 2000 caracters"
+    }
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
+

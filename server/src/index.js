@@ -15,6 +15,7 @@ import bookExemplaireRouter from "./routes/book-exemplaire"
 import genreRouter from "./routes/genre"
 import userRouter from "./routes/user"
 import authRouter from "./routes/auth"
+import contactRouter from "./routes/contact"
 
 const app = express()
 
@@ -34,6 +35,7 @@ app.use("/", bookExemplaireRouter)
 app.use("/", genreRouter)
 app.use("/", userRouter)
 app.use("/", authRouter)
+app.use("/", contactRouter)
 
 mongoose.Promise = global.Promise;
 

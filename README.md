@@ -1,5 +1,5 @@
 # biblio
-C'est un projet personnel de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration.
+C'est un projet personnel en cours de développement de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
 
 ## stack:
  1. Front-End:
