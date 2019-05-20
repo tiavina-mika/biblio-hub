@@ -9,6 +9,7 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
  3. Base de données:
      * MongoDB
 
+## set up et installation:
  1. database:
   * mongod
  2. server: 
