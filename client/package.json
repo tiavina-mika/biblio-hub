@@ -23,6 +23,7 @@
     "react-dom": "^16.8.6",
     "react-final-form": "^4.1.0",
     "react-flexbox-grid": "^2.1.2",
+    "react-google-recaptcha": "^1.0.5",
     "react-loader-spinner": "^2.3.0",
     "react-markdown": "^4.0.8",
     "react-markdown-github": "^3.2.0",

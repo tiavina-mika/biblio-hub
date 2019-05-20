@@ -6,20 +6,22 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 
-import { renderTextField } from './fields';
+import { renderTextField, renderPasswordField } from './fields';
 
 import { shallowCompare } from '../../utils/shallow-compare';
 
 const styles = {
 	fieldLabel: {
-			textTransform: 'uppercase',
-			paddingBottom: 0,
-		},
+		// textTransform: 'uppercase',
+		paddingBottom: 10,
+		marginBottom: 25
+	},
 	buttonLabel: {
 		textTransform: 'uppercase',
 	},
 	containedButton: {
 		marginTop: '12px',
+		textTransform: "capitalize",
 		borderRadius: 2,
 		'&:hover': {
 			backgroundColor: 'rgba(60,141,188, .6)'
@@ -28,6 +30,7 @@ const styles = {
 	flatButton: {
 		borderRadius: 2,
 		color: '#000',
+		textTransform: "capitalize",
 		padding: '7px 18px 6px 18px',
 		'&:hover': {
 			backgroundColor: '#ebebeb'
@@ -68,11 +71,12 @@ class SigninForm extends React.Component {
 				<Field
 					name="password"
 					type="password"
-					component={renderTextField}
+					component={renderPasswordField}
 					placeholder="Mot de passe"
 					label="Entrez votre mot passe"
 					variant={variant}
 					className={classes.fieldLabel}
+					inputStyle={{marginBottom: 20}}
 					fullWidth />
 
                 <Button
@@ -85,7 +89,7 @@ class SigninForm extends React.Component {
 					Connexion
 				</Button>
                 <Button
-					classes={{colorInherit: classes.flatButton}}
+					className={classes.flatButton}
 					style={{marginTop: 15}}
                     onClick={this.onForgotPassword} 
 					fullWidth>

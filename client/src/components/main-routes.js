@@ -4,6 +4,7 @@ import asyncComponent from './async-component';
 
 import MainRoute from '../routes/main';
 const AsyncHome = asyncComponent(() => import('./pages/home'));
+const AsyncContact = asyncComponent(() => import('./pages/contact'));
 const AsyncBook = asyncComponent(() => import('./books/show'));
 const AsyncBooks = asyncComponent(() => import('./books/list'));
 const AsyncAuthors = asyncComponent(() => import('./authors/list'));
@@ -24,6 +25,7 @@ const MainRoutes = () => ([
         <MainRoute path="/livres/:slug" exact component={AsyncBook}/>,
         <MainRoute path="/auteurs/:slug" exact component={AsyncAuthor}/>,
         <MainRoute path="/genres/:slug" exact component={AsyncGenre}/>,
+        <MainRoute path="/contact" exact component={AsyncContact}/>,
 ]);
 
 export default MainRoutes;

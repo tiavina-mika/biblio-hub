@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 import { renderTextField } from './fields';
 
 import { shallowCompare } from '../../utils/shallow-compare';
 
-const styles = {
+const styles = theme => ({
 	fieldLabel: {
 		textTransform: 'uppercase',
 		paddingBottom: 0,
@@ -25,7 +27,18 @@ const styles = {
 			backgroundColor: 'rgba(60,141,188, .6)'
 		}
 	},
-};
+	linkContainer: {
+		paddingTop: 25
+	},
+	link: {
+		textDecorartion: 'none',
+		color: theme.palette.primary.main,
+		marginLeft: 10
+	},
+	typography: {
+		fontSize: 17
+	}
+});
 
 class SignupForm extends React.Component {
 	static propTypes = {
@@ -95,6 +108,9 @@ class SignupForm extends React.Component {
             fullWidth>
             Creér
           </Button>
+					<div className={classes.linkContainer}>
+						<Typography className={classes.Typography}>Vous avez déjà un compte? <Link to="/signin" className={classes.link}>Connectez-vous</Link></Typography>
+				</div>
 			</form>
 		);
   }

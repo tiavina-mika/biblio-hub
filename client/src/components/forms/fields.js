@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import SelectField from '@material-ui/core/Select';
@@ -7,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Checkbox from '@material-ui/core/Checkbox';
+import PasswordField from 'material-ui-password-field';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -23,8 +25,21 @@ const styles = {
   placeholder: {
     color: 'rgba(0, 0, 0, .3)',
     border: 'none',
-    fontSize: 16
+    fontSize: 16,
   },
+  password: {
+    color: 'rgba(0, 0, 0, .8)',
+    border: 'none',
+    fontSize: 16,
+    paddingBottom: 3,
+    width: '100%',
+    textTransform: 'uppercase',
+  },
+  variant: {
+    border: '1px solid rgba(0, 0, 0, .3)',
+    padding: 5,
+    borderRadius: 3
+  }
 };
 export class fileUpload extends React.Component {
   setRef = (ref) => {
@@ -93,6 +108,34 @@ renderCustomTextField.propTypes = {
 };
   
 export const renderTextField = withStyles(styles)(renderCustomTextField);
+
+const renderCustomPasswordField = ({
+  classes,
+  input,
+  placeholder,
+  label,
+  helperText,
+  inputStyle,
+  variant,
+  meta: { touched, error },
+  ...custom
+}) =>
+  <PasswordField
+    hintText={touched ? error : helperText}
+    floatingLabelText={label}
+    errorText={touched && error}
+    placeholder={placeholder}
+    {...input}
+    {...custom}
+    style={{...inputStyle}}
+    className={classNames(classes.password, variant && variant==="outlined" && classes.variant)}
+  />
+
+renderCustomPasswordField.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export const renderPasswordField = withStyles(styles)(renderCustomPasswordField);
 
 export const renderSelect = ({
   input: { value, onChange },

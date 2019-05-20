@@ -12,6 +12,7 @@ import red from '@material-ui/core/colors/red';
 import CommentForm from '../forms/comment';
 import { comment } from '../../redux/actions/books';
 import { BASE_URL } from '../../redux/actions/constants';
+import ReCaptcha from '../blocks/recaptcha';
 
 const styles = theme => ({
   cardHeader: {
@@ -61,6 +62,7 @@ class Comment extends React.Component {
 
             <CardContent>
                 <CommentForm onSubmit={this.onSubmit} />
+                <ReCaptcha />
             </CardContent>
         </Card>
     );
