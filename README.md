@@ -7,5 +7,5 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
   * npm install
   * npm start
  3. client: 
-  * npm start
+  * npm install
   * npm start
