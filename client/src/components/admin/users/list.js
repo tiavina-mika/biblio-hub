@@ -7,7 +7,6 @@ import { getAllUsers, remove } from '../../../redux/actions/users';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -19,11 +18,15 @@ import EnhancedTableHead  from '../components/list-table-head';
 import ButtonActions  from '../components/list-table-actions';
 import Checked  from '../components/checked';
 import Chip from '@material-ui/core/Chip';
+import { getUsers, getUsersLoading } from '../../../redux/root-reducer';
+import Pagination from '../../blocks/pagination';
+import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
 
 const rows = [
   { id: 'name', disablePadding: false, label: 'Nom' },
   { id: 'email', disablePadding: false, label: 'Email' },
   { id: 'photo', disablePadding: false, label: 'Photo' },
+  { id: 'checked', disablePadding: false, label: 'Vu' },
   { id: 'role', disablePadding: false, label: 'Role' },
   { id: 'createdAt', disablePadding: false, label: 'Ajouté le' },
 ];
@@ -66,14 +69,15 @@ const styles = theme => ({
 class List extends Component {
   state = {
     order: 'asc',
-    orderBy: 'name',
+    orderBy: 'createdAt',
     selected: [],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: DASHBOARD_LIST_PER_PAGE,
   };
 
   componentDidMount() {
-    this.props.getAllUsers()
+    const { getAllUsers, match : { params }} = this.props;
+    params ? getAllUsers(DASHBOARD_LIST_PER_PAGE, 1, params.search) : getAllUsers(DASHBOARD_LIST_PER_PAGE, 1);
   }
 
   handleRequestSort = (event, property) => {
@@ -89,7 +93,7 @@ class List extends Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: this.props.data.map(n => n._id) }));
+      this.setState(state => ({ selected: this.props.data.users.map(n => n._id) }));
 
       return;
     }
@@ -134,8 +138,9 @@ class List extends Component {
     this.props.remove(id)
     this.props.history.push(`/dashboard/redirect`);
   }
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  handleChangePage = page => {
+    this.setState({page});
+    this.props.getAllUsers(DASHBOARD_LIST_PER_PAGE, page);
   };
 
   handleChangeRowsPerPage = event => {
@@ -146,7 +151,7 @@ class List extends Component {
 
   render() {
     const { classes, data, loading, history: { push } } = this.props;
-    const dataLength = !loading && data ? data.length : 0;
+    const dataLength = !loading && data ? data.users.length : 0;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataLength - page * rowsPerPage);
 
@@ -170,8 +175,7 @@ class List extends Component {
               rows={rows}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(data.users, getSorting(order, orderBy))
                 .map(n => {
                   const isSelected = this.isSelected(n._id);
                   return (
@@ -190,6 +194,7 @@ class List extends Component {
                       </TableCell>
                       <TableCell align="right">{n.email}</TableCell>
                       <TableCell align="right"><Checked checked={n.photo}/></TableCell>
+                      <TableCell align="right"><Checked checked={n.checked}/></TableCell>
                       <TableCell align="right">
                         <Chip
                           label={n.role}
@@ -212,27 +217,17 @@ class List extends Component {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 10 * emptyRows }}>
                   <TableCell colSpan={9} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={dataLength}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        <Pagination
+          currentPage={data.currentPage}
+          total={data.pages}
+          onChange={this.handleChangePage}
         />
 
         <FloatingButtonActions
@@ -252,8 +247,8 @@ List.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.users.data.get('users'),
-  loading: state.users.data.loading,
-})
+  data: getUsers(state),
+  loading: getUsersLoading(state),
+});
 
 export default connect(mapStateToProps, { getAllUsers, remove })(withStyles(styles)(List))

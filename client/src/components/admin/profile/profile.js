@@ -182,6 +182,6 @@ Show.propTypes = {
 const mapStateToProps = (state) => ({
   currentUser: state.users.user.get('user'),
   loading: state.users.data.loading,
-})
+});
 
-export default connect(mapStateToProps, { remove,})(withStyles(styles)(Show))
+export default connect(mapStateToProps, { remove })(withStyles(styles)(Show))

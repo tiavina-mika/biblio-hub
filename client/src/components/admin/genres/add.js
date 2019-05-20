@@ -3,14 +3,17 @@ import { connect } from 'react-redux';
 import Form from './form';
 import { getFormData } from '../../../utils/utils';
 import FormLayout from '../pages/form';
-
 import { post, edit, getGenre } from '../../../redux/actions/genres';
 
 import FloatingButtonActions from '../components/floating-button-actions';
 
 class Add extends React.PureComponent {
   onSubmit = (form) => {
-      this.props.post(form)
+    const formData = new FormData();
+    getFormData(formData, 'name', form.name);
+    form.photo && formData.append('photo', form.photo[0]);
+
+    this.props.post(formData)
   }
   render() {
     return (

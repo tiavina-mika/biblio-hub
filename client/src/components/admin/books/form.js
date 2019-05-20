@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { renderTextField, fileUpload, renderSelect, renderMultipleCheckboxSelect, renderCheckBox } from '../../forms/fields';
 import { shallowCompare } from '../../../utils/shallow-compare';
 import Chip from '@material-ui/core/Chip';
+import ReactMDE from 'redux-forms-markdown-editor';
 import Avatar from '@material-ui/core/Avatar';
 import { BASE_URL } from '../../../redux/actions/constants'
 
@@ -175,6 +176,16 @@ class Form extends React.Component {
 					fullWidth
 				/>
 				<Field
+					name="summary"
+					type="text"
+					label="Resumé du livre"
+					component={ReactMDE}
+					placeholder="Resumé"
+					className={classes.fieldLabel}
+					required
+					variant="outlined"
+					fullWidth />
+				<Field
 					label="Publier?"
 					name="publish"
 					component={renderCheckBox}
@@ -183,18 +194,13 @@ class Form extends React.Component {
 					fullWidth
 				/>
 				<Field
-					name="summary"
-					type="text"
-					label="Resumé du livre"
-					multiline
-					rows={10}
-					component={renderTextField}
-					placeholder="Resumé"
-					className={classes.fieldLabel}
-					required
+					label="Privé?"
+					name="member"
+					component={renderCheckBox}
 					variant="outlined"
-					fullWidth />
-
+					type="checkbox"
+					fullWidth
+				/>
     			<Button
 						type="submit"
 						color="primary"

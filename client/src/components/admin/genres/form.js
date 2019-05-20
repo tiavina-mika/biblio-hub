@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 
-import { renderTextField } from '../../forms/fields';
+import { renderTextField, fileUpload } from '../../forms/fields';
 
 import { shallowCompare } from '../../../utils/shallow-compare';
 
@@ -65,6 +65,16 @@ class Form extends React.Component {
 					label="Nom du genre"
 					className={classes.fieldLabel}
 					fullWidth />
+				<Field
+					withRef
+					ref={this.setFileInputRef}
+					name="photo"
+					component={fileUpload}
+					variant="outlined"
+					type="file"
+					accept="image/*"
+					fullWidth
+				/>
         		<Button
 					type="submit"
 					color="primary"
@@ -83,7 +93,15 @@ const validate = (values) => {
 	const errors = {};
 	if (!values.name) {
 		errors.name = "Nom requis";
-  	}
+	  }
+	  if (values.photo && values.photo[0]) {
+		const fileName = values.photo[0].name.split('.');
+		const extension = fileName[fileName.length - 1];
+		const allowed = /jpeg|jpg|png|gif/i.test(extension);
+		if(!allowed){
+			errors.photo = 'Les images de types jpeg, jpg, png et gif seuls sont permis';
+		}
+	}
 	return errors;
 };
 

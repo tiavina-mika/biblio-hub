@@ -15,8 +15,11 @@ class Edit extends React.PureComponent {
   }
 
   onSubmit = (form) => {
+      const formData = new FormData();
       const id = form._id;
-      id ? this.props.edit(id, form) : this.props.initialize();
+      getFormData(formData, 'name', form.name);
+      form.photo && formData.append('photo', form.photo[0]);
+      id ? this.props.edit(id, formData) : this.props.initialize();
   }
   render() {
     const { data } = this.props;

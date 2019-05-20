@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -15,10 +15,11 @@ import TableRow from '@material-ui/core/TableRow';
 import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import FloatingButtonActions from '../components/floating-button-actions';
 import { BASE_URL } from '../../../redux/actions/constants';
-import ReactMarkdown from 'react-markdown/with-html';
 import { Typography } from '@material-ui/core';
 import { getBooksByAuthor } from '../../../redux/actions/books';
 import ListBy  from '../books/list-by';
+import Markdown from '../../blocks/markdown';
+import { getAuthorState, getAuthorsLoading } from '../../../redux/root-reducer';
 
 const styles = theme => ({
   table: {
@@ -49,6 +50,12 @@ const styles = theme => ({
   image: {
     objectFit: 'cover',
     width: '50%'
+  },
+  markDown: {
+    marginTop: 20,
+    marginBottom: 20,
+    textAlign: 'justify',
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 3}px`
   }
 });
 
@@ -59,10 +66,7 @@ class Author extends React.Component {
     const books = await this.props.getBooksByAuthor(author._id);
     this.setState({books: books});
   }
-  handleDeleteAuthor = (id) => {
-    this.props.remove(id);
-  }
-   render() {
+  render() {
     const { classes, data, loading } = this.props;
     const { books } = this.state;
     if(loading) {
@@ -122,10 +126,7 @@ class Author extends React.Component {
 
                     
                 </Card>
-                { data.description &&
-                <Card style={{ marginTop: 20, marginBottom: 20 }}>
-                  <ReactMarkdown source={data.description} escapeHtml={false}/>
-                </Card> }
+                { data.description && <Markdown input={data.description}/> }
 
                 <ListBy data={books} history={this.props.history}/>
               </Col>
@@ -166,8 +167,8 @@ Author.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.authors.author.get('author'),
-  loading: state.authors.data.loading,
-})
+  data: getAuthorState(state),
+  loading: getAuthorsLoading(state),
+});
 
-export default connect(mapStateToProps, { getBooksByAuthor, getAuthor, remove })(withStyles(styles)(Author))
+export default connect(mapStateToProps, { getBooksByAuthor, getAuthor, remove })(withStyles(styles)(Author));

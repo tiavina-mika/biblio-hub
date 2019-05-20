@@ -1,12 +1,11 @@
 import fs from 'fs'
-import moment from 'moment'
 import Book from "../models/book"
 import {validateBook} from '../utils/validation'
 import upload from '../utils/book-files-upload'
 
 const bookByID = async (req, res, next, id) => {
     try {
-        const book = await Book.findById(id).populate('genres').populate('author').exec()
+        const book = await Book.findById(id).populate('genres').populate('author').populate('comments.postedBy', '_id name').exec()
         req.book = book
         next()
     } catch (error) {
@@ -20,8 +19,32 @@ const findAll = async (req, res) => {
         if(req.query.search) {
             query.title = {$regex: req.query.search, $options: "i"}
         }
-        const book = await Book.find(query).populate('genres').populate('author').exec()
-        res.json(book)
+        if(req.query.publish) {
+            query.publish = !!req.query.publish
+        }
+        if(req.query.member) {
+            query.member = !!req.query.member
+        }
+        if(req.query.limit) {
+            const resPerPage = parseInt(req.query.limit)
+            const page = parseInt(req.query.page) || 1
+            const books = await Book.find(query)    
+                .skip((resPerPage * page) - resPerPage)
+                .limit(resPerPage)
+                .populate('genres', 'name').populate('author', 'slug first_name family_name')
+            const count = await Book.countDocuments()
+
+            res.json({
+                // books: books.map(n => n.newComment), 
+                books, 
+                'currentPage': page, 
+                'pages' : Math.ceil(count / resPerPage), 
+                total: count
+            })
+        } else {
+            const books = await Book.find(query).populate('genres name').populate('author').exec()
+            res.json(books)
+        }
     } catch (error) {
         res.status(400).json(error)
     }
@@ -34,8 +57,24 @@ const findOne = async (req, res) => {
 
         // const book = await Book.findByIdAndUpdate(req.book, {$inc: {"views": 1}}, {new: true}).populate('genres').populate('author')
         // const book = await Book.findById(req.book).populate('genres').populate('author')
-        book.views++
         // book.populate('genres').populate('author'))
+        const result = await book.save()
+        res.json(result)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+const findOneBySlug = async (req, res) => {
+    try {
+        // const book = await Book.findOne({slug: req.params.slug})
+          const book = await Book.findOneAndUpdate({slug: req.params.slug}, {$inc: {"views": 1}}, {new: true})
+
+            .populate('genres', 'name')
+            .populate('author')
+            .populate('comments.postedBy', '_id name')
+            .exec()
+        book.views++
         const result = await book.save()
         res.json(result)
     } catch (error) {
@@ -50,19 +89,19 @@ const create = async (req, res) => {
             return res.status(400).json(Object.keys(errors))
         }
         const book = new Book(req.body)
-        // console.log('req', req.body)
-        console.log('req.mod',  moment(req.body.date_publication).format('DD MMMM YYYY'))
         book.genres = [...req.body.genres.split(',')]
-        // book.date_publication =
-        // book.publish = typeof(req.body.publish) === 'undefined' ? false : req.body.publish
+        book.publish = !!req.body.publish
+        book.member = !!req.body.member
         if(req.files) {
             if(req.files['epub']) {
                 book.epub.data = fs.readFileSync(req.files['epub'][0].path)
                 book.epub.contentType = req.files['epub'][0].mimetype
+                book.epub.size = req.files['epub'][0].size
             }
             if(req.files['pdf']){
                book.pdf.data = fs.readFileSync(req.files['pdf'][0].path)
-                book.pdf.contentType = req.files['pdf'][0].mimetype             
+                book.pdf.contentType = req.files['pdf'][0].mimetype
+                book.pdf.size = req.files['pdf'][0].size           
             }
             if(req.files['photo']){
                 book.photo.data = fs.readFileSync(req.files['photo'][0].path)
@@ -77,36 +116,6 @@ const create = async (req, res) => {
     }
 }
     
-
-// const create = async (req, res) => {
-//     try {
-//         upload(req, res,async (error) => {
-//             if(error) {
-//                 res.status(400).json(error)
-//             } else {
-          
-//                     const book = new Book(req.body)
-//                     book.cover = req.file && `upload/image/${req.file}`
-//                     const result = await book.save()
-//                     res.json(result)
-//             }
-//         })
-//     } catch (error) {
-//         res.status(400).json(error)
-//     }
-// }
-
-// const create = async (req, res) => {
-//     try {
-//         const book = new Book(req.body)
-//         const result = await book.save()
-//         res.json(result)
-//     } catch (error) {
-//         res.status(400).json(error)
-//     }
-// }
-
-
 const edit = async (req, res) => {
     try {
 
@@ -117,25 +126,20 @@ const edit = async (req, res) => {
         const book = await req.book
         book.set(req.body)
         book.updatedAt = Date.now()
-        book.date_publication = moment(req.body.date_publication).format('DD MMMM YYYY')
         book.genres = [...new Set(req.body.genres.split(','))]
-        // book.genres = [...req.body.genres.split(',').filter(n => !!n && !/\W/g.test(n))]
-        // book.genres = req.body.genres.map(n => typeof(n) === 'object' ? n._id : n)
-        // book.author = req.body.author.map(n => typeof(n) === 'object' ? n._id : n)
-        // book.genres = [... req.body.genres]
-        // book.author = req.body.author ? req.body.author : book.author
-        console.log('genres', req.body.genres)
-        // console.log('author', req.body.author)
         // console.log('reqMod2', [...req.body.genres.split(',').filter(n => !!n && !/\W/g.test(n))])
-        book.publish = typeof(req.body.publish) === 'undefined' ? false : req.body.publish
+        book.publish = !!req.body.publish
+        book.member = !!req.body.member
          if(req.files) {
             if(req.files['epub']) {
                 book.epub.data = fs.readFileSync(req.files['epub'][0].path)
                 book.epub.contentType = req.files['epub'][0].mimetype
+                book.epub.size = req.files['epub'][0].size
             }
             if(req.files['pdf']){
-               book.pdf.data = fs.readFileSync(req.files['pdf'][0].path)
-                book.pdf.contentType = req.files['pdf'][0].mimetype             
+                book.pdf.data = fs.readFileSync(req.files['pdf'][0].path)
+                book.pdf.contentType = req.files['pdf'][0].mimetype
+                book.epub.size = req.files['pdf'][0].size
             }
             if(req.files['photo']){
                 book.photo.data = fs.readFileSync(req.files['photo'][0].path)
@@ -150,8 +154,6 @@ const edit = async (req, res) => {
     }
 }
 
-
-
 const remove = async (req, res) => {
     try {
         const book = await req.book
@@ -164,6 +166,17 @@ const remove = async (req, res) => {
 
 const listByGenre = async (req, res) => {
     try {
+        const query = {}
+        if(req.query.publish) {
+            query.publish = !!req.query.publish
+        }
+        if(req.query.limit) {
+            query.genres = req.genre
+            const books = await Book.find(query).limit(parseInt(req.query.limit))
+                                .populate('author', 'first_name family_name')
+                                .exec()
+            res.json(books)
+        }
         const books = await Book.find({genres: req.genre}).populate('author').exec()
         res.json(books)
     } catch (error) {
@@ -176,6 +189,39 @@ const listByAuthor = async (req, res) => {
         const books = await Book.find({author: req.author}).populate('author').exec()
         res.json(books)
     } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+const comment = async (req, res) => {
+    try {
+      let comment = req.body.comment
+      comment.postedBy = req.body.userId
+      const result = await Book.findByIdAndUpdate(req.body.bookId, {$push: {comments: comment}, $inc: {"newComment": 1}}, {new: true})
+          .populate('comments.postedBy', '_id name')
+          .exec()
+          // result.newComment++
+        res.json(result)
+    } catch(error) {
+        res.status(400).json(error)
+    }
+}
+
+
+const uncomment = async (req, res) => {
+    try {
+      let comment = req.body.comment
+
+      if(req.body.userId === comment.postedBy._id) {
+          const result = await Book.findByIdAndUpdate(req.body.bookId, {$pull: {comments: {_id: comment._id}, $inc: {"newComment": -1}}}, {new: true})
+              .populate('comments.postedBy', '_id name')
+              .exec()
+            res.json(result)
+      } else {
+        res.json({USER_NON_AUTORIZED: 'User non authorized'})
+      }
+
+    } catch(error) {
         res.status(400).json(error)
     }
 }
@@ -204,5 +250,8 @@ export default {
     photo,
     pdf,
     epub,
+    findOneBySlug,
+    comment,
+    uncomment,
     bookByID
 }

@@ -7,9 +7,9 @@ import { getAll, remove } from '../../../redux/actions/books';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import { desc, stableSort, getSorting } from '../../../utils/utils';
 import FloatingButtonActions from '../components/floating-button-actions';
@@ -18,7 +18,9 @@ import EnhancedTableToolbar  from '../components/list-table-toolbar';
 import EnhancedTableHead  from '../components/list-table-head';
 import ButtonActions  from '../components/list-table-actions';
 import Checked  from '../components/checked';
-
+import { getBooks, getBooksLoading } from '../../../redux/root-reducer';
+import Pagination from '../../blocks/pagination';
+import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
 
 const rows = [
   { id: 'title', disablePadding: false, label: 'Titre' },
@@ -28,6 +30,8 @@ const rows = [
   { id: 'pdf', disablePadding: false, label: 'Pdf' },
   { id: 'date_publication', disablePadding: false, label: 'date_publication' },
   { id: 'views', disablePadding: false, label: 'vues' },
+  { id: 'comments', disablePadding: false, label: 'commentaires' },
+  { id: 'newComments', disablePadding: false, label: 'commentaires non lus' },
   { id: 'createdAt', disablePadding: false, label: 'Ajouté le' },
 ];
 
@@ -49,7 +53,15 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: 'transparent'
     }
-  }
+  },
+  totalComment: {
+    backgroundColor: theme.palette.primary.main,
+    color: '#fff'
+  },
+  totalNonReadComment: {
+    backgroundColor: '#961919',
+    color: '#fff'
+  },
 });
 
 
@@ -59,11 +71,12 @@ class List extends Component {
     orderBy: 'family_name',
     selected: [],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: DASHBOARD_LIST_PER_PAGE,
   };
 
   componentDidMount() {
-    this.props.getAll()
+    const { getAll, match : { params }} = this.props;
+    params ? getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, params.search) : getAll(DASHBOARD_LIST_PER_PAGE, 1);
   }
 
   handleRequestSort = (event, property) => {
@@ -79,7 +92,7 @@ class List extends Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: this.props.data.map(n => n._id) }));
+      this.setState(state => ({ selected: this.props.data.books.map(n => n._id) }));
 
       return;
     }
@@ -121,10 +134,15 @@ class List extends Component {
   handleEdit = (id) => {
     this.props.history.push(`/dashboard/modifier/livre/${id}`);
   }
+  handleDelete = (id) => {
+    this.props.remove(id)
+    this.props.history.push(`/dashboard/redirect`);
+  }
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
-  };
+  handleChangePage = page => {
+    this.setState({page});
+    this.props.getAll(DASHBOARD_LIST_PER_PAGE, page);
+  }
 
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
@@ -133,8 +151,8 @@ class List extends Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    const { classes, data, loading, history: { push } } = this.props;
-    const dataLength = !loading && data ? data.length : 0;
+    const { classes, data, loading } = this.props;
+    const dataLength = !loading && data ? data.books.length : 0;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataLength - page * rowsPerPage);
 
@@ -158,8 +176,7 @@ class List extends Component {
               rows={rows}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(data.books, getSorting(order, orderBy))
                 .map(n => {
                   const isSelected = this.isSelected(n._id);
                   return (
@@ -182,6 +199,12 @@ class List extends Component {
                       <TableCell align="right"><Checked checked={n.pdf}/></TableCell>
                       <TableCell align="right">{moment(new Date(n.date_publication)).format('DD MMMM YYYY')}</TableCell>
                       <TableCell align="right">{n.views}</TableCell>
+                      <TableCell align="right">
+                        <Button className={classes.totalComment} >{n.comments.length}</Button>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Button className={classes.totalNonReadComment} >{n.newComment}</Button>
+                      </TableCell>
                       <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
                       <TableCell align="right">                     
                         <ButtonActions
@@ -196,29 +219,18 @@ class List extends Component {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 10 * emptyRows }}>
                   <TableCell colSpan={9} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={dataLength}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        <Pagination
+          currentPage={data.currentPage}
+          total={data.pages}
+          onChange={this.handleChangePage}
         />
-
         <FloatingButtonActions
             name="livre"
             add
@@ -236,8 +248,8 @@ List.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.books.data.get('books'),
-  loading: state.books.data.loading,
-})
+  data: getBooks(state),
+  loading: getBooksLoading(state),
+});
 
 export default connect(mapStateToProps, { getAll, remove })(withStyles(styles)(List));

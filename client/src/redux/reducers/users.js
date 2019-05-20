@@ -75,4 +75,8 @@ export default combineReducers({
   data: users,
   user: user,
   profile: profile,
-});  
+});
+
+export const getUser = state => state.user.get('user');
+export const getUsers = state => state.data.get('users');
+export const getUsersLoading = state => state.loading;

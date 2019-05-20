@@ -1,18 +1,21 @@
 import React from 'react';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import Paper from '@material-ui/core/Paper';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import ButtonActions  from '../components/list-table-actions';
-
+import NoData  from '../components/no-data';
 import { connect } from 'react-redux';
 import { remove } from '../../../redux/actions/books';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import { getBooksLoading } from '../../../redux/root-reducer';
+import CustomizedLinearProgress  from '../components/progress';
 
 const styles = theme => ({
   cardTable: {
@@ -31,11 +34,21 @@ const styles = theme => ({
     fontSize: 20,
     fontWeight: 700
   },
+  link: {
+      textDecoration: 'none'
+  }
 });
 
 const ListBy = props => {
-    const { classes, data, history: { push } } = props;
-    console.log(data);
+    const { classes, data, history: { push }, by, loading } = props;
+    if(loading) {
+        return <CustomizedLinearProgress />
+      }
+    if(!data && !loading) {
+        return <NoData
+                title={`Il n'y a pas encore de livre pour ce ${by}`}
+                link='/dashboard/ajouter/livre'/>
+    }
     return (
         data
             ? ([<Card className={classes.cardTitle}>
@@ -56,7 +69,7 @@ const ListBy = props => {
                                 <TableCell align="right">
                                     Ajouter le
                                 </TableCell>                       
-                                <TableCell align="center">
+                                <TableCell align="right">
                                     Actions
                                 </TableCell>                       
                             </TableRow>
@@ -69,11 +82,10 @@ const ListBy = props => {
                                     </TableCell>
                                     {n.author &&              
                                     <TableCell align="right">
-                                    <Typography>{ n.author.family_name }</Typography>
+                                        <Typography><Link to={`/dashboard/auteur/${n.author._id}`} className={classes.link}>{ n.author.family_name }</Link></Typography>
                                     </TableCell>}
-                                    <TableCell align="right">
-                                    {new Date(n.date_publication).toLocaleString()}
-                                    </TableCell>
+                                    <TableCell align="right"  className={classes.th}>{moment(new Date(n.createdAt)).format('DD MMM YYYY à HH:mm')}</TableCell>
+
                                     <TableCell align="right">                     
                                         <ButtonActions
                                             dataTitle={n.title}
@@ -89,12 +101,15 @@ const ListBy = props => {
                     </Table>
                 </Card>
             ])
-            : <Paper elevation={1}>Il n'y a pas encore de livre</Paper>
+            : <CustomizedLinearProgress />
         )
 }
+const mapStateToProps = (state) => ({
+    loading: getBooksLoading(state),
+});
 
 ListBy.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default connect(null, { remove })(withStyles(styles)(ListBy))
+export default connect(mapStateToProps, { remove })(withStyles(styles)(ListBy))

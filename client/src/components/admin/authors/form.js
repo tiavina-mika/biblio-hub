@@ -7,7 +7,7 @@ import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 
 import { renderTextField, fileUpload } from '../../forms/fields';
-
+import ReactMDE from 'redux-forms-markdown-editor';
 import { shallowCompare } from '../../../utils/shallow-compare';
 
 const styles = {
@@ -107,9 +107,9 @@ class Form extends React.Component {
 					name="description"
 					type="text"
 					label="Descritpion"
-          multiline
-          rows={10}
-					component={renderTextField}
+					// multiline
+					// rows={10}
+					component={ReactMDE}
 					placeholder="description"
 					label="Biographie de l'auteur"
 					className={classes.fieldLabel}
@@ -156,8 +156,7 @@ const validate = (values) => {
 		if (values.date_of_death - values.date_of_birth < 10) {
 			errors.date_of_death = "Trop court";
 		}
-  }
-
+  	}
 
 	if (values.photo && values.photo[0]) {
 		const fileName = values.photo[0].name.split('.');

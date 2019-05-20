@@ -7,9 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 import { connect } from 'react-redux';
 import { getOne, remove } from '../../../redux/actions/books';
-import {  getAuthor } from '../../../redux/actions/authors';
-import {  getGenre } from '../../../redux/actions/genres';
-
 import Chip from '@material-ui/core/Chip';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Table from '@material-ui/core/Table';
@@ -18,16 +15,17 @@ import TableRow from '@material-ui/core/TableRow';
 import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import FloatingButtonActions from '../components/floating-button-actions';
 import { BASE_URL } from '../../../redux/actions/constants'
-import ReactMarkdown from 'react-markdown/with-html';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import DoneIcon from '@material-ui/icons/Done';
 import DownloadIcon from 'mdi-material-ui/Download';
 import CustomizedLinearProgress  from '../components/progress';
 import Checked  from '../components/checked';
-import { IconButton }  from '../components/buttons';
+import { IconButton }  from '../../blocks/buttons';
+import Markdown from '../../blocks/markdown';
+import Comments from './comments';
+import { getBookState, getBooksLoading } from '../../../redux/root-reducer';
 
 const styles = theme => ({
   table: {
@@ -81,18 +79,21 @@ const styles = theme => ({
   titleRightSidebar: {
     fontWeight: 600,
     fontSize: 25
-  }
+  },
+  chip: {
+    borderColor: '#d64444',
+    color: '#d64444',
+    marginLeft: 15,
+    marginTop: -8
+  },
 });
 
-class Author extends React.Component {
+class Book extends React.Component {
   state = {data: ''}
   componentDidMount() {
       this.props.getOne(this.props.match.params.id).then(d => this.setState({data: d}))
   }
-  handleDeleteAuthor = (id) => {
-    this.props.remove(id);
-  }
-   render() {
+  render() {
     const { classes, loading, history: { push } } = this.props;
     const { data } = this.state;
     if(loading) {
@@ -114,9 +115,15 @@ class Author extends React.Component {
                 <Typography variant="title" className={classes.title}>
                   {data.title}
                 </Typography>
-                <Typography variant="title" className={classes.subtitle}>
-                  {`${data.author && data.author.first_name} ${data.author && data.author.family_name}`}
-                </Typography>
+                {data.author
+                ? <Typography variant="title" className={classes.subtitle}>
+                    {`${data.author && data.author.first_name} ${data.author && data.author.family_name}`}
+                  </Typography>
+                :	<Chip
+                    label="Pas d'auteur"
+                    className={classes.chip}
+                    variant="outlined"
+                  />}
               </Card>
               <Card className={classes.card}>
               
@@ -130,14 +137,10 @@ class Author extends React.Component {
                       <TableCell align="right">Auteur</TableCell>
                       <TableCell align="left"  className={classes.th}>{`${data.author.first_name} ${data.author.family_name}`}</TableCell>
                     </TableRow> }
-                    <TableRow>
-                      <TableCell align="right">Résumé</TableCell>
-                      <TableCell align="left"  className={classes.th}>{data.summary}</TableCell>
-                    </TableRow>
                     { data.date_publication &&
                     <TableRow>
                       <TableCell align="right">Date de publication</TableCell>
-                      <TableCell align="left"  className={classes.th}>{moment(new Date(data.date_publication)).format('DD MMMM YYYY')}</TableCell>
+                      <TableCell align="left"  className={classes.th}>{data.date_publication}</TableCell>
                     </TableRow> }
                     <TableRow>
                       <TableCell align="right">Ajouté le</TableCell>
@@ -158,6 +161,10 @@ class Author extends React.Component {
                       <TableCell align="right">Publier?</TableCell>
                       <TableCell align="left" className={classes.th}><Checked checked={data.publish}/></TableCell>
                     </TableRow>
+                    <TableRow>
+                      <TableCell align="right">Privé?</TableCell>
+                      <TableCell align="left" className={classes.th}><Checked checked={data.member}/></TableCell>
+                    </TableRow>
                     { data && data.genres && 
                     <TableRow>
                       <TableCell align="right">Genres</TableCell>
@@ -176,7 +183,7 @@ class Author extends React.Component {
                         <TableCell align="right">Epub</TableCell>
                         <TableCell align="left" className={classes.th}>
                               <a href={`${BASE_URL}/api/books/epub/${data._id}`} style={{textDecoration: 'none'}}>
-                                <IconButton label="DOWNLOAD EPUB" icon={<DownloadIcon style={{marginRight: 5}} />}/>
+                                <IconButton label={`DOWNLOAD EPUB (${Number(data.epub.size / (1024 * 1024)).toFixed(3)}Mo)`} icon={<DownloadIcon style={{marginRight: 5}} />}/>
                               </a>                     
                         </TableCell>
                       </TableRow> }
@@ -185,17 +192,15 @@ class Author extends React.Component {
                         <TableCell align="right">PDF</TableCell>
                         <TableCell align="left" className={classes.th}>
                               <a href={`${BASE_URL}/api/books/pdf/${data._id}`} style={{textDecoration: 'none'}}>
-                                <IconButton label="DOWNLOAD PDF" icon={<DownloadIcon style={{marginRight: 5}} />}/>
+                                <IconButton label={`DOWNLOAD PDF (${Number(data.pdf.size / (1024 * 1024)).toFixed(3)}Mo)`} icon={<DownloadIcon style={{marginRight: 5}} />}/>
                               </a>                     
                         </TableCell>
                       </TableRow> }
                   </Table>
 
                 </Card>
-                { data.description &&
-                <Card style={{ marginTop: 20 }}>
-                  <ReactMarkdown source={data.description} escapeHtml={false}/>
-                </Card> }
+                { data.summary &&<Markdown input={data.summary}/>}
+                <Comments data={data.comments} bookId={data._id}/>
               </Col>
 
               { data.photo || data.author ?
@@ -258,13 +263,13 @@ class Author extends React.Component {
     }
 }
 
-Author.propTypes = {
+Book.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  data: state.books.book.get('book'),
-  loading: state.books.loading,
-})
+  data: getBookState(state),
+  loading: getBooksLoading(state),
+});
 
-export default connect(mapStateToProps, { getOne, remove,})(withStyles(styles)(Author))
+export default connect(mapStateToProps, { getOne, remove,})(withStyles(styles)(Book))

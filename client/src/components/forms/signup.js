@@ -45,7 +45,7 @@ class SignupForm extends React.Component {
 		this.props.onSubmit(form);
 	}
 	render() {
-		const { handleSubmit, loading, classes } = this.props;
+		const { handleSubmit, loading, classes, variant } = this.props;
 		return (
 			<form onSubmit={handleSubmit(this.onSubmit)}>
 				<Field
@@ -55,6 +55,7 @@ class SignupForm extends React.Component {
 					// disabled={disabled}
 					placeholder="Entrer votre pseudo"
 					label="Pseudo"
+					variant={variant}
 					className={classes.fieldLabel}
 					fullWidth />
 				<Field
@@ -63,6 +64,7 @@ class SignupForm extends React.Component {
 					component={renderTextField}
 					// disabled={disabled}
 					placeholder="Entrer votre email"
+					variant={variant}
 					label="Email"
 					className={classes.fieldLabel}
 					fullWidth />
@@ -72,6 +74,7 @@ class SignupForm extends React.Component {
 					component={renderTextField}
 					placeholder="Mot de passe"
 					label="Entrez votre mot de passe"
+					variant={variant}
 					className={classes.fieldLabel}
 					fullWidth />
 				<Field
@@ -80,6 +83,7 @@ class SignupForm extends React.Component {
 					component={renderTextField}
 					placeholder="Confirmation"
 					label="Confirmez votre mot de passe"
+					variant={variant}
 					className={classes.fieldLabel}
 					fullWidth />
           <Button

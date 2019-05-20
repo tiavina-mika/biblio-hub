@@ -12,9 +12,12 @@ import {
 const loading = (state = false, action) => {
 	switch (action.type) {
 		case FETCH_GENRES_REQUEST:
+		case FETCH_GENRE_REQUEST:
 			return true;
 		case FETCH_GENRES_SUCCESS:
 		case FETCH_GENRES_FAILURE:
+		case FETCH_GENRE_SUCCESS:
+		case FETCH_GENRE_FAILURE:
 			return false;
 		default:
 			return state;
@@ -57,4 +60,8 @@ export default combineReducers({
   loading: loading,
   data: genres,
   genre: genre
-});  
+});
+
+export const getGenre = state => state.genre.get('genre');
+export const getGenres = state => state.data.get('genres');
+export const getGenresLoading = state => state.loading;

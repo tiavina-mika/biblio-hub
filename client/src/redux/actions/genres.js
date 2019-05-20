@@ -2,12 +2,32 @@ import { FETCH_GENRE_REQUEST } from './constants';
 
 import { apiGet, apiDelete, apiPost, apiEdit } from './api';
 
-export const getAllGenres = (search) => (dispatch, getState) => {
-	const url = search ? `/api/genres?search=${search}` : `/api/genres` ;
+export const getAllGenres = (limit, page, search, redirectUrl) => (dispatch, getState) => {
+	let url = `/api/genres`;
+	if(limit) {
+		url += `?limit=${limit}`;
+	}
+	if (page) {
+		url += `&page=${page}`;
+	}
+	if (search) {
+		url += `&search=${search}`;
+	}
 	return apiGet({
 		key: 'FETCH_GENRES',
 		name: 'genres',
 		url: url,
+		redirectUrl,
+		dispatch,
+		getState
+    });
+};
+
+export const getOneBySlug = (slug) => (dispatch, getState) => {
+	return apiGet({
+		key: 'FETCH_GENRE',
+		name: 'genre',
+		url: `/api/genres/filter/${slug}`,
 		dispatch,
 		getState
     });

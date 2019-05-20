@@ -18,37 +18,36 @@ const styles = {
 
 const ButtonActions = props => {
         const { dataTitle, classes, onRemove, onEdit, onShow, key } = props;
-        return ([
-                <AlertDialog
-                    key={key}
-                    style={classes.actionButtons}
-                    component={Button}
-                    tooltip="Supprimer"
-                    icon={<TrashCanOutline />}
-                    title="Suppression"
-                    content={`Voulez-vous supprimez ${dataTitle}`}
-                    submitButtonText='Supprimer'
-                    onClick={onRemove}
-                />,
-                <Tooltip
-                    title="Voir preview"
-                    key={key}
-                    placement='top'
-                    enterDelay={300}> 
-                        <Button onClick={onShow} className={classes.actionButtons}>
-                            <EyeOutline />
-                        </Button>                   
-                </Tooltip>,
-                <Tooltip
-                    title="Modifier"
-                    key={key}
-                    placement='top'
-                    enterDelay={300}>             
-                        <Button onClick={onEdit} className={classes.actionButtons}>
-                            <Pencil />
-                        </Button> 
-                </Tooltip> 
-        ])
+        const remove = onRemove && <AlertDialog
+                key={key}
+                style={classes.actionButtons}
+                component={Button}
+                tooltip={`Supprimer ${dataTitle}`}
+                icon={<TrashCanOutline />}
+                title="Suppression"
+                content={`Voulez-vous supprimez ${dataTitle}`}
+                submitButtonText='Supprimer'
+                onClick={onRemove}
+            />;
+        const show = onShow && <Tooltip
+                title="Voir preview"
+                key={key}
+                placement='top'
+                enterDelay={300}> 
+                    <Button onClick={onShow} className={classes.actionButtons}>
+                        <EyeOutline />
+                    </Button>                   
+            </Tooltip>;
+        const edit = onEdit && <Tooltip
+                title={`Modifier ${dataTitle}`}
+                key={key}
+                placement='top'
+                enterDelay={300}>             
+                    <Button onClick={onEdit} className={classes.actionButtons}>
+                        <Pencil />
+                    </Button> 
+            </Tooltip> ;
+        return ([remove,show,edit]);
 }
 ButtonActions.propTypes = {
     classes: PropTypes.object.isRequired,

@@ -1,4 +1,5 @@
 import fs from 'fs'
+import moment from 'moment'
 import Author from "../models/author"
 import upload from '../utils/image-upload'
 import { validateAuthor } from '../utils/validation'
@@ -20,19 +21,24 @@ const findAll = async (req, res) => {
             query.family_name = {$regex: req.query.search, $options: "i"}
         }
 
-        if(parseInt(req.query.size)) {
-        const resPerPage = parseInt(req.query.size)
-        const page = req.params.page || 1
-            const authors = await Author.find()
+        if(req.query.limit) {
+            const resPerPage = parseInt(req.query.limit)
+            const page = parseInt(req.query.page) || 1
+            const authors = await Author.find(query)    
                 .skip((resPerPage * page) - resPerPage)
                 .limit(resPerPage)
-            const count = await Author.count()
+            const count = await Author.countDocuments()
 
-            res.json({authors, 'currentPage': page, 'pages' : Math.ceil(count / resPerPage), total: count})
+            return res.json({
+                authors, 
+                'currentPage': page, 
+                'pages' : Math.ceil(count / resPerPage), 
+                total: count
+            })
+        } else {
+            const authors = await Author.find(query).exec()
+            return res.json(authors)
         }
-
-        const author = await Author.find(query).exec()
-        res.json(author)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -42,6 +48,16 @@ const findOne = async (req, res) => {
     try {
         const author = await req.author
         res.json(author)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+const findOneBySlug = async (req, res) => {
+    try {
+        const author = await Author.findOne({slug: req.params.slug}).populate('books').exec()
+        const result = await author.save()
+        res.json(result)
     } catch (error) {
         res.status(400).json(error)
     }
@@ -76,11 +92,12 @@ const create = async (req, res) => {
             return res.status(400).json(errors)
         }
         const author = new Author(req.body)
-            if(req.file){
-                // const path = `/upload/image/${req.file.filename}`
-              author.photo.data = fs.readFileSync(req.file.path)
-              author.photo.contentType = req.file.mimetype
-            }
+        book.date_of_birth = moment(req.body.date_of_birth, 'DD MM YYYY')
+        book.date_of_death = moment(req.body.date_of_death, 'DD MM YYYY')
+        if(req.file){
+          author.photo.data = fs.readFileSync(req.file.path)
+          author.photo.contentType = req.file.mimetype
+        }
         // author.photo = req.file && `public/upload/image/${req.file.filename}`
         // console.log('author: ', req.file)
         const result = await author.save()
@@ -121,6 +138,8 @@ const edit = async (req, res) => {
         const author = await req.author
             author.set(req.body)
             author.updatedAt = Date.now()
+            book.date_of_birth = moment(req.body.date_of_birth, 'DD MM YYYY')
+            book.date_of_death = moment(req.body.date_of_death, 'DD MM YYYY')
             if(req.file){
                 // const path = `/upload/image/${req.file.filename}`
               author.photo.data = fs.readFileSync(req.file.path)
@@ -182,5 +201,6 @@ export default {
     edit,
     remove,
     authorByID,
+    findOneBySlug,
     photo
 }

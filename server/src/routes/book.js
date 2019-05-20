@@ -27,11 +27,14 @@ router.route('/api/books/by/:genreId')
   .get(bookController.listByGenre)
 router.route('/api/books/from/:authorId')
   .get(bookController.listByAuthor)
-// .fields([
-//     { name: 'cover', maxCount: 1 }, 
-//     { name: 'epub', maxCount: 1 },
-//     { name: 'pdf', maxCount: 1 },
-// ])
+router.route('/api/books/filter/:slug')
+  .get(bookController.findOneBySlug)
+
+router.route('/api/books/comment')
+  .put(bookController.comment)
+router.route('/api/books/uncomment')
+  .put(bookController.uncomment)
+
 router.route('/api/books/:bookId')
   .get(bookController.findOne)
   .put(upload.fields([

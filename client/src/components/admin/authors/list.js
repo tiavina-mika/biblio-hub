@@ -6,7 +6,6 @@ import { getAllAuthors, remove } from '../../../redux/actions/authors';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -18,6 +17,9 @@ import EnhancedTableToolbar  from '../components/list-table-toolbar';
 import EnhancedTableHead  from '../components/list-table-head';
 import ButtonActions  from '../components/list-table-actions';
 import Checked  from '../components/checked';
+import { getAuthors, getAuthorsLoading } from '../../../redux/root-reducer';
+import Pagination from '../../blocks/pagination';
+import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
 
 const rows = [
   { id: 'first_name', numeric: false, disablePadding: false, label: 'Prenoms' },
@@ -55,11 +57,12 @@ class List extends React.Component {
     orderBy: 'family_name',
     selected: [],
     page: 0,
-    rowsPerPage: 5,
+    rowsPerPage: DASHBOARD_LIST_PER_PAGE,
   };
 
   componentDidMount() {
-    this.props.getAllAuthors()
+    const { getAllAuthors, match : { params }} = this.props;    
+    params ? getAllAuthors(DASHBOARD_LIST_PER_PAGE, 1, params.search) : getAllAuthors(DASHBOARD_LIST_PER_PAGE, 1);
   }
 
   handleRequestSort = (event, property) => {
@@ -75,7 +78,7 @@ class List extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: this.props.data.map(n => n._id) }));
+      this.setState(state => ({ selected: this.props.data.authors.map(n => n._id) }));
 
       return;
     }
@@ -122,8 +125,9 @@ class List extends React.Component {
     this.props.history.push(`/dashboard/redirect`);
   }
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  handleChangePage = page => {
+    this.setState({page});
+    this.props.getAllAuthors(DASHBOARD_LIST_PER_PAGE, page);
   };
 
   handleChangeRowsPerPage = event => {
@@ -134,16 +138,15 @@ class List extends React.Component {
 
   render() {
     const { classes, data, loading } = this.props;
-    const dataLength = !loading && data ? data.length : 0;
+    const dataLength = !loading && data ? data.authors.length : 0;
     const { order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, dataLength - page * rowsPerPage);
 
     if(loading) {
       return <CustomizedLinearProgress />
     }
-
     return (
-      data && !loading
+      data
       ? <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des auteurs"/>
         <div className={classes.tableWrapper}>
@@ -158,8 +161,7 @@ class List extends React.Component {
               rows={rows}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(data.authors, getSorting(order, orderBy))
                 .map(n => {
                   const isSelected = this.isSelected(n._id);
                   return (
@@ -194,27 +196,17 @@ class List extends React.Component {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 10 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={dataLength}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        <Pagination
+          currentPage={data.currentPage}
+          total={data.pages}
+          onChange={this.handleChangePage}
         />
 
         <FloatingButtonActions
@@ -234,8 +226,8 @@ List.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.authors.data.get('authors'),
-  loading: state.authors.data.loading,
-})
+  data: getAuthors(state),
+  loading: getAuthorsLoading(state),
+});
 
 export default connect(mapStateToProps, { getAllAuthors, remove })(withStyles(styles)(List))

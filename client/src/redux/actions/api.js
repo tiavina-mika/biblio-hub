@@ -4,7 +4,6 @@ import { BASE_URL } from './constants';
 import { dispatchLogout } from './authentication';
 import { getStorage } from './../../utils/local-storage';
 import { push } from 'connected-react-router';
-import { getLocation } from '../../redux/root-reducer';
 
 export const setAuthHeader = token => {
 	if (token) {
@@ -36,10 +35,10 @@ export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispa
             return dispatch(setError(response.data));
         }
 
-            const data = await response.data;
+        const data = await response.data;
 
-            dispatch({ type: `${key}_SUCCESS`, [name]: data, getState });
-            return params ? dispatch(push(`${redirectUrl}/${data._id}`)) : dispatch(push(redirectUrl)) ;
+        dispatch({ type: `${key}_SUCCESS`, [name]: data, getState });
+        return params ? dispatch(push(`${redirectUrl}/${data._id}`)) : dispatch(push(redirectUrl)) ;
     } catch(error) {
         if (error.response) {
             if (error.response.status === 404 || error.response.status === 401) {
@@ -77,7 +76,6 @@ export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, get
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
         }
 
-
         const response = await axios.put(`${BASE_URL}${url}`, body);
 
         if (response && response.status !== 200) {
@@ -108,8 +106,7 @@ export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, get
     };
 };
 
-
-export const apiGet = async ({ key, name, url, dispatch, getState, token, disableToken, ...rest }) => {
+export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, token, disableToken, ...rest }) => {
     try {
         if (!token && !disableToken) {
             setAuthHeader(getStorage('token'));
@@ -133,6 +130,9 @@ export const apiGet = async ({ key, name, url, dispatch, getState, token, disabl
         
             const data = await response.data;
             dispatch({ type: `${key}_SUCCESS`, [name] : data, getState });
+            if(redirectUrl){
+                return dispatch(push(redirectUrl))
+            }
             return data;
     } catch(error) {
         if (error.response) {

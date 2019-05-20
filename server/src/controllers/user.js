@@ -27,8 +27,31 @@ const profileByID = async (req, res, next, id) => {
 
 const findAll = async (req, res) => {
     try {
-        const user = await User.find().exec()
-        res.json(user)
+        const query = {}
+        if(req.query.search) {
+            query.email = {$regex: req.query.search, $options: "i"}
+        }
+        if(req.query.checked) {
+            query.checked = !!req.query.checked
+        }
+        if(req.query.limit) {
+            const resPerPage = parseInt(req.query.limit)
+            const page = parseInt(req.query.page) || 1
+            const users = await User.find(query)    
+                .skip((resPerPage * page) - resPerPage)
+                .limit(resPerPage)
+            const count = await User.countDocuments()
+
+            res.json({
+                users, 
+                'currentPage': page, 
+                'pages' : Math.ceil(count / resPerPage), 
+                total: count
+            })
+        } else {
+            const users = await User.find().exec()
+            res.json(users)
+        }
     } catch (error) {
         res.status(400).json(error)
     }
@@ -179,14 +202,13 @@ const editProfile = async (req, res) => {
 // }
 
 const profilePhoto = (req, res, next) => {
-    // if(req.profile.photo.data && req.user === req.profile.user) {
-    //     res.set("Content-Type", req.profile.photo.contentType)
-    //     return res.send(req.profile.photo.data)
-    // }
-    // if(req.profile.photo.data && req.user === req.profile.user) {
+    if(req.user.profile) {
         res.set("Content-Type", req.user.profile.photo.contentType)
         return res.send(req.user.profile.photo.data)
-    // }
+    } else {
+        console.log('phot', `${process.cwd()}/public/profileImage.jpg`)
+        return res.sendFile(`${process.cwd()}/public/profileImage.jpg`)
+    }
 }
 export default {
     findAll,

@@ -53,7 +53,7 @@ class SigninForm extends React.Component {
 		this.props.onSubmit(form);		
 	}
 	render() {
-		const { handleSubmit, loading, classes } = this.props;
+		const { handleSubmit, loading, classes, variant } = this.props;
 		return (
 			<form onSubmit={handleSubmit(this.onSubmit)}>
 				<Field
@@ -62,6 +62,7 @@ class SigninForm extends React.Component {
 					component={renderTextField}
 					placeholder="Email"
 					label="Entrez votre email"
+					variant={variant}
 					className={classes.fieldLabel}
 					fullWidth />
 				<Field
@@ -70,6 +71,7 @@ class SigninForm extends React.Component {
 					component={renderTextField}
 					placeholder="Mot de passe"
 					label="Entrez votre mot passe"
+					variant={variant}
 					className={classes.fieldLabel}
 					fullWidth />
 

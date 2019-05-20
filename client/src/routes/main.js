@@ -2,32 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import asyncComponent from '../components/async-component';
-import Header from '../components/pages/header';
+import MainLayout from '../components/main-layout';
 
 
-const MainRoute = ({ component: Component, authenticated, isAdmin, ...rest }) => (
-    <Route {...rest} render={props => <MainLayout {...props}><Component authenticated={authenticated} isAdmin={isAdmin} {...props}/></MainLayout>
+const MainRoute = ({ component: Component, authenticated, id, ...rest }) => (
+    <Route {...rest} render={props => <MainLayout {...props}><Component authenticated={authenticated} id={id} {...props}/></MainLayout>
     }/>
-  )
-
-  const MainLayout = ({ children, ...rest }) => {
-    return (
-      <div>
-        <Header/>
-        {children}
-      </div>
-    )
-  }
-
-
-
-const Error404 = () => {
-    return <h1>Error404 for admin</h1>
-}
+)
 
 const mapStateToProps = state => ({
 	authenticated: state.user.get('authenticated'),
-	isAdmin: state.user.get('isAdmin'),
+	id: state.user.get('id'),
 	email: state.user.get('email'),
 });
 

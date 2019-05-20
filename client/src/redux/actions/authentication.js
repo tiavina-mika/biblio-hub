@@ -8,7 +8,7 @@ import { setAuthHeader } from './api';
 
 const url = '/auth';
 
-export const signin =  (email, password) => async (dispatch, getState) => {
+export const signin =  (email, password, currentUrl) => async (dispatch, getState) => {
     try {
         const location = getLocation(getState());
         dispatch({ type: FETCH_AUTH_REQUEST });
@@ -24,7 +24,8 @@ export const signin =  (email, password) => async (dispatch, getState) => {
         if (location && location.query && location.query.redirect) {
             return dispatch(push(location.query.redirect))
         }
-        return isAdmin ? dispatch(push('/dashboard')) : dispatch(push('/'));
+        return isAdmin ? dispatch(push('/dashboard')) : currentUrl ? dispatch(push(currentUrl)): dispatch(push('/'));
+        
 
     } catch (error) {
         if (error.response) {
@@ -43,14 +44,12 @@ export const signin =  (email, password) => async (dispatch, getState) => {
     }
 }
 
-export const signup = (name, email, password) => async dispatch => {
+export const signup = (name, email, password) => async (dispatch, getState) => {
     try {
         const user = await axios.post(`${BASE_URL}${url}/signup`, {name, email, password});
-        // const isAdmin = user.data.role ==='ADMIN';
         if (user && user.status !== 200) {
             return dispatch(setError(user.data));
         }
-        
         return dispatch(push(`/signin`));
 	} catch(error) {
         if (error.response) {

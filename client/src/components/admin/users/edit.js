@@ -1,20 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Form from './form';
 import { getFormData } from '../../../utils/utils';
 import { edit, getOne, initialize } from '../../../redux/actions/users';
 import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
+import CustomizedLinearProgress  from '../components/progress';
+import { getUserState, getUsersLoading } from '../../../redux/root-reducer';
 
 class Edit extends React.PureComponent {
   state = {data: ''}
@@ -32,7 +26,10 @@ class Edit extends React.PureComponent {
     id ? this.props.edit(id, form) : this.props.initialize();
   }
   render() {
-    const { data } = this.props;
+    const { data, loading } = this.props;
+    if(loading) {
+      return <CustomizedLinearProgress />
+    }
     return (
       <FormLayout
           title="Modifier cet utilisateur"
@@ -46,6 +43,7 @@ class Edit extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.users.user.get('user'),
-})
+  data: getUserState(state),
+  loading: getUsersLoading(state),
+});
 export default connect(mapStateToProps, { edit, getOne, initialize })(Edit);

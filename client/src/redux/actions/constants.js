@@ -1,4 +1,13 @@
 export const BASE_URL = 'http://localhost:5000';
+export const DASHBOARD_LIST_PER_PAGE = 5;
+export const LIST_BOOKS_PER_PAGE = 6;
+export const LIST_AUTHORS_PER_PAGE = 6;
+export const LIST_GENRES_PER_PAGE = 6;
+export const LIST_PER_PAGE = 5;
+export const GENRES_SIDEBAR_LIMIT = 10;
+export const GENRES_HOME_LIMIT = 8;
+export const BOOKS_HOME_LIMIT = 6;
+export const AUTHORS_HOME_LIMIT = 6;
 
 export const ERROR_SET = 'ERROR_SET';
 export const ERROR_REMOVE = 'ERROR_REMOVE';

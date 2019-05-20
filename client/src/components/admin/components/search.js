@@ -13,7 +13,9 @@ import Button from '@material-ui/core/Button';
 import { getAll } from '../../../redux/actions/books';
 import { getAllAuthors } from '../../../redux/actions/authors';
 import { getAllGenres } from '../../../redux/actions/genres';
+import { getAllUsers } from '../../../redux/actions/users';
 import { connect } from 'react-redux';
+import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
 
 const styles = theme => ({
   root: {
@@ -81,17 +83,19 @@ const styles = theme => ({
 });
 
 const getPlaceholder = pathname => {
-    let placeholder;
-    if(pathname.includes('livre') || pathname.includes('livres')) {
-        placeholder='Chercher livre...'
-    } else if (pathname.includes('auteurs') || pathname.includes('auteur')) {
-        placeholder='Chercher auteur...'
-    } else if (pathname.includes('genres') || pathname.includes('genre')) {
-        placeholder='Chercher genre...'
-    } else {
-        placeholder='Chercher livre...'
-    }  
-    return placeholder;
+  let placeholder;
+  if(/livre/.test(pathname)) {
+      placeholder='Chercher livre...'
+  } else if (/auteur/.test(pathname)) {
+      placeholder='Chercher auteur...'
+  } else if (/genre/.test(pathname)) {
+    placeholder='Chercher genre...'
+  } else if (/utilisateur/.test(pathname)) {
+    placeholder='Chercher utilisateur...'
+  } else {
+      placeholder='Chercher livre...'
+  }  
+  return placeholder;
 }
 
 class Search extends Component {
@@ -100,18 +104,20 @@ class Search extends Component {
         this.setState({value: event.target.value});
     }
     handleSubmit = (event) => {
-        const { pathname } = this.props;
+        const { pathname, getAll, getAllAuthors, getAllGenres, getAllUsers } = this.props;
         const { value } = this.state;
         event.preventDefault();
 
-        if(pathname.includes('livre') || pathname.includes('livres')) {
-            this.props.getAll(value);
-        } else if (pathname.includes('auteurs') || pathname.includes('auteur')) {
-            this.props.getAllAuthors(value);
-        } else if (pathname.includes('genres') || pathname.includes('genre')) {
-            this.props.getAllGenres(value);
+        if(/livre/.test(pathname)) {      
+          getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, `/dashboard/livres/recherche/${value}`);
+        } else if (/auteur/.test(pathname)) {
+          getAllAuthors(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/auteurs/recherche/${value}`);
+        } else if (/genre/.test(pathname)) {
+          getAllGenres(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/genres/recherche/${value}`);
+        } else if (/utilisateur/.test(pathname)) {
+          getAllUsers(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/utilisateurs/recherche/${value}`);
         } else {
-            this.props.getAll(value);
+          getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, `/dashboard/livres/recherche/${value}`);
         }
     }
     render() {
@@ -120,18 +126,18 @@ class Search extends Component {
     const placeholder = getPlaceholder(pathname);
     return (
             <form className={classes.search} onSubmit={this.handleSubmit}>
-            <Button className={classes.searchButton} type="submit">
-                <SearchIcon className={classes.searchIcon}/>
-            </Button>
-            <InputBase
-                placeholder={placeholder}
-                classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                }}
-                name="search"
-                onChange={this.handleClick}
-            />
+              <Button className={classes.searchButton} type="submit">
+                  <SearchIcon className={classes.searchIcon}/>
+              </Button>
+              <InputBase
+                  placeholder={placeholder}
+                  classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                  }}
+                  name="search"
+                  onChange={this.handleClick}
+              />
             </form>
         );
     }
@@ -143,5 +149,5 @@ Search.propTypes = {
 
 const mapStateToProps = state => ({
     pathname: state.router.location.pathname,
-  })
-export default connect(mapStateToProps, { getAll, getAllAuthors, getAllGenres })(withStyles(styles)(Search));
+})
+export default connect(mapStateToProps, { getAll, getAllAuthors, getAllGenres, getAllUsers })(withStyles(styles)(Search));

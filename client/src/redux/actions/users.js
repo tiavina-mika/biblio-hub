@@ -1,11 +1,22 @@
 import { FETCH_USER_REQUEST, BASE_URL } from './constants';
 import { apiGet, apiDelete, apiPost, apiEdit } from './api';
 
-export const getAllUsers = () => (dispatch, getState) => {
+export const getAllUsers = (limit, page, search, redirectUrl) => (dispatch, getState) => {
+	let url = `/api/users`;
+	if(limit) {
+		url += `?limit=${limit}`;
+	}
+	if (page) {
+		url += `&page=${page}`;
+	}
+	if (search) {
+		url += `&search=${search}`;
+	}
 	return apiGet({
 		key: 'FETCH_USERS',
 		name: 'users',
-		url: '/api/users',
+		url: url,
+		redirectUrl,
 		dispatch,
 		getState
     });

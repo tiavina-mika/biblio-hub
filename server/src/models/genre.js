@@ -9,7 +9,11 @@ const GenreSchema = new Schema(
         books: [{type: Schema.Types.ObjectId, ref: 'Book'}],
         slug: {type: String,trim: true,lowercase: true},
         createdAt: {type: Date,default: Date.now},
-        updatedAt: {type: Date}
+        updatedAt: {type: Date},
+        photo: {
+            data: Buffer,
+            contentType: String
+        },
     }
 )
 

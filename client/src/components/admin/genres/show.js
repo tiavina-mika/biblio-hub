@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import Paper from '@material-ui/core/Paper';
+import CardMedia from '@material-ui/core/CardMedia';
 
 import { connect } from 'react-redux';
 import { getGenre, remove } from '../../../redux/actions/genres';
@@ -16,7 +16,9 @@ import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import FloatingButtonActions from '../components/floating-button-actions';
 import CustomizedLinearProgress  from '../components/progress';
 import ListBy  from '../books/list-by';
+import { BASE_URL } from '../../../redux/actions/constants';
 import { Typography } from '@material-ui/core';
+import { getGenreState, getGenresLoading } from '../../../redux/root-reducer';
 
 const styles = theme => ({
   table: {
@@ -79,6 +81,7 @@ class Show extends React.Component {
                         <TableCell align="right">Nom</TableCell>
                         <TableCell align="left" className={classes.th}>{data.name}</TableCell>
                       </TableRow>
+                      
                       <TableRow>
                         <TableCell align="right">Ajouté le</TableCell>
                         <TableCell align="left"  className={classes.th}>{moment(new Date(data.createdAt)).format('DD MMM YYYY à HH:mm')}</TableCell>
@@ -96,8 +99,20 @@ class Show extends React.Component {
   
                     </Table>
                 </Card>
-                <ListBy data={books} author={data} history={this.props.history}/>
+                <ListBy data={books} author={data} history={this.props.history} by={data.name}/>
               </Col>
+              { data.photo && data.photo.data &&
+                <Col  xs={12} sm={8} md={8} lg={4} start="xs">
+                    <Card className={classes.card}>
+                        <CardMedia
+                          component="img"
+                          alt={data.name}
+                          className={classes.media}
+                          height={300}
+                          image={`${BASE_URL}/api/genres/photo/${data._id}`}
+                        />
+                    </Card>
+              </Col> }
             </Row>
           </Grid>
           <FloatingButtonActions
@@ -120,9 +135,10 @@ Show.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+
 const mapStateToProps = (state) => ({
-  data: state.genres.genre.get('genre'),
-  loading: state.genres.data.loading,
-})
+  data: getGenreState(state),
+  loading: getGenresLoading(state),
+});
 
 export default connect(mapStateToProps, { getGenre, getBooksByGenre , remove })(withStyles(styles)(Show))

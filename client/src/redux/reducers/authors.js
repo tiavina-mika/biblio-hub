@@ -65,11 +65,13 @@ const author = (state = ImmutableMap({ author: null }), action) => {
   }
 }
 
-
 export default combineReducers({
   loading: loading,
   data: authors,
   author: author
 });  
-  // export const getAuthors = state => state.authors;
+
+export const getAuthor = state => state.author.get('author');
+export const getAuthors = state => state.data.get('authors');
+export const getAuthorsLoading = state => state.loading;
   

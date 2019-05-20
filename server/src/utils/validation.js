@@ -9,11 +9,14 @@ export const validateBook = (data) => {
     if(validator.isEmpty(data.summary)) {
         errors.EMPTY_SUMMARY = "Summary is empty"
     }
-    // if(validator.isEmpty(data.author)) {
-    //     errors.author = "Author is empty"
-    // }
+    if(validator.isEmpty(data.author)) {
+        errors.EMPTY_AUTHOR = "Author is empty"
+    }
     if(!validator.isLength(data.title, {max: 100})) {
         errors.TITLE_LENGTH = "Title must be under 100 caracters"
+    }
+    if(!validator.isLength(data.date_publication, {max: 75})) {
+        errors.DATE_PUBLICATION_LENGTH = "Title must be under 75 caracters"
     }
     return {
         errors,

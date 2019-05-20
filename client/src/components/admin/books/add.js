@@ -31,6 +31,7 @@ class Add extends React.PureComponent {
       getFormData(formData, 'author', form.author);
       getFormData(formData, 'genres', form.genres);
       getFormData(formData, 'publish', form.publish);
+      getFormData(formData, 'member', form.member);
       form.photo && formData.append('photo', form.photo[0]);
       form.epub && formData.append('epub', form.epub[0]);
       form.pdf && formData.append('pdf', form.pdf[0]);
@@ -39,14 +40,15 @@ class Add extends React.PureComponent {
       this.props.post(formData)
   }
   render() {
-    const { authors, genres } = this.props;
+    const { authors, genres, loading } = this.props;
+    
     const initialValues = {genres: []};
     return (
      <FormLayout
         title="Ajouter livre"
         onSubmit={this.onSubmit}
         buttonName="livre">
-          <Form onSubmit={this.onSubmit} authors={authors} genres={genres} initialValues={initialValues}/>
+          <Form onSubmit={this.onSubmit} authors={authors} authorLoading={loading} genres={genres} initialValues={initialValues}/>
           <FloatingButtonActions name="livre" list />
       </FormLayout>
     );

@@ -10,15 +10,13 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import Table from '@material-ui/core/Table';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
 import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import FloatingButtonActions from '../components/floating-button-actions';
 import { BASE_URL } from '../../../redux/actions/constants'
-import ReactMarkdown from 'react-markdown/with-html';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import CustomizedLinearProgress  from '../components/progress';
 import FormDialog from '../profile/add-profile-dialog';
+import { getUserState, getUsersLoading } from '../../../redux/root-reducer';
 
 const styles = theme => ({
   table: {
@@ -172,9 +170,8 @@ Show.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.users.user.get('user'),
-  // profile: state.profile.profile.get('profile'),
-  loading: state.users.data.loading,
-})
+  data: getUserState(state),
+  loading: getUsersLoading(state),
+});
 
 export default connect(mapStateToProps, { getOne, remove,})(withStyles(styles)(Show))

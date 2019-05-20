@@ -1,15 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from 'react-flexbox-grid';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
 import Form from './form';
 import { getFormData } from '../../../utils/utils';
 import { getAllAuthors } from '../../../redux/actions/authors';
@@ -17,6 +7,9 @@ import { getAllGenres } from '../../../redux/actions/genres';
 import { edit, getOne, initialize } from '../../../redux/actions/books';
 import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
+import CustomizedLinearProgress  from '../components/progress';
+import { getBookState, getBooksLoading, getAuthors, getGenres } from '../../../redux/root-reducer';
+
 
 class Edit extends React.PureComponent {
   // state = {data: ''}
@@ -44,6 +37,7 @@ class Edit extends React.PureComponent {
     getFormData(formData, 'date_publication', form.date_publication);
     getFormData(formData, 'author', typeof(form.author) === 'object' ? form.author._id : form.author);
     getFormData(formData, 'genres', filterGenres);
+    getFormData(formData, 'member', form.member);
     getFormData(formData, 'publish', (form.publish));
     form.photo && formData.append('photo', form.photo[0]);
     form.epub && formData.append('epub', form.epub[0]);
@@ -52,11 +46,13 @@ class Edit extends React.PureComponent {
     id ? this.props.edit(id, formData) : this.props.initialize();
 }
   render() {
-    const { data, authors, genres } = this.props;
-    console.log('data: ', data);
+    const { data, authors, genres, loading } = this.props;
+    if(loading) {
+      return <CustomizedLinearProgress />
+    }
     return (
       <FormLayout
-          title="Modifier cet livre"
+          title="Modifier ce livre"
           onSubmit={this.onSubmit}
           buttonName="livre">
             <Form initialValues={data} authors={authors} genres={genres} onSubmit={this.onSubmit}/>
@@ -67,8 +63,9 @@ class Edit extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.books.book.get('book'),
-  authors: state.authors.data.get('authors'),
-  genres: state.genres.data.get('genres'),
-})
+  data: getBookState(state),
+  authors: getAuthors(state),
+  genres: getGenres(state),
+  loading: getBooksLoading(state),
+});
 export default connect(mapStateToProps, { getAllAuthors, getAllGenres, edit, getOne, initialize })(Edit);
