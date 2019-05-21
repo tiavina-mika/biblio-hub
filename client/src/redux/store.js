@@ -5,8 +5,6 @@ import { createBrowserHistory } from 'history'
 import { routerMiddleware } from 'connected-react-router'
 import { getStorage } from '../utils/local-storage';
 
-// import { getStorage } from '../utils/local-storage';
-
 import rootReducer from './root-reducer';
 
 export const history = createBrowserHistory();

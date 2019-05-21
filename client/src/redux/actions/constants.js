@@ -8,7 +8,19 @@ export const GENRES_SIDEBAR_LIMIT = 10;
 export const GENRES_HOME_LIMIT = 8;
 export const BOOKS_HOME_LIMIT = 6;
 export const AUTHORS_HOME_LIMIT = 6;
-
+export const FONT=[
+    'Nunito',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+].join(',');
 export const ERROR_SET = 'ERROR_SET';
 export const ERROR_REMOVE = 'ERROR_REMOVE';
 

@@ -12,7 +12,7 @@ const create = async (req, res) => {
         const mailOptions = {
               from: email,
               to: process.env.EMAIL_RECEIVING,
-              subject: 'ENTER_YOUR_SUBJECT',
+              subject: 'BIBLIO-NEW-MESSAGE',
               html: `<p>${name}</p>
                       <p>${email}</p>
                       <p>${message}</p>`
@@ -20,7 +20,7 @@ const create = async (req, res) => {
 
             transporter.sendMail(mailOptions, (error, response) => {
               if(error) {
-                res.json({MAIL_SEND_FAIL: "Email send failed"})
+                res.json({MAIL_SEND_ERROR: "Email send failed"})
               }else {
                 res.json({MAIL_SEND_SUCCESS: "Email send successfully"})
               }

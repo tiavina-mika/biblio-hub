@@ -31,21 +31,6 @@ class ErrorSnackbar extends React.Component {
 		const { errorMessage, theme } = this.props;
 		const { palette: {secondary: { main }}} = theme;
 		if (!errorMessage) return null;
-		// if (errorMessage === 'KnowledgeContentSuccess') {
-		// 	return (
-		// 		<Snackbar
-		// 			open
-		// 			autoHideDuration={1500}
-		// 			action={
-		// 				<Button color="inherit" style={{color: main}} size="small" onClick={this.onSnackbarClose}>
-		// 					<FormattedMessage id="button.close" />
-		// 				</Button>
-		// 			}
-		// 			message={<FormattedMessage id={`error.${errorMessage}`} />}
-		// 			onClose={this.onSnackbarClose}/>
-		// 	);
-
-		// }
 		return (
 			<Snackbar
 				open

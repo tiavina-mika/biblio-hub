@@ -7,7 +7,7 @@ import './index.css';
 
 WebFont.load({
     google: {
-      families: ['Titillium Web:300,400,700', 'Century Gothic Regular:300,400,700', 'sans-serif']
+      families: ['Nunito:300,400,700', 'Century Gothic Regular:300,400,700', 'sans-serif']
     }
 });
 ReactDOM.render(

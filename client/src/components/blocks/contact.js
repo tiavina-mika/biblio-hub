@@ -22,7 +22,7 @@ const styles = theme => ({
   },
 });
 
-function FolderList(props) {
+const  Contact = (props) => {
   const { classes } = props;
   return (
     <List className={classes.root}>
@@ -50,8 +50,8 @@ function FolderList(props) {
   );
 }
 
-FolderList.propTypes = {
+Contact.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FolderList);
+export default withStyles(styles)(Contact);

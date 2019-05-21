@@ -21,10 +21,10 @@ const styles = {
     },
 }
 
-const Spinner = ({classes, local, height, width, color, backgroundColor}) => (
+const Spinner = ({classes, local, height, width, color, backgroundColor, type}) => (
     <div className={!local ? classes.fullScreen : ''}>
         <Loader 
-            type="Oval"
+            type={type || "Oval"}
             color={color || "#17a288"}
             height={height || '100'}	
             width={width || '100'}
