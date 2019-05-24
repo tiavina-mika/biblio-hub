@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Notifications from 'react-notify-toast';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import Header from './pages/header';
@@ -10,7 +11,6 @@ const styles = theme => ({
   },
   content: {
     [theme.breakpoints.up('md')]: {
-    //   padding: theme.spacing.unit,
     }
   },
 });
@@ -24,6 +24,7 @@ class MainLayout extends React.Component {
         <CssBaseline />
         <Header />
         <main className={classes.content}>
+            <Notifications  options={{zIndex: 200, top: '80px'}}/>
             {children}
         </main>
       </div>

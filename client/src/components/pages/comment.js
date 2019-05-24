@@ -39,8 +39,9 @@ const styles = theme => ({
 
 class Comment extends React.Component {
     onSubmit = (form) => {
-        const { userId, book, comment } = this.props;
-        comment(userId, book._id, form.comment);
+        const { userId, book, comment, history: { push, go } } = this.props;
+        comment(userId, book._id, form.comment, book._slug)
+          .then(() => go(0));
     }
     render() {
         const { classes, userId, book } = this.props;

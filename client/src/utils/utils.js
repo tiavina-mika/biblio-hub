@@ -29,3 +29,18 @@ export const getFormData = (formData, name, field) => {
 
 // this.props.postAuthor(formData)
 }
+
+export const getMessageType = (type) => {
+  let messageType;
+  if(/info/i.test(type)){
+      messageType="info"
+  } else if(/warning/i.test(type)) {
+      messageType="warning"
+  } else if(/error/i.test(type)) {
+      messageType="error"
+  } else {
+      messageType="success"
+  }
+
+  return messageType;
+}

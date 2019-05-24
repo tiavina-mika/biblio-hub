@@ -20,7 +20,9 @@ const messages = {
 	'error.EMPTY_FAMILY_NAME' : `Nom de l'auteur aquis`,
 	'error.LENGTH_FIRST_NAME' : `Le prenom doit être entre 5 et 100 caractèrres`,
 	'error.LENGTH__FAMILY_NAME' : `Le nom doit doit être entre 5 et 100 caractèrres`,
-	
+	'error.EMAIL_WAITING_FOR_CONFIRMATION': "Compte existant. Veuillez verifier votre email pour confirmer votre inscription",
+	'error.MAIL_CONFIRMATION_SEND_ERROR': "Votre compte n'a pas été confirmé",
+	'error.USER_NOT_CONFIRMED': "Un email vous a été envoyé pour terminer l'inscription."
 };
 
 class ErrorSnackbar extends React.Component {

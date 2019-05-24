@@ -13,6 +13,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
+import { getMessageType } from '../../utils/utils'
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -92,20 +93,20 @@ const messages = {
 	'MAIL_SEND_ERROR':  "Votre message n'a pas été envoyé, veuillez contacter l'administrateur" ,	
 };
 
-const getMessageType = (type) => {
-    let messageType;
-    if(/info/i.test(type)){
-        messageType="info"
-    } else if(/warning/i.test(type)) {
-        messageType="warning"
-    } else if(/error/i.test(type)) {
-        messageType="error"
-    } else {
-        messageType="success"
-    }
+// const getMessageType = (type) => {
+//     let messageType;
+//     if(/info/i.test(type)){
+//         messageType="info"
+//     } else if(/warning/i.test(type)) {
+//         messageType="warning"
+//     } else if(/error/i.test(type)) {
+//         messageType="error"
+//     } else {
+//         messageType="success"
+//     }
 
-    return messageType;
-}
+//     return messageType;
+// }
 
 const styles2 = theme => ({
   margin: {

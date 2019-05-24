@@ -3,20 +3,16 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import { Link } from 'react-router-dom';
-
-import { connect } from 'react-redux';
-import { getOneBySlug } from '../../redux/actions/books';
 import Chip from '@material-ui/core/Chip';
-import { Grid, Row, Col } from 'react-flexbox-grid';
-// import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import { BASE_URL } from '../../redux/actions/constants'
 import InfoIcon from '@material-ui/icons/Info';
 import Typography from '@material-ui/core/Typography';
 import DownloadIcon from 'mdi-material-ui/Download';
 import { IconButton }  from '../blocks/buttons';
 import Markdown from '../blocks/markdown';
+import Share from '../blocks/social-share';
+import CommentDialog from '../comments/auth-dialog';
 
 const styles = theme => ({
   primaryText : {
@@ -131,12 +127,13 @@ class Header extends Component {
     }
 
     renderNonAuthenticated = () => {
-      const { classes } = this.props;
+      const { classes, history } = this.props;
       return ([
         <div className={classes.downloadButtons}>
-              <a href={`${BASE_URL}/signin`} style={{textDecoration: 'none'}}>
-                <IconButton label={`Connexion`} />
-              </a>
+              {/* <a href={`${BASE_URL}/signin`} style={{textDecoration: 'none'}}> */}
+                {/* <IconButton label={`Se connecter pour télécharger ce livre`} /> */}
+                <CommentDialog title="Se connecter pour télécharger ce livre" variant="contained" history={history}/>
+              {/* </a> */}
         </div>,
         <div className={classes.info}>
             <InfoIcon style={{fontSize: 14, marginRight: 5}}/>Connectez-vous pour pouvoir télécharger ce livre en plusieurs formats - epup, pdf.
@@ -158,7 +155,7 @@ class Header extends Component {
                           </Link>
                     </Typography>}
 
-                    {authenticated && data.member ?  this.renderNonAuthenticated() : this.renderDownloadButtons()}
+                    { authenticated && data.member ?  this.renderDownloadButtons() : this.renderNonAuthenticated() }
                     { data && data.genres && 
                       <div>
                           {data.genres.map(n => (
@@ -170,7 +167,7 @@ class Header extends Component {
                           ))}
                       </div> }
                       { data.summary &&<Markdown input={data.summary}/>}
-
+                      <Share url={`${BASE_URL}/livres/${data.slug}`} />
               </Card>
           );
     }

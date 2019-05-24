@@ -11,7 +11,7 @@ import Genres from '../sidebars/genres';
 import Books from '../sidebars/books';
 import { getBooksByAuthor } from '../../redux/actions/books';
 import Main from './show-main';
-import CommentDialog from '../comments/comment-dialog';
+import CommentDialog from '../comments/auth-dialog';
 import Photo from './show-photo';
 import AuthorPhoto from './show-author-photo';
 // import MainList from './main-list';
@@ -70,10 +70,10 @@ class Book extends React.Component {
                   </Card>
               </Col>
               <Col xs={12} sm={12} md={12} lg={6} start="xs">
-                  <Main data={data} push={history.push} authenticated={authenticated}/>
-                  { data.comments && data.comments.map(n => n.postedBy && <Comments comment={n} book={data}/>)}
+                  <Main data={data} push={history.push} authenticated={authenticated} history={history} />
+                  { data.comments && data.comments.map(n => n.postedBy && <Comments comment={n} book={data} userId={userId} history={history}/>)}
                   { authenticated
-                    ? <CommentForm book={data} userId={userId}/>
+                    ? <CommentForm book={data} userId={userId} history={history}/>
                     : <CommentDialog title="Ajouter un commentaire" variant="contained" loading={loading} history={history} currentUrl={`/livres/${data.slug}`}/> }
               </Col>
               <Col xs={12} sm={8} md={5} lg={2} start="xs">

@@ -60,8 +60,8 @@ const styles = theme => ({
 
 class Comment extends React.Component {
   handleDelete = () => {
-    const {comment, userId, book, uncomment} = this.props;
-    uncomment(userId, book._id, comment, `/livres/${book.slug}`);
+    const {comment, userId, book, uncomment, history} = this.props;
+    uncomment(userId, book._id, comment).then(() => history.go(0));
   }
   rightAction = () => {
     const { classes, comment, userId } = this.props;
@@ -105,5 +105,4 @@ class Comment extends React.Component {
 Comment.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 export default connect(null, { uncomment })(withStyles(styles)(Comment));

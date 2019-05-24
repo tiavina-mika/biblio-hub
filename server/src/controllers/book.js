@@ -2,6 +2,7 @@ import fs from 'fs'
 import Book from "../models/book"
 import {validateBook} from '../utils/validation'
 import upload from '../utils/book-files-upload'
+import sendEmail from '../mailer/comment'
 
 const bookByID = async (req, res, next, id) => {
     try {
@@ -198,9 +199,12 @@ const comment = async (req, res) => {
       let comment = req.body.comment
       comment.postedBy = req.body.userId
       const result = await Book.findByIdAndUpdate(req.body.bookId, {$push: {comments: comment}, $inc: {"newComment": 1}}, {new: true})
-          .populate('comments.postedBy', '_id name')
+          .populate('comments.postedBy', '_id email name')
           .exec()
-          // result.newComment++
+
+            const lastComment = result.comments[result.comments.length-1]
+            sendEmail(lastComment, result)
+                .then(() => console.log('Email send successfuly'))
         res.json(result)
     } catch(error) {
         res.status(400).json(error)

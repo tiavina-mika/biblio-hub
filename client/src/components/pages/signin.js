@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-
+import Notifications from 'react-notify-toast';
 import SigninForm from '../forms/signin';
 
 import { signin } from '../../redux/actions/authentication';
@@ -68,9 +68,9 @@ class Signin extends React.PureComponent {
     return (
       <Grid fluid style={{padding: 0, width: '100%'}}>
         <Row center="xs">
-
           <Col xs={12} sm={5} md={4} lg={4} center="xs">
               <Card className={classes.cardLeft}>
+                <Notifications  options={{zIndex: 90000, top: '180px'}}/>
                 <CardHeader
                   classes={{title: classes.cardTitle, subheader: classes.cardSubtitle}}
                   title="Login"

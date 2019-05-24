@@ -82,7 +82,6 @@ export const comment = (userId, bookId, body) => (dispatch, getState) => {
 	return apiEdit({
 		key: 'FETCH_BOOK',
 		name: 'book',
-		redirectUrl: `/dashboard/livre/${bookId}`,
 		url: `/api/books/comment`,
 		body: {userId, bookId, comment: {text: body}},	
 		dispatch,
@@ -90,11 +89,10 @@ export const comment = (userId, bookId, body) => (dispatch, getState) => {
     });
 };
 
-export const uncomment = (userId, bookId, comment, redirectUrl) => (dispatch, getState) => {
+export const uncomment = (userId, bookId, comment) => (dispatch, getState) => {
 	return apiEdit({
 		key: 'FETCH_BOOK',
 		name: 'book',
-		redirectUrl,
 		url: `/api/books/uncomment`,
 		body: {userId, bookId, comment},	
 		dispatch,

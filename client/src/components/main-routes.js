@@ -12,10 +12,12 @@ const AsyncAuthor = asyncComponent(() => import('./authors/show'));
 const AsyncGenre = asyncComponent(() => import('./genres/show'));
 const AsyncGenres = asyncComponent(() => import('./genres/list'));
 const AsyncRedirect = asyncComponent(() => import('./pages/redirect'));
+const AsyncConfirm = asyncComponent(() => import('./pages/confirm'));
 
 const MainRoutes = () => ([
         <MainRoute path="/" exact component={AsyncHome}/>,
         <MainRoute path={`/redirect`} exact component={AsyncRedirect}/>,
+        <MainRoute path={`/confirmer/:id`} exact component={AsyncConfirm}/>,
         <MainRoute path="/livres" exact component={AsyncBooks}/>,
         <MainRoute path="/livres/recherche/:search" exact component={AsyncBooks}/>,
         <MainRoute path="/auteurs" exact component={AsyncAuthors}/>,

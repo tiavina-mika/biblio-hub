@@ -78,7 +78,7 @@ class SimpleTabs extends React.Component {
             <Signin  onClose={onClose}  history={history} currentUrl={currentUrl}/>
         }
         {value === 1 && 
-            <Signup onClose={onClose}/>
+            <Signup  history={history} onClose={onClose}/>
         }
       </div>
     );

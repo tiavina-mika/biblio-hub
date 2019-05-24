@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-
 import SignupForm from '../forms/signup';
 
 import { signup } from '../../redux/actions/authentication';
@@ -31,7 +30,7 @@ const styles = {
 
 class Signup extends React.PureComponent {
   onSubmit = (form) => {
-		this.props.signup(form.name, form.email, form.password)
+		this.props.signup(form.name, form.email, form.password);
   }
   render() {
     const { classes } = this.props;

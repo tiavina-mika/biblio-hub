@@ -7,6 +7,7 @@ class Signup extends React.PureComponent {
   onSubmit = (form) => {
     this.props.signup(form.name, form.email, form.password);
     this.props.onClose();
+    // this.props.history.go(0);
   }
   render() {
     return (
