@@ -55,10 +55,10 @@ class AdminLayout extends React.Component {
   };
   componentDidMount() {
     this.props.getOne(this.props.id).then(d => this.setState({currentUser: d}))
-}
+  }
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-  };
+  }
 
   render() {
     const { classes, theme, children, history, authenticated, ...rest } = this.props;
@@ -72,6 +72,7 @@ class AdminLayout extends React.Component {
           handleDrawerToggle={this.handleDrawerToggle}
           authenticated={authenticated}
           currentUser={currentUser}
+          admin
           />
         <nav className={classes.drawer}>
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}

@@ -69,7 +69,7 @@ class Genres extends Component {
             <TitleHeader title='Decouvrez les livres par catégorie' path={path} />
             <Grid container spacing={16}>
                 {data.genres.map(n => (
-                <Grid item key={n._id} sm={6} md={4} lg={2}>
+                <Grid item key={n._id} xs={12} sm={6} md={4} lg={2}>
                     <Link to={`/genres/${n.slug}`} className={classes.link}>
                         <Card className={classes.card}>
                             <CardMedia

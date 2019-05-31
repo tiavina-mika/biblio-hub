@@ -20,7 +20,7 @@ const initialState = {
     : false,
     id: getStorage('id') || '',
     email: getStorage('email') || '',
-    isAdmin: Boolean(getStorage('isAdmin')) || '',
+    isAdmin: getStorage('isAdmin') || '',
   })
 };
 

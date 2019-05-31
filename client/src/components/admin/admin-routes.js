@@ -25,7 +25,6 @@ const AsyncAdminUsers = asyncComponent(() => import('./users/list'));
 const AsyncShowUser = asyncComponent(() => import('./users/show'));
 const AsyncAddUser = asyncComponent(() => import('./users/add'));
 const AsyncEditUser = asyncComponent(() => import('./users/edit'));
-const AsyncAddProfile = asyncComponent(() => import('./profile/add'));
 
 const AsyncProfileAdmin = asyncComponent(() => import('./profile/profile'));
 
@@ -59,7 +58,6 @@ const AdminRoutes = ({path}) => ([
         <AdminRoute path={`${path}/utilisateur/:id`} exact component={AsyncShowUser}/>,
         <AdminRoute path={`${path}/modifier/utilisateur/:id`} exact component={AsyncEditUser}/>,
         <AdminRoute path={`${path}/profile/:id`} exact component={AsyncProfileAdmin}/>,
-        <AdminRoute path={`${path}/:id/ajouter/profil`} exact component={AsyncAddProfile}/>,
 ]);
 const Dashboard = ({isAdmin, authenticated}) => {
 	return <h1>Dashboard for Admin, {isAdmin ? 'admin' : 'not admin'}</h1>

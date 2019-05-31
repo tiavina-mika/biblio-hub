@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { post } from '../../../redux/actions/profile';
+import { profile } from '../../../redux/actions/users';
 import Form from './form';
 
 class FormDialog extends React.Component {
@@ -13,9 +13,10 @@ class FormDialog extends React.Component {
     open: false,
   };
   onSubmit = (form) => {
+    const { userId, profile, history: { go }} = this.props;
     const formData = new FormData();
     form.photo && formData.append('photo', form.photo[0]);
-    this.props.post(this.props.userId, formData);
+    profile(userId, formData)
   }
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -26,18 +27,18 @@ class FormDialog extends React.Component {
   };
 
   render() {
-      const { label, title, contentText, handleSubmit } = this.props;
+      const { title, contentText } = this.props;
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          {label}
+          {title}
         </Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">{title}</DialogTitle>
+          <DialogTitle id="form-dialog-title">Ajouter une photo</DialogTitle>
           <DialogContent>
             <DialogContentText>
                 {contentText}
@@ -49,4 +50,4 @@ class FormDialog extends React.Component {
     );
   }
 }
-export default connect(null, { post })(FormDialog);
+export default connect(null, { profile })(FormDialog);

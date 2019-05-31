@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputBase from '@material-ui/core/InputBase';
 import Checkbox from '@material-ui/core/Checkbox';
 import PasswordField from 'material-ui-password-field';
 
@@ -25,6 +26,10 @@ const styles = {
   placeholder: {
     color: 'rgba(0, 0, 0, .3)',
     border: 'none',
+    fontSize: 16,
+  },
+  placeholderInput: {
+    color: 'rgba(0, 0, 0, 1)',
     fontSize: 16,
   },
   password: {
@@ -108,6 +113,40 @@ renderCustomTextField.propTypes = {
 };
   
 export const renderTextField = withStyles(styles)(renderCustomTextField);
+
+
+const renderCustomInput = ({
+  classes,
+  input,
+  placeholder,
+  label,
+  helperText,
+  variant,
+  meta: { touched, error },
+  ...custom
+}) =>
+  <InputBase
+    error={touched && error}
+    label={label}
+    placeholder={placeholder}
+    helperText={touched ? error : helperText}
+    {...input}
+    {...custom}
+    variant={variant}
+    InputProps={{
+      style: {
+        '&:hover': {
+          borderBottomColor: 'rgba(0, 0, 0, .5)',
+        },
+      },
+    }}
+  />;
+renderCustomInput.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+  
+export const renderInput = withStyles(styles)(renderCustomInput);
+
 
 const renderCustomPasswordField = ({
   classes,

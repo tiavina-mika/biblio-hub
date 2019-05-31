@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
 import bcrypt from 'bcryptjs'
 import User from '../models/user'
-import sendEmail from '../mailer/send'
-import sendEmailNotification from '../mailer/new-user'
-import { validateSignin, validateSignup } from '../utils/validation'
+import sendEmailToUser from '../mailer/send'
+import sendEmailToAdmin from '../mailer/new-user'
+import { validateSignin, validateSignup, validateChangePassword } from '../utils/validation'
 import moment from 'moment'
 
 const signup = async (req, res) => {
@@ -19,7 +19,7 @@ const signup = async (req, res) => {
         return res.status(400).json(Object.keys(errors))
       }
       if (user && !user.confirmed) {
-        sendEmail(user.email, user.id)
+        sendEmailToUser(user.email, user.id)
         errors.EMAIL_WAITING_FOR_CONFIRMATION = 'Email was used and waiting for confiration!'
         return res.status(400).json(Object.keys(errors))
       }
@@ -33,13 +33,13 @@ const signup = async (req, res) => {
 
           const result = await newUser.save()
           Promise.all[
-            sendEmail(result.email, result._id)
+            sendEmailToUser(result.email, result._id)
               .then(() => res.json({MAIL_CONFIRMATION_SEND_SUCCESS: `Email confirmation send successfully from ${process.env.USER_MAILER}`}))
               .catch(e => {
                 errors.MAIL_CONFIRMATION_SEND_ERROR = 'Email confirmation send failed'
                 res.status(400).json(Object.keys(errors))
               }),
-            sendEmailNotification(result, 'Nouvel utilisateur').then(() => console.log('Email notification send successfully'))
+            sendEmailToAdmin(result, 'Nouvel utilisateur').then(() => console.log('Email notification send successfully'))
           ]
           // res.status(200).json(result)
         })
@@ -69,7 +69,7 @@ const signin = async (req, res) => {
           }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
 
-        sendEmailNotification(user, `${user.name} est connecté il y ${moment(new Date(user.createdAt)).fromNow()}`)
+        sendEmailToAdmin(user, `${user.name} est connecté il y ${moment(new Date(user.createdAt)).fromNow()}`)
           .then(() => console.log('Email notification send successfully'))
         return res.json({
           success: true,
@@ -89,6 +89,38 @@ const signin = async (req, res) => {
   }
 }
 
+const changePassword = async (req, res) => {
+    try {
+        const { isValid, errors } = validateChangePassword(req.body)
+        if(!isValid) {
+            return res.status(400).json(errors)
+        }
+        const user = await req.user
+          const isMatch = await bcrypt.compare(req.body.password, user.password)
+          if (!isMatch) {
+            errors.INCORRECT_PASSWORD = 'Password is incorrect'
+            return res.status(400).json(Object.keys(errors))
+          }
+          bcrypt.genSalt(10, async (err, salt) => {
+                bcrypt.hash(req.body.newPassword, salt, async (err, hash) => {
+                  user.password = hash
+                  const result = await user.save()
+                  if(result) {
+                      // res.json({CHANGE_PASSWORD_SUCCESS: 'Your password has changed successfully'})
+                      res.json(result)
+                  } else {
+                      errors.CHANGE_PASSWORD_FAILED = 'Your password has not changed'
+                      return res.status(400).json(Object.keys(errors))     
+                  }
+                })
+          })
+
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+
 const signout = (req, res) => {
   // res.clearCookie("t")
   return res.status(200).json({
@@ -100,4 +132,5 @@ export default {
   signin,
   signup,
   signout,
+  changePassword
 }

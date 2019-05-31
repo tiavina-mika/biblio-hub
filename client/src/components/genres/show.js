@@ -13,6 +13,7 @@ import { BASE_URL } from '../../redux/actions/constants'
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import CommentIcon from '@material-ui/icons/Comment';
+import CommentOutlineIcon from 'mdi-material-ui/CommentOutline';
 import EyeOutlineIcon from 'mdi-material-ui/EyeOutline';
 import { getGenreState, getGenresLoading, getBooksLoading } from '../../redux/root-reducer';
 import { Link } from 'react-router-dom';
@@ -118,11 +119,24 @@ const styles = theme => ({
     objectFit: 'cover',
     width: '50%'
   },
+  commentCount: {
+    marginLeft: 3,
+    fontSize: 14
+  },
   icon: {
-    color: '#212121'
+    fontSize: 16
+  },
+  eyeIcon: {
+    fontSize: 18
   },
   badge: {
     marginRight: theme.spacing.unit
+  },
+  iconsContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    color: '#7f7f7f',
+    marginRight: 10
   }
 });
 
@@ -172,12 +186,14 @@ class Genre extends React.Component {
                                   </CardActions>
 
                                   <CardActions className={classes.cardIcons}>
-                                    <Badge className={classes.badge} badgeContent={n.comments.length} max={99} color="primary">
-                                          <CommentIcon className={classes.icon}/>
-                                      </Badge>
-                                      <Badge className={classes.badge} badgeContent={n.views} max={9999} color="primary">
-                                          <EyeOutlineIcon className={classes.icon}/>
-                                      </Badge>
+                                    <div className={classes.iconsContainer}>
+                                        <CommentOutlineIcon className={classes.icon}/>
+                                        <span className={classes.commentCount}>{n.comments.length}</span>
+                                    </div>
+                                    <div className={classes.iconsContainer}>
+                                        <EyeOutlineIcon className={classes.eyeIcon}/>
+                                        <span className={classes.commentCount}>{n.views}</span>
+                                    </div>
                                   </CardActions>
                               </Card>
                           </Link>

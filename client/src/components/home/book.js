@@ -36,8 +36,9 @@ const styles = theme => ({
         }
     },
     cardActions: {
-        flexGrow: 1,
-        paddingTop: `${theme.spacing.unit}px`
+        display: 'block',
+        paddingTop: `${theme.spacing.unit}px`,
+        textAlign: 'left'
     },
     header: {
         paddingBottom: `${theme.spacing.unit * 2}px`,
@@ -46,11 +47,33 @@ const styles = theme => ({
     link: {
         textDecoration: 'none'
     },
+    // title: {
+    //     [theme.breakpoints.down('sm')]: {
+    //         fontSize: 18
+    //     },
+    // }
+    subtitle: {
+        fontWeight: 300,
+        marginTop: 5,
+        color:  '#616161',
+        fontSize: 14,
+    },
+    linkSubtitle: {
+        color: '#17a288',
+        textDecoration: 'none',
+        fontSize: 14,
+        fontWeight: 300
+    },
+    title: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop:  `${theme.spacing.unit * 5}px`,
+    }
 });
 
 const Book = ({ classes, book }) => {
     return (
-        <Grid item key={book._id} sm={6} md={3} lg={2}>
+        <Grid item key={book._id} xs={6} sm={6} md={3} lg={2}>
             <Link to={`/livres/${book.slug}`} className={classes.link}>
             
                 <Card className={classes.card}>
@@ -63,6 +86,12 @@ const Book = ({ classes, book }) => {
                         <Typography gutterBottom variant="h6" component="h2">
                             {book.title}
                         </Typography>
+                        {book.author &&
+                            <Typography variant="title" className={classes.subtitle}>
+                            Par <Link to={`/auteurs/${book.author.slug}`} className={classes.linkSubtitle}>
+                                    {`${book.author && book.author.first_name} ${book.author && book.author.family_name}`}
+                                </Link>
+                            </Typography>}
                     </CardActions>
                 </Card>
             </Link>

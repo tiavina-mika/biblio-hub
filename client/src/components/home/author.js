@@ -41,11 +41,16 @@ const styles = theme => ({
     link: {
         textDecoration: 'none'
     },
+    title: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize: 18
+        },
+    }
 });
 
 const Author = ({ classes, data }) => {
     return (
-        <Grid item key={data._id} sm={6} md={3} lg={2}>
+        <Grid item key={data._id}  xs={6} sm={6} md={3} lg={2}>
             <Link to={`/auteurs/${data.slug}`} className={classes.link}>
                 <Card className={classes.card}>
                     <CardMedia
@@ -54,7 +59,7 @@ const Author = ({ classes, data }) => {
                         title={`${data.first_name} ${data.family_name}`}
                     />
                     <CardActions className={classes.cardActions}>
-                        <Typography gutterBottom variant="h6" component="h2">
+                        <Typography gutterBottom variant="h6" component="h2" className={classes.title}>
                         {`${data.first_name} ${data.family_name}`}
                         </Typography>
                     </CardActions>

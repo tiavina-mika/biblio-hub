@@ -11,7 +11,6 @@ import CustomizedLinearProgress  from '../components/progress';
 import { getUserState, getUsersLoading } from '../../../redux/root-reducer';
 
 class Edit extends React.PureComponent {
-  state = {data: ''}
   componentDidMount = () => {
     const { id } = this.props.match.params;
     this.props.getOne(id);

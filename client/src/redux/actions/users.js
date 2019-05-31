@@ -46,17 +46,42 @@ export const post = (body) => (dispatch, getState) => {
     });
 };
 
-export const edit = (id, body) => (dispatch, getState) => {
+export const edit = (id, name, email, redirectUrl) => (dispatch, getState) => {
 	return apiEdit({
 		key: 'FETCH_USER',
 		name: 'user',
-		redirectUrl: `/dashboard/utilisateur/${id}`,
+		redirectUrl: redirectUrl || `/dashboard/utilisateur/${id}`,
 		url: `/api/users/${id}`,
-		body,
+		body : { name, email },
 		dispatch,
 		getState
     });
 };
+
+export const changePassword = (id, password, newPassword) => (dispatch, getState) => {
+	return apiEdit({
+		key: 'FETCH_USER',
+		name: 'user',
+		redirectUrl: `/profil`,
+		url: `/auth/change-password/${id}`,
+		body: { password, newPassword },
+		dispatch,
+		getState
+  });
+};
+
+export const profile = (id, body) => (dispatch, getState) => {
+	return apiEdit({
+		key: 'FETCH_USER',
+		name: 'user',
+		// redirectUrl: `/profil`,
+		url: `/api/users/profile/${id}`,
+		body,
+		dispatch,
+		getState
+  });
+};
+
 
 export const remove = (id) => (dispatch, getState) => {
 	return apiDelete({

@@ -116,19 +116,6 @@ class Form extends React.Component {
 						/> 
 					}
 				</div>
-{/* 
-				<Field
-					withRef
-					ref={this.setFileInputRef}
-					label="Photo"
-					placeholder="Photo"
-					name="photo"
-					component={fileUpload}
-					variant="outlined"
-					type="file"
-					accept="image/*"
-					fullWidth
-				/> */}
     			<Button
 					type="submit"
 					color="primary"
@@ -148,11 +135,6 @@ const validate = (values) => {
 	if (values.name && values.name.length > 100) {
 		errors.name = "Nom trop long";
   }	
-	// if (!values.confirm || values.confirm.length === 0) {
-	// 	errors.confirm = "Confirmation de mot de passe requis";
-	// } else if (values.confirm !== values.password) {
-	// 	errors.confirm = "Confirmation de mot de passe invalide";
-	// }
 
 	return errors;
 };

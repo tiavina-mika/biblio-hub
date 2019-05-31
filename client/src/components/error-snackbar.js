@@ -9,6 +9,7 @@ import { withTheme } from '@material-ui/core/styles';
 const messages = {
 	'error.INCORRECT_PASSWORD':  'Mot de passe incorrect' ,
 	'error.INVALID_EMAIL':  'Email invalide' ,
+	'error.USER_NOT_FOUND':  'Email inexistant' ,
 	'error.EMPTY_EMAIL':  'Email requis' ,
 	'error.EMPTY_NAME':  'Nom requis' ,
 	'error.NAME_LENGTH':  'Le nom devrait avoir entre 5 et 100 caractères',
@@ -22,7 +23,8 @@ const messages = {
 	'error.LENGTH__FAMILY_NAME' : `Le nom doit doit être entre 5 et 100 caractèrres`,
 	'error.EMAIL_WAITING_FOR_CONFIRMATION': "Compte existant. Veuillez verifier votre email pour confirmer votre inscription",
 	'error.MAIL_CONFIRMATION_SEND_ERROR': "Votre compte n'a pas été confirmé",
-	'error.USER_NOT_CONFIRMED': "Un email vous a été envoyé pour terminer l'inscription."
+	'error.USER_NOT_CONFIRMED': "Un email vous a été envoyé pour terminer l'inscription.",
+	'error.CHANGE_PASSWORD_FAILED': "Votre changement de mot de passe n'a pas été effectué. Veuillez réessayer"
 };
 
 class ErrorSnackbar extends React.Component {

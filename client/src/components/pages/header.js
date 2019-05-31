@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { withTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Search from '../forms/search';
+import Menu from '../admin/components/menu-profil';
 
 const styles = theme => ({
     logo: {
@@ -34,8 +35,15 @@ const styles = theme => ({
       border: '1px solid #fff',
       padding:`${theme.spacing.unit / 2}px ${theme.spacing.unit * 5}px`,
       '&:hover': {
-        color: 'red'
+        backgroundColor: '#77c4b5'
       }
+    },
+    link: {
+      '&:hover': {
+        color: '#77c4b5'
+      },
+      textDecoration: 'none',
+      color: '#fff'
     },
     item: {
         marginRight: 35,
@@ -149,7 +157,7 @@ class Header extends Component{
                 <ListItem key = {5} button divider >{Authenticated}</ListItem>
                 {!authenticated && <ListItem key = {6} button divider >{Login}</ListItem>}
                 {!authenticated && <ListItem key = {7} button divider >{Register}</ListItem>}
-                {authenticated && isAdmin 
+                {authenticated === true && isAdmin === true
                   ? <ListItem key = {8} button divider > {Dashboard}</ListItem>
                   : null }
              </List>
@@ -163,23 +171,16 @@ class Header extends Component{
 
   //Larger Screens
   largerScreen = () => {
-    const { authenticated, isAdmin, classes, theme: {palette: {primary: { contrastText }}} }= this.props;
-
-    const Authenticated = <Typography variant="h6" color="inherit" className={classes.item}>
-            <NavLink exact activeStyle={{ color: '#000' }} to="/logout" style={{textDecoration: 'none', color: contrastText}}>
-                Se Déconnecter
-            </NavLink>
-        </Typography> ; 
-
+    const { authenticated, isAdmin, classes, id, currentUser, theme: {palette: {primary: { contrastText }}} }= this.props;
     const Unauthentiated = [
         <Typography variant="h6" color="inherit" className={classNames(classes.item, classes.login)}>
             <NavLink exact activeStyle={{ color: '#000' }} to="/signin" style={{textDecoration: 'none', color: contrastText}}>
-                Login
+                Se connecter
             </NavLink>
         </Typography>,
         <Typography variant="h6" color="inherit" className={classes.item}>
             <NavLink exact activeStyle={{ color: '#000' }} to="/signup" style={{textDecoration: 'none', color: contrastText}}>
-                Register
+                S'enregistrer
             </NavLink>
         </Typography>       
     ];
@@ -196,22 +197,22 @@ class Header extends Component{
                 <Toolbar>
                     <div className={classes.grow} />
                     <Typography variant="h6" color="inherit" className={classes.item}>
-                        <NavLink exact activeStyle={{ color: '#000' }} to="/" style={{textDecoration: 'none', color: contrastText}}>
+                        <NavLink exact activeStyle={{ color: '#000' }} to="/">
                         <img src={`${process.env.PUBLIC_URL}/logo.png`} className={classes.logo}/>
                         </NavLink>
                     </Typography>
                     <Typography variant="h6" color="inherit" className={classes.item}>
-                        <NavLink exact activeStyle={{ color: '#000' }} to="/livres" style={{textDecoration: 'none', color: '#fff'}}>
+                        <NavLink exact activeStyle={{ color: '#000' }} to="/livres" className={classes.link}>
                             Livres
                         </NavLink>
                     </Typography>
                     <Typography variant="h6" color="inherit" className={classes.item}>
-                        <NavLink exact activeStyle={{ color: '#000' }} to="/auteurs" style={{textDecoration: 'none', color: '#fff'}}>
+                        <NavLink exact activeStyle={{ color: '#000' }} to="/auteurs" className={classes.link}>
                             Auteurs
                         </NavLink>
                     </Typography>
                     <Typography variant="h6" color="inherit" className={classes.item}>
-                        <NavLink exact activeStyle={{ color: '#000' }} to="/genres" style={{textDecoration: 'none', color: '#fff'}}>
+                        <NavLink exact activeStyle={{ color: '#000' }} to="/genres" className={classes.link}>
                             Genres
                         </NavLink>
                     </Typography>
@@ -220,8 +221,9 @@ class Header extends Component{
                         <Search />
                     </div>
                     <div className={classes.grow} />
-                    {authenticated && isAdmin ? Dashboard : null}
-                    {authenticated ? Authenticated : Unauthentiated}
+                    { isAdmin && authenticated && Dashboard }
+                    { !authenticated && Unauthentiated}
+                    { authenticated && <Menu currentUser={currentUser}/>}
                 </Toolbar>
             </AppBar>
         </div>
@@ -238,6 +240,7 @@ class Header extends Component{
 const mapStateToProps = state => ({
     authenticated: state.user.get('authenticated'),
     isAdmin: state.user.get('isAdmin'),
+    id: state.user.get('id'),
 })
 Header = connect(mapStateToProps)(withTheme()(Header));
 

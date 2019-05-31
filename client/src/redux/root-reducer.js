@@ -7,7 +7,6 @@ import authorsReducer, * as fromAuthors from './reducers/authors';
 import genresReducer, * as fromGenres from './reducers/genres';
 import booksReducer, * as fromBooks from './reducers/books';
 import usersReducer, * as fromUsers from './reducers/users';
-import profileReducer from './reducers/profile';
 
 const rootReducer = (history) => combineReducers({
   router: connectRouter(history),
@@ -18,7 +17,6 @@ const rootReducer = (history) => combineReducers({
   genres : genresReducer,
   books : booksReducer,
   users : usersReducer,
-  profile : profileReducer,
 })
 
 

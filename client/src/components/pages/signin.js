@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,9 +16,28 @@ import SigninForm from '../forms/signin';
 import { signin } from '../../redux/actions/authentication';
 import { Typography } from '@material-ui/core';
 
+const screenWidth = window.innerWidth;
+
 const styles = theme => ({
+  grid: {
+    height: window.innerHeight,
+    paddingRight: 8,
+  },
+  right: {
+    backgroundImage: `url(${process.env.PUBLIC_URL}/images/signin.jpg)`,
+    backgroundSize: 'cover',
+    height: window.innerHeight,
+    [theme.breakpoints.down('md')]: {
+			display: 'none'
+    },
+    // backgroundColor: 'red'
+  },
   cardLeft: {
-    width: '60%',
+    [theme.breakpoints.up('lg')]: {
+			width: '60%',
+			marginLeft: 'auto',
+			marginRight: 'auto',
+    },
     backgroundColor: 'transparent',
     boxShadow: 'none',
     margin: 'auto',
@@ -52,7 +72,20 @@ const styles = theme => ({
     paddingTop: '50%', // 16:9
     height: 300,
     width: '100%',
-},
+  },
+  footer: {
+    [theme.breakpoints.up('lg')]: {
+      left: 250
+    },
+    [theme.breakpoints.only('md')]: {
+      left: 550
+    },
+    position: 'absolute',
+    bottom: 5,
+  },
+  link: {
+		color: theme.palette.primary.main,
+	},
 });
 
 class Signin extends React.PureComponent {
@@ -66,9 +99,9 @@ class Signin extends React.PureComponent {
   render() {
     const { classes } = this.props;
     return (
-      <Grid fluid style={{padding: 0, width: '100%'}}>
+      <Grid fluid className={classes.grid}>
         <Row center="xs">
-          <Col xs={12} sm={5} md={4} lg={4} center="xs">
+          <Col xs={12} sm={8} md={8} lg={4} center="xs">
               <Card className={classes.cardLeft}>
                 <Notifications  options={{zIndex: 90000, top: '180px'}}/>
                 <CardHeader
@@ -87,15 +120,14 @@ class Signin extends React.PureComponent {
                       Créer votre compte
                   </Button>
                 </CardActions>
+                <CardActions  className={classes.footer}>
+                  <Typography><Link className={classes.link} to="/">Home</Link></Typography>
+                  <Typography><Link className={classes.link} to="/contact">Contact</Link></Typography>
+                </CardActions>
               </Card>
           </Col>
-          <Col xs={12} sm={7} md={8} lg={8} start="xs">
-              <Card className={classes.card}>
-                    <CardMedia
-                        className={classes.cardMedia}
-                        image={`${process.env.PUBLIC_URL}/login.jpg`}
-                    />
-                </Card>
+          {/* { screenWidth > 992 && */}
+            <Col xs={12} sm={12} md={8} lg={8} start="xs" className={classes.right}>
             </Col>
           </Row>
       </Grid>

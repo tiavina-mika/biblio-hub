@@ -124,6 +124,29 @@ export const validateSignin = (data) => {
     }
 }
 
+export const validateChangePassword = (data) => {
+    let errors = {}
+
+    if(validator.isEmpty(data.newPassword)) {
+        errors.EMPTY_NEWPASSWORD = "New password is empty"
+    }
+    if(validator.isEmpty(data.password)) {
+        errors.EMPTY_PASSWORD = "User password is empty"
+    }
+    // if(!validator.isLength(data.password, {min: 6, max: 20})) {
+    //     errors.PASSWORD_LENGTH = "User password must be between 6 and 20 caracters"
+    // }
+     if(!validator.isLength(data.newPassword, {min: 6, max: 20})) {
+        errors.NEWPASSWORD_LENGTH = "User new password must be between 6 and 20 caracters"
+    }
+
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
+
+
 export const validateContact = (data) => {
     let errors = {}
 

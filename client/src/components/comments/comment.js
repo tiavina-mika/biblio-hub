@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import red from '@material-ui/core/colors/red';
 import { BASE_URL } from '../../redux/actions/constants';
 import { uncomment } from '../../redux/actions/books';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const styles = theme => ({
   cardHeader: {
@@ -86,7 +87,9 @@ class Comment extends React.Component {
           classes={{title: classes.primary, action: classes.action}}
           className={classes.cardHeader}
           avatar={
-            comment.postedBy && <Avatar aria-label="Recipe" src={`${BASE_URL}/api/users/${comment.postedBy._id}/photo`} />
+            comment.postedBy && comment.postedBy.photo
+            ? <Avatar src={`${BASE_URL}/api/users/photo/${comment.postedBy._id}`}/>
+            : <AccountCircle style={{fontSize: 34, color: '#000'}}/> 
           }
           action={this.rightAction()}
           title={<Link to='#' className={classes.name}>{comment.postedBy.name}</Link>}

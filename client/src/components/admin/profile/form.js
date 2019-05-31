@@ -49,7 +49,6 @@ class Form extends React.Component {
 
 	onSubmit = (form) => {
 		this.props.onSubmit(form);
-		this.props.history.push(`/dashboard/redirect`);		
 	}
 	render() {
 

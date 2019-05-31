@@ -11,7 +11,10 @@ const styles = theme => ({
         alignItems: 'center'
     },
     headerTitle: {
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        [theme.breakpoints.down('sm')]: {
+            fontSize: 16
+        },
     },
     link: {
         color: theme.palette.primary.main,

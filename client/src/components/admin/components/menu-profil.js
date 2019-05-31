@@ -46,7 +46,7 @@ class MenuAppBar extends React.Component {
   };
 
   render() {
-    const { classes, currentUser } = this.props;
+    const { classes, currentUser, admin } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -56,9 +56,9 @@ class MenuAppBar extends React.Component {
                     aria-haspopup="true"
                     onClick={this.handleMenu}
                     color="inherit">
-                    {currentUser.profile
-                      ? <Avatar src={`${BASE_URL}/api/users/${currentUser._id}/photo`}/>
-                      : <AccountCircle style={{fontSize: 34}}/> }
+                    {currentUser.photo
+                      ? <Avatar src={`${BASE_URL}/api/users/photo/${currentUser._id}`}/>
+                      : <AccountCircle style={{fontSize: 34, color: '#fff'}}/> }
                 </IconButton>
 
                 <Menu
@@ -84,7 +84,7 @@ class MenuAppBar extends React.Component {
                             verticalAlign: 'bottom',
                             display: 'flex'
                             }}
-                            to={`/dashboard/profile/${currentUser._id}`}>
+                            to={admin ? `/dashboard/profile/${currentUser._id}` : `/profil`}>
                                 <User style={{ marginRight: 30 }}/>
                                 <Typography style={{marginTop: '3px', fontSize: 16}}>Profil</Typography>
                             </NavLink>

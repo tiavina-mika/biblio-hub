@@ -3,7 +3,7 @@ import { setError } from './error';
 import { BASE_URL } from './constants';
 import { dispatchLogout } from './authentication';
 import { getStorage } from './../../utils/local-storage';
-import { push } from 'connected-react-router';
+import { push, go } from 'connected-react-router';
 
 export const setAuthHeader = token => {
 	if (token) {
@@ -84,7 +84,7 @@ export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, get
 
         const data = await response.data;
         dispatch({ type: `${key}_SUCCESS`, [name]: data, getState });
-        return data ? dispatch(push(redirectUrl)) : dispatch(push(`/dashboard`));
+        return data && redirectUrl ? dispatch(push(redirectUrl)) : dispatch(go(0));
     } catch(error) {
         if (error.response) {
             if (error.response.status === 404 || error.response.status === 401) {

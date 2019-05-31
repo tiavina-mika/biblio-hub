@@ -5,7 +5,6 @@ import { signin } from '../../redux/actions/authentication';
 
 class Signin extends React.PureComponent {
   onSubmit = (form) => {
-    console.log('form: ', form);
     this.props.signin(form.email, form.password, 0);
     this.props.onClose();
   }

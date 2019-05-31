@@ -6,7 +6,7 @@ import sendEmail from '../mailer/comment'
 
 const bookByID = async (req, res, next, id) => {
     try {
-        const book = await Book.findById(id).populate('genres').populate('author').populate('comments.postedBy', '_id name').exec()
+        const book = await Book.findById(id).populate('genres').populate('author').populate('comments.postedBy').exec()
         req.book = book
         next()
     } catch (error) {
@@ -199,12 +199,12 @@ const comment = async (req, res) => {
       let comment = req.body.comment
       comment.postedBy = req.body.userId
       const result = await Book.findByIdAndUpdate(req.body.bookId, {$push: {comments: comment}, $inc: {"newComment": 1}}, {new: true})
-          .populate('comments.postedBy', '_id email name')
+          .populate('comments.postedBy')
           .exec()
 
             const lastComment = result.comments[result.comments.length-1]
-            sendEmail(lastComment, result)
-                .then(() => console.log('Email send successfuly'))
+            // sendEmail(lastComment, result)
+            //     .then(() => console.log('Email send successfuly'))
         res.json(result)
     } catch(error) {
         res.status(400).json(error)

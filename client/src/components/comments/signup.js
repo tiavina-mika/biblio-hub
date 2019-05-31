@@ -11,7 +11,7 @@ class Signup extends React.PureComponent {
   }
   render() {
     return (
-         <SignupForm onSubmit={this.onSubmit} variant="outlined"/>
+         <SignupForm onSubmit={this.onSubmit} variant="outlined" fullWidth={true}/>
     );
   }
 }

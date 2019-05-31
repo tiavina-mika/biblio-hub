@@ -39,7 +39,7 @@ export const signin =  (email, password, refresh) => async (dispatch, getState) 
         if (error.response) {
             if (error.response.status === 404 || error.response.status === 401) {
                 dispatch({ type: FETCH_AUTH_FAILURE });
-                return dispatch(setError('NETWORK_ERROR'));       
+                return dispatch(setError('USER_NOT_FOUND'));       
             } else if (error.response.status === 401 && error.response.headers.get('WWW-Authenticate') === 'TokenExpired') {
                 dispatch({ type: FETCH_AUTH_FAILURE });
                 return dispatchLogout(dispatch, getState);

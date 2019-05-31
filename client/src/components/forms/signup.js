@@ -7,37 +7,77 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import EmailIcon from '@material-ui/icons/Email';
+import LockIcon from '@material-ui/icons/Lock';
+import HttpsIcon from '@material-ui/icons/Https';
+import FolderSharedIcon from '@material-ui/icons/FolderShared';
+import IconButton from '@material-ui/core/IconButton';
 
-import { renderTextField } from './fields';
+import { renderInput } from './fields';
 
 import { shallowCompare } from '../../utils/shallow-compare';
 
 const styles = theme => ({
-	fieldLabel: {
-		textTransform: 'uppercase',
-		paddingBottom: 0,
-	},
 	buttonLabel: {
 		textTransform: 'uppercase',
 	},
 	containedButton: {
-		marginTop: '12px',
+		paddingTop: theme.spacing.unit * 1.2,
+		paddingBottom: theme.spacing.unit * 1.2,
+		marginTop: '22px',
 		borderRadius: 2,
 		'&:hover': {
 			backgroundColor: 'rgba(60,141,188, .6)'
-		}
+		},
 	},
 	linkContainer: {
-		paddingTop: 25
+		paddingTop: 25,
 	},
 	link: {
 		textDecorartion: 'none',
 		color: theme.palette.primary.main,
-		marginLeft: 10
+		marginLeft: 10,
+		fontSize: 18,
 	},
 	typography: {
-		fontSize: 17
-	}
+		fontSize: 18,
+		color: '#fff'
+	},
+	form: {
+		[theme.breakpoints.up('md')]: {
+			width: '50%',
+			marginLeft: 'auto',
+			marginRight: 'auto',
+    }
+	},
+	formFullWidth: {
+		[theme.breakpoints.up('md')]: {
+			width: '100%',
+    }
+	},
+	paper: {
+    display: 'flex',
+		alignItems: 'center',
+		overflow: 'hidden',
+		marginTop: theme.spacing.unit * 2.5,
+		marginBotton: theme.spacing.unit * 2.5,
+
+		// height:  theme.spacing.unit * 6
+    // width: 400,
+  },
+  input: {
+    paddingLeft: theme.spacing.unit,
+    flex: 1,
+  },
+  iconButton: {
+		padding: 10,
+		backgroundColor: '#e9ecef',
+		// height:  theme.spacing.unit * 6,
+		borderRadius: 0,
+		borderRight: '1px solid #c7c8c9',
+		color: '#5a5b5b'
+  },
 });
 
 class SignupForm extends React.Component {
@@ -58,59 +98,83 @@ class SignupForm extends React.Component {
 		this.props.onSubmit(form);
 	}
 	render() {
-		const { handleSubmit, loading, classes, variant } = this.props;
+		const { handleSubmit, loading, classes, variant, backgroundColor, fullWidth } = this.props;
 		return (
-			<form onSubmit={handleSubmit(this.onSubmit)}>
-				<Field
-					name="name"
-					type="name"
-					component={renderTextField}
-					// disabled={disabled}
-					placeholder="Entrer votre pseudo"
-					label="Pseudo"
-					variant={variant}
-					className={classes.fieldLabel}
-					fullWidth />
-				<Field
-					name="email"
-					type="email"
-					component={renderTextField}
-					// disabled={disabled}
-					placeholder="Entrer votre email"
-					variant={variant}
-					label="Email"
-					className={classes.fieldLabel}
-					fullWidth />
-				<Field
-					name="password"
-					type="password"
-					component={renderTextField}
-					placeholder="Mot de passe"
-					label="Entrez votre mot de passe"
-					variant={variant}
-					className={classes.fieldLabel}
-					fullWidth />
-				<Field
-					name="confirm"
-					type="password"
-					component={renderTextField}
-					placeholder="Confirmation"
-					label="Confirmez votre mot de passe"
-					variant={variant}
-					className={classes.fieldLabel}
-					fullWidth />
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained" 
-            disabled={loading}
-            className={classNames(classes.buttonLabel,classes.containedButton)}
-            fullWidth>
-            Creér
-          </Button>
-					<div className={classes.linkContainer}>
-						<Typography className={classes.Typography}>Vous avez déjà un compte? <Link to="/signin" className={classes.link}>Connectez-vous</Link></Typography>
-				</div>
+			<form onSubmit={handleSubmit(this.onSubmit)} className={fullWidth ? classes.formFullWidth : classes.form}>
+				  <Paper className={classes.paper}>
+							<IconButton className={classes.iconButton} aria-label="Menu">
+								<FolderSharedIcon />
+							</IconButton>
+								<Field
+									name="name"
+									type="name"
+									component={renderInput}
+									placeholder="Nom complet"
+									label="Pseudo"
+									variant={variant}
+									className={classes.input}
+									backgroundColor={backgroundColor}
+									fullWidth />
+							</Paper>
+
+							<Paper className={classes.paper}>
+									<IconButton className={classes.iconButton} aria-label="Menu">
+										<EmailIcon />
+									</IconButton>
+									<Field
+										name="email"
+										type="email"
+										component={renderInput}
+										backgroundColor={backgroundColor}
+										placeholder="Adresse email"
+										variant={variant}
+										label="Email"
+										className={classes.input}
+										fullWidth />
+							</Paper>
+							<Paper className={classes.paper}>
+									<IconButton className={classes.iconButton} aria-label="Menu">
+										<LockIcon />
+									</IconButton>
+									<Field
+										name="password"
+										type="password"
+										component={renderInput}
+										backgroundColor={backgroundColor}
+										placeholder="Mot de passe"
+										label="Entrez votre mot de passe"
+										variant={variant}
+										className={classes.input}
+										fullWidth />
+							</Paper>
+							<Paper className={classes.paper}>
+								<IconButton className={classes.iconButton} aria-label="Menu">
+										<HttpsIcon />
+								</IconButton>
+								<Field
+									name="confirm"
+									type="password"
+									component={renderInput}
+									backgroundColor={backgroundColor}
+									placeholder="Confirmation de mot de passe"
+									label="Confirmez votre mot de passe"
+									variant={variant}
+									className={classes.input}
+									fullWidth />
+							</Paper>
+							
+							<Button
+									type="submit"
+									color="primary"
+									variant="contained" 
+									disabled={loading}
+									className={classNames(classes.buttonLabel,classes.containedButton)}
+									fullWidth>
+									Creér
+							</Button>
+							{!fullWidth && <div className={classes.linkContainer}>
+									<Typography className={classes.typography}>Vous avez déjà un compte? <Link to="/signin" className={classes.link}>Connectez-vous</Link></Typography>
+							</div>}
 			</form>
 		);
   }
@@ -118,10 +182,10 @@ class SignupForm extends React.Component {
 
 const validate = (values) => {
 	const errors = {};
-	if (!values.email || values.email.length === 0) {
-		errors.email = "Email requis";
-	} else if (!/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(values.email)) {
-    errors.email = "Email invalide";
+  if (!values.email) {
+    errors.email = 'Email requis'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Addresse email invalide'
   }
 	if (!values.password || values.password.length === 0) {
 		errors.password = "Mot de passe requis";

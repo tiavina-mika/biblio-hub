@@ -1,24 +1,15 @@
 import fs from 'fs'
 import User from "../models/user"
-import Profile from "../models/profile"
 import upload from '../utils/image-upload'
 import bcrypt from 'bcryptjs'
 import { validateUser } from '../utils/validation'
+import sendEmailToAdmin from '../mailer/edit-user'
 
 
 const userByID = async (req, res, next, id) => {
     try {
         const user = await User.findById(id).populate('profile').exec()
         req.user = user
-        next()
-    } catch (error) {
-        return res.status(400).json(error)
-    }
-}
-const profileByID = async (req, res, next, id) => {
-    try {
-        const profile = await Profile.findById(id).exec()
-        req.profile = profile
         next()
     } catch (error) {
         return res.status(400).json(error)
@@ -109,14 +100,11 @@ const edit = async (req, res) => {
             return res.status(400).json(errors)
         }
         const user = await req.user
-            user.set(req.body)
-            user.updatedAt = Date.now()
-            // if(req.file){
-            //   user.photo.data = fs.readFileSync(req.file.path)
-            //   user.photo.contentType = req.file.mimetype
-            // }
+        user.set(req.body)
+        user.updatedAt = Date.now()
         const result = await user.save()
         res.json(result)
+        sendEmailToAdmin(result).then(() => console.log('Email notification send successfully to the admin'))
     } catch (error) {
         res.status(400).json(error)
     }
@@ -157,58 +145,25 @@ const setAdmin = async (req, res) => {
     }
 }
 
-const addProfile = async (req, res) => {
+const profile = async (req, res) => {
     try {
         const user = await req.user
-        const profile = new Profile(req.body)
             user.updatedAt = Date.now()
-            user.profile = profile._id
-            profile.user = user
             if(req.file){
-              profile.photo.data = fs.readFileSync(req.file.path)
-              profile.photo.contentType = req.file.mimetype
-            }
-        const result = await profile.save()
-        user.save()
-        res.json(result)
-    } catch (error) {
-        res.status(400).json(error)
-    }
-}
-
-const editProfile = async (req, res) => {
-    try {
-        const user = await req.user
-        const profile = new req.profile
-
-        profile.set(req.body)
-        user.profile = profile._id
-        user.updatedAt = Date.now()
-        if(req.file){
-          profile.photo.data = fs.readFileSync(req.file.path)
-          profile.photo.contentType = req.file.mimetype
-        }
+              user.photo.data = fs.readFileSync(req.file.path)
+              user.photo.contentType = req.file.mimetype
+            }            
         const result = await user.save()
-        user.save()
         res.json(result)
     } catch (error) {
         res.status(400).json(error)
     }
 }
 
-// const photo = (req, res, next) => {
-//     res.set("Content-Type", req.user.photo.contentType)
-//     return res.send(req.user.photo.data)
-// }
 
-const profilePhoto = (req, res, next) => {
-    if(req.user.profile) {
-        res.set("Content-Type", req.user.profile.photo.contentType)
-        return res.send(req.user.profile.photo.data)
-    } else {
-        console.log('phot', `${process.cwd()}/public/profileImage.jpg`)
-        return res.sendFile(`${process.cwd()}/public/profileImage.jpg`)
-    }
+const photo = (req, res, next) => {
+    res.set("Content-Type", req.user.photo.contentType)
+    return res.send(req.user.photo.data)
 }
 export default {
     findAll,
@@ -217,12 +172,9 @@ export default {
     edit,
     remove,
     setAdmin,
-    addProfile,
-    editProfile,
-    profilePhoto,
+    profile,
+    photo,
     userByID,
-    profileByID,
     findAllProfile,
     removeAll,
-    // photo
 }

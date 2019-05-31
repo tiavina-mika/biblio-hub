@@ -24,12 +24,12 @@ const UserSchema = new Schema(
             default: false
         },
         checked: {type: Boolean, default: false},
-        profile: {type: Schema.Types.ObjectId, ref: 'Profile'},
+        // profile: {type: Schema.Types.ObjectId, ref: 'Profile'},
         role: {type: String, required: true, enum: ['ADMIN', 'USER', 'SUPER_ADMIN'], default: 'USER'},
-        // photo: {
-        //     data: Buffer,
-        //     contentType: String
-        // },
+        photo: {
+            data: Buffer,
+            contentType: String
+        },
         slug: {type: String,trim: true,lowercase: true},
 
         createdAt: {type: Date,default: Date.now},
