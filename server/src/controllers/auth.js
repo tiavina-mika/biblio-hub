@@ -2,9 +2,13 @@ import jwt from 'jsonwebtoken'
 import expressJwt from 'express-jwt'
 import bcrypt from 'bcryptjs'
 import User from '../models/user'
+import Book from '../models/book'
+import Author from '../models/author'
+import Genre from '../models/genre'
 import sendEmailToUser from '../mailer/send'
 import sendEmailToAdmin from '../mailer/new-user'
-import { validateSignin, validateSignup, validateChangePassword } from '../utils/validation'
+import sendEmailToUserPassword from '../mailer/forgotten-password'
+import { validateSignin, validateSignup, validateChangePassword, validateEmail, validatePassword } from '../utils/validation'
 import moment from 'moment'
 
 const signup = async (req, res) => {
@@ -89,6 +93,26 @@ const signin = async (req, res) => {
   }
 }
 
+const confirm = async (req, res) => {
+  try {
+      const { id } = req.params
+      const user = await User.findById(id)
+
+      if (!user) {
+        res.status(400).json({COULD_NOT_FIND: 'Could not find you'})
+      }
+      else if (user && !user.confirmed) {
+        const updatedUser = await User.findOneAndUpdate({_id: id}, { confirmed: true },{new: true, useFindAndModify: false})
+        updatedUser && res.json({ USER_CONFIRMED: "Your account is now confirmed" })
+      }
+      else  {
+        res.json({ ACCOUNT_CONFIRMED: "Your count is already confirmed" })
+      }
+  } catch (error) {
+      res.status(400).json(error)
+  }
+}
+
 const changePassword = async (req, res) => {
     try {
         const { isValid, errors } = validateChangePassword(req.body)
@@ -104,6 +128,7 @@ const changePassword = async (req, res) => {
           bcrypt.genSalt(10, async (err, salt) => {
                 bcrypt.hash(req.body.newPassword, salt, async (err, hash) => {
                   user.password = hash
+                  user.updatedAt = Date.now()
                   const result = await user.save()
                   if(result) {
                       // res.json({CHANGE_PASSWORD_SUCCESS: 'Your password has changed successfully'})
@@ -120,6 +145,70 @@ const changePassword = async (req, res) => {
     }
 }
 
+const forgottenPassword = async (req, res) => {
+  try {
+      const { isValid, errors } = validateEmail(req.body)
+      if(!isValid) {
+          return res.status(400).json(Object.keys(errors))
+      }
+      const user = await User.findOne({email : req.body.email})
+      if (!user) {
+        errors.EMAIL_NOT_EXIST = 'Email not exist'
+        return res.status(400).json(Object.keys(errors))
+      }
+
+      sendEmailToUserPassword(user.email, user._id)
+        .then(() => res.json({MAIL_FORGOTTEN_PASSWORD_SEND_SUCCESS: `Email confirmation send successfully from ${process.env.USER_MAILER}`}))
+        .catch(e => {
+          errors.MAIL_FORGOTTEN_PASSWORD_SEND_ERROR = 'Email confirmation send failed'
+          res.status(400).json(Object.keys(errors))
+        })
+  } catch (error) {
+      res.status(400).json(error)
+  }
+}
+
+const newPassword = async (req, res) => {
+    try {
+        const { isValid, errors } = validatePassword(req.body)
+        if(!isValid) {
+            return res.status(400).json(errors)
+        }
+        const user = await req.user
+
+        bcrypt.genSalt(10, async (err, salt) => {
+              bcrypt.hash(req.body.password, salt, async (err, hash) => {
+                  user.password = hash
+                  user.updatedAt = Date.now()
+                  const result = await user.save()
+                  if(result) {
+                      sendEmailToAdmin(result, `${result.name} a un nouveau mot de passe, ${moment(new Date()).fromNow()}`)
+                        .then(() => res.json({NEW_PASSWORD_SUCCESS: `Email confirmation send successfully`}))
+                  } else {
+                      errors.NEW_PASSWORD_ERROR = 'Your password has not changed'
+                      return res.status(400).json(Object.keys(errors))     
+                  }
+              })
+          })
+
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
+
+const countAll = async (req, res) => {
+    try {
+          const books = await Book.countDocuments()
+          const authors = await Author.countDocuments()
+          const genres = await Genre.countDocuments()
+          const users = await User.countDocuments()
+          const nonConfirmed = await User.countDocuments({confirmed: false})
+          const forMembers = await Book.countDocuments({member: true})
+          res.json({books, authors, genres, users, forMembers, nonConfirmed})
+    } catch (error) {
+        res.status(400).json(error)
+    }
+}
 
 const signout = (req, res) => {
   // res.clearCookie("t")
@@ -132,5 +221,9 @@ export default {
   signin,
   signup,
   signout,
-  changePassword
+  confirm,
+  changePassword,
+  forgottenPassword,
+  newPassword,
+  countAll
 }

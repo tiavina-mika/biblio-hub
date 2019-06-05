@@ -4,7 +4,7 @@ import { FETCH_BOOKS_SUCCESS, FETCH_BOOKS_REQUEST, FETCH_BOOKS_FAILURE, FETCH_BO
 
 import { apiGet, apiDelete, apiPost, apiEdit } from './api';
 
-export const getAll = (limit, page, publish, member, search, redirectUrl) => (dispatch, getState) => {
+export const getAll = (limit, page, publish, member, search, sort, redirectUrl) => (dispatch, getState) => {
 	let url = `/api/books`;
 	
 	if(limit) {
@@ -13,14 +13,17 @@ export const getAll = (limit, page, publish, member, search, redirectUrl) => (di
 	if (page) {
 		url += `&page=${page}`;
 	}
-	if(publish && typeof(publish) === 'boolean') {
+	if(typeof(publish) === 'boolean') {
 		url += `&publish=${publish}`;
 	}
-	if(member && typeof(member) === 'boolean') {
+	if(typeof(member) === 'boolean') {
 		url += `&member=${member}`;
 	}
 	if (search) {
 		url += `&search=${search}`;
+	}
+	if (sort) {
+		url += `&sort=${sort}`;
 	}
 	return apiGet({
 		key: 'FETCH_BOOKS',

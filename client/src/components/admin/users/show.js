@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import Checked  from '../components/checked';
 
 import { connect } from 'react-redux';
 import { getOne, remove } from '../../../redux/actions/users';
@@ -15,8 +16,8 @@ import FloatingButtonActions from '../components/floating-button-actions';
 import { BASE_URL } from '../../../redux/actions/constants'
 import Typography from '@material-ui/core/Typography';
 import CustomizedLinearProgress  from '../components/progress';
-import FormDialog from '../profile/add-profile-dialog';
 import { getUserState, getUsersLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 const styles = theme => ({
   table: {
@@ -81,6 +82,7 @@ class Show extends React.Component {
     return (
       data && !loading ?
       <div className={classes.root}>
+        <Helmet title={data.name} />
         <Grid fluid>
           <Row center="xs">
             <Col xs={12} sm={12} md={12} lg={8} start="xs">
@@ -118,15 +120,9 @@ class Show extends React.Component {
                         <TableCell align="right">Slug</TableCell>
                         <TableCell align="left"  className={classes.th}>{data.slug}</TableCell>
                     </TableRow> }
-                  <TableRow>
-                      <TableCell align="right">Photo</TableCell>
-                      <TableCell align="left"  className={classes.th}>
-                        <FormDialog
-                            label="Photo"
-                            title="Ajouter photo de profil"
-                            userId={data._id}
-                        />
-                      </TableCell>
+                    <TableRow>
+                      <TableCell align="right">Confirmer?</TableCell>
+                      <TableCell align="left" className={classes.th}><Checked checked={data.confirmed}/></TableCell>
                     </TableRow>
                 </Table>
                 </Card>

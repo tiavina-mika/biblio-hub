@@ -24,7 +24,9 @@ const messages = {
 	'error.EMAIL_WAITING_FOR_CONFIRMATION': "Compte existant. Veuillez verifier votre email pour confirmer votre inscription",
 	'error.MAIL_CONFIRMATION_SEND_ERROR': "Votre compte n'a pas été confirmé",
 	'error.USER_NOT_CONFIRMED': "Un email vous a été envoyé pour terminer l'inscription.",
-	'error.CHANGE_PASSWORD_FAILED': "Votre changement de mot de passe n'a pas été effectué. Veuillez réessayer"
+	'error.CHANGE_PASSWORD_FAILED': "Votre changement de mot de passe n'a pas été effectué. Veuillez réessayer",
+	'error.GENRE_NAME_LENGTH': "Le nom du genre doit avoir 6 à 50 caractères",
+	'error.EMPTY_GENRE': "Nom du genre requis",	
 };
 
 class ErrorSnackbar extends React.Component {
@@ -40,7 +42,7 @@ class ErrorSnackbar extends React.Component {
 				open
 				action={
 					<Button color="inherit" style={{color: main}} size="small" onClick={this.onSnackbarClose}>
-						close
+						fermer
 					</Button>
 				}
 				message={messages[`error.${errorMessage}`]}

@@ -11,6 +11,7 @@ const BookSchema = new Schema(
         summary: {type: String, required: true},
         slug: {type: String,trim: true,lowercase: true},
         views: {type: Number, default: 0},
+        download: {type: Number, default: 0},
         newComment: {type: Number, default: 0},
         publish: {type: Boolean, default: false},
         member: {type: Boolean, default: false},

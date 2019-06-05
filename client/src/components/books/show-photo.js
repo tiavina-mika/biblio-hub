@@ -14,7 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 const styles = theme => ({
   listItemText: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   listItem: {
     padding: 0
@@ -63,6 +63,9 @@ const styles = theme => ({
           boxShadow: '0 10px 8px rgba(0, 0, 0, 0.3), 0 6px 10px rgba(0, 0, 0, 0.3)',
       }
   },
+  primaryText: {
+    marginRight: 10
+  }
 });
 
 const Photo = ({classes, data}) => (

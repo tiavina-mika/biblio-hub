@@ -109,7 +109,7 @@ class SignupForm extends React.Component {
 									name="name"
 									type="name"
 									component={renderInput}
-									placeholder="Nom complet"
+									placeholder="Nom Complet"
 									label="Pseudo"
 									variant={variant}
 									className={classes.input}
@@ -126,7 +126,7 @@ class SignupForm extends React.Component {
 										type="email"
 										component={renderInput}
 										backgroundColor={backgroundColor}
-										placeholder="Adresse email"
+										placeholder="Adresse Email"
 										variant={variant}
 										label="Email"
 										className={classes.input}
@@ -194,6 +194,18 @@ const validate = (values) => {
 		errors.confirm = "Confirmation de mot de passe requis";
 	} else if (values.confirm !== values.password) {
 		errors.confirm = "Confirmation de mot de passe invalide";
+	}
+	if(!/[0-9]/.test(values.password)) {
+		errors.password = "Le mot de passe doit avoir au moins un chiffre";
+	}
+	if(!/[a-z]/i.test(values.password)) {
+		errors.password = "Le mot de passe doit avoir au moins une lettre";
+	}
+	if(values.password && values.password.length < 6) {
+		errors.password = "Le mot de passe doit avoir au moins 6 caractères";
+	}
+	if(values.password && values.password.length > 20) {
+		errors.password = "Le mot de passe doit avoir au plus 20 caractères";
 	}
 	return errors;
 };

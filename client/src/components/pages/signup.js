@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import { withStyles, MuiThemeProvider } from '@material-ui/core/styles';
@@ -7,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import SignupForm from '../forms/signup';
+import Helmet from '../helmet';
 
 import { signup } from '../../redux/actions/authentication';
 
@@ -18,7 +20,7 @@ const styles = theme => ({
   },
   row: {
     height: window.innerHeight,
-    paddingTop: '5%'
+    paddingTop: '2%'
   },
 	card: {
     borderRadius: 2,
@@ -30,7 +32,6 @@ const styles = theme => ({
   cardTitle: {
     textTransform: 'inherit',
     marginBottom: 1,
-    // color: theme.palette.primary.main
     color: '#000'
   },
   cardHeader: {
@@ -44,8 +45,10 @@ const styles = theme => ({
     marginTop: 0,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     border: '1px solid #000'
-    // backgroundColor: 'rgba(255, 255, 255, 0.4)',
-  }
+  },
+  logoContainer: {
+    marginBottom: theme.spacing.unit * 3
+  },
 });
 
 class Signup extends React.PureComponent {
@@ -56,8 +59,14 @@ class Signup extends React.PureComponent {
     const { classes } = this.props;
     return (
       <Grid fluid className={classes.grid}>
+        <Helmet title="Création compte" />
         <Row center="xs" className={classes.row}>
           <Col xs={12} sm={9} md={7} lg={6} start="xs">
+            <div className={classes.logoContainer}>
+              <Link to="/">
+                <img src={`${process.env.PUBLIC_URL}/images/logo-inversed-lg.png`} alt={process.env.REACT_APP_NAME}/>
+              </Link>
+            </div>
             <Card className={classes.card}>
               <CardHeader
                 classes={{title: classes.cardTitle, subheader: classes.cardSubtitle, root: classes.cardHeader}}

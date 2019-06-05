@@ -92,7 +92,7 @@ const ListBy = props => {
                                             key={n._id}
                                             onShow={() => push(`/dashboard/livre/${n._id}`)}
                                             onRemove={() => this.props.remove(n._id)}
-                                            onEdit={() => push(`/dashboard/modifierlivre/${n._id}`)}
+                                            onEdit={() => push(`/dashboard/modifier/livre/${n._id}`)}
                                         />
                                     </TableCell>                    
                                 </TableRow>

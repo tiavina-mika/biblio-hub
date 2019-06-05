@@ -14,11 +14,11 @@ import Main from './show-main';
 import CommentDialog from '../comments/auth-dialog';
 import Photo from './show-photo';
 import AuthorPhoto from './show-author-photo';
-// import MainList from './main-list';
 import Comments from '../comments/comment';
 import CommentForm from '../pages/comment';
 import Spinner from '../blocks/spinner';
 import { getUserId } from '../../redux/root-reducer';
+import Helmet from '../helmet';
 
 const styles = theme => ({
   layout: {
@@ -59,13 +59,14 @@ class Book extends React.Component {
     return (
       data ?
       <div className={classNames(classes.layout, classes.cardGrid)}>
+        <Helmet title={data.title} />
         <Grid fluid>
             <Row center="xs">
-              <Col  xs={12} sm={12} md={12} lg={3} start="xs">
+              <Col xsOffset={12}  xs={12} sm={12} md={12} lg={3} start="xs">
                   <Card>
                       <Genres />
                   </Card>
-                  <Card style={{marginTop: 5, padding: 10}}>
+                  <Card style={{marginTop: 30, padding: 10}}>
                      <Books books={books.filter(n => n._id != data._id)} headerTitle={`Les autres livres de ${data.author.family_name}`}/>
                   </Card>
               </Col>
@@ -84,16 +85,6 @@ class Book extends React.Component {
               </Col>
             </Row>
           </Grid>
-          
-          {/* <Grid fluid>
-                <Row center="xs">
-                  {books && <MainList 
-                    books={books.filter(n => n._id != data._id)}
-                    headerTitle={`Les autres livres de ${data.author.family_name}`}
-                    path='/livres'/> }
-              </Row>
-          </Grid> */}
-
       </div>
       : <Spinner />   
     );

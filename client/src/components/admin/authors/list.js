@@ -20,6 +20,7 @@ import Checked  from '../components/checked';
 import { getAuthors, getAuthorsLoading } from '../../../redux/root-reducer';
 import Pagination from '../../blocks/pagination';
 import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
+import Helmet from '../../helmet';
 
 const rows = [
   { id: 'first_name', numeric: false, disablePadding: false, label: 'Prenoms' },
@@ -49,7 +50,6 @@ const styles = theme => ({
     }
   }
 });
-
 
 class List extends React.Component {
   state = {
@@ -148,74 +148,75 @@ class List extends React.Component {
     return (
       data
       ? <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des auteurs"/>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-          <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={dataLength}
-              rows={rows}
-            />
-            <TableBody>
-              {stableSort(data.authors, getSorting(order, orderBy))
-                .map(n => {
-                  const isSelected = this.isSelected(n._id);
-                  return (
-                    <TableRow
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n._id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                      
-                        <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
-                      </TableCell>
-                      <TableCell component="th" align="right">
-                        {n.first_name}
-                      </TableCell>
-                      <TableCell align="right">{n.family_name}</TableCell>
-                      <TableCell align="right"><Checked checked={n.photo}/></TableCell>
-                      <TableCell align="right">{moment(new Date(n.date_of_birth)).format('DD MMMM YYYY')}</TableCell>
-                      <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
-                      <TableCell align="right">
-                        <ButtonActions
-                            dataTitle={n.title}
-                            key={n._id}
-                            onShow={() => this.handleShow(n._id)}
-                            onRemove={() => this.handleDelete(n._id)}
-                            onEdit={() => this.handleEdit(n._id)}
-                          />                    
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 10 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <Pagination
-          currentPage={data.currentPage}
-          total={data.pages}
-          onChange={this.handleChangePage}
-        />
-
-        <FloatingButtonActions
-            name="auteur"
-            add
-            remove={selected.length > 0}
-            onDelete={this.handleDeleteAllClick}
+          <Helmet title="Liste des auteurs" />
+          <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des auteurs"/>
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+            <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={dataLength}
+                rows={rows}
+              />
+              <TableBody>
+                {stableSort(data.authors, getSorting(order, orderBy))
+                  .map(n => {
+                    const isSelected = this.isSelected(n._id);
+                    return (
+                      <TableRow
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n._id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">
+                        
+                          <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
+                        </TableCell>
+                        <TableCell component="th" align="right">
+                          {n.first_name}
+                        </TableCell>
+                        <TableCell align="right">{n.family_name}</TableCell>
+                        <TableCell align="right"><Checked checked={n.photo}/></TableCell>
+                        <TableCell align="right">{moment(new Date(n.date_of_birth)).format('DD MMMM YYYY')}</TableCell>
+                        <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
+                        <TableCell align="right">
+                          <ButtonActions
+                              dataTitle={n.title}
+                              key={n._id}
+                              onShow={() => this.handleShow(n._id)}
+                              onRemove={() => this.handleDelete(n._id)}
+                              onEdit={() => this.handleEdit(n._id)}
+                            />                    
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 10 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <Pagination
+            currentPage={data.currentPage}
+            total={data.pages}
+            onChange={this.handleChangePage}
           />
-      </Paper>
+
+          <FloatingButtonActions
+              name="auteur"
+              add
+              remove={selected.length > 0}
+              onDelete={this.handleDeleteAllClick}
+            />
+        </Paper>
       : <CustomizedLinearProgress/>
     );
   }

@@ -11,7 +11,6 @@ import 'dotenv/config'
 import { configPassport } from './config/passport'
 import authorRouter from "./routes/author"
 import bookRouter from "./routes/book"
-import bookExemplaireRouter from "./routes/book-exemplaire"
 import genreRouter from "./routes/genre"
 import userRouter from "./routes/user"
 import authRouter from "./routes/auth"
@@ -31,7 +30,6 @@ app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, '/public')))
 app.use("/", authorRouter)
 app.use("/", bookRouter)
-app.use("/", bookExemplaireRouter)
 app.use("/", genreRouter)
 app.use("/", userRouter)
 app.use("/", authRouter)

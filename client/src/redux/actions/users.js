@@ -37,7 +37,7 @@ export const post = (body) => (dispatch, getState) => {
 	return apiPost({
 		key: 'FETCH_USER',
 		name: 'user',
-		redirectUrl: '/dashboard/utilisateur',
+		redirectUrl: `/dashboard/utilisateur`,
 		params: true,
 		url: `/api/users`,
 		body,

@@ -21,19 +21,32 @@ import Checked  from '../components/checked';
 import { getBooks, getBooksLoading } from '../../../redux/root-reducer';
 import Pagination from '../../blocks/pagination';
 import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
+import { Typography } from '@material-ui/core';
+import Helmet from '../../helmet';
 
 const rows = [
   { id: 'title', disablePadding: false, label: 'Titre' },
-  { id: 'auteur', disablePadding: false, label: 'Auteur' },
   { id: 'photo', disablePadding: false, label: 'Photo' },
   { id: 'epub', disablePadding: false, label: 'Epub' },
   { id: 'pdf', disablePadding: false, label: 'Pdf' },
-  { id: 'date_publication', disablePadding: false, label: 'date_publication' },
   { id: 'views', disablePadding: false, label: 'vues' },
   { id: 'comments', disablePadding: false, label: 'commentaires' },
-  { id: 'newComments', disablePadding: false, label: 'commentaires non lus' },
   { id: 'createdAt', disablePadding: false, label: 'Ajouté le' },
 ];
+
+const getSort = name => {
+  let query;
+  if(name === 'titre') {
+    query = 'title';
+  } else if (name === 'date') {
+    query = 'createdAt'
+  } else if (name === 'telechargement') {
+    query = 'download'
+  } else if (name === 'vues') {
+    query = 'views'
+  }
+  return query;
+}
 
 const styles = theme => ({
   root: {
@@ -62,6 +75,10 @@ const styles = theme => ({
     backgroundColor: '#961919',
     color: '#fff'
   },
+  subheading: {
+    color: '#898989',
+    fontSize: 13
+  }
 });
 
 
@@ -75,10 +92,27 @@ class List extends Component {
   };
 
   componentDidMount() {
-    const { getAll, match : { params }} = this.props;
-    params ? getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, params.search) : getAll(DASHBOARD_LIST_PER_PAGE, 1);
+    const { getAll, match : { params }} = this.props;    
+    if(params && params.search) {
+        getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, params.search)
+    } else if(params && params.sort) {
+        getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, null, getSort(params.sort))
+    } else {
+        getAll(DASHBOARD_LIST_PER_PAGE, 1)
+    }
   }
-
+  componentWillUpdate ({ location }) {
+    const { getAll, match : { params }} = this.props;    
+      if (location.pathname !== this.props.location.pathname) {
+        if(params && params.search) {
+            getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, params.search)
+        } else if(params && params.sort) {
+            getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, null, getSort(params.sort))
+        } else {
+            getAll(DASHBOARD_LIST_PER_PAGE, 1)
+        }
+      }
+  }
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -141,7 +175,14 @@ class List extends Component {
 
   handleChangePage = page => {
     this.setState({page});
-    this.props.getAll(DASHBOARD_LIST_PER_PAGE, page);
+    const { getAll, match : { params }} = this.props;    
+    if(params && params.search) {
+        getAll(DASHBOARD_LIST_PER_PAGE, page, null, null, params.search)
+    } else if(params && params.sort) {
+        getAll(DASHBOARD_LIST_PER_PAGE, page, null, null, null, getSort(params.sort))
+    } else {
+        getAll(DASHBOARD_LIST_PER_PAGE, page, null)
+    }
   }
 
   handleChangeRowsPerPage = event => {
@@ -163,81 +204,78 @@ class List extends Component {
     return (
       data && !loading
       ? <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des livres"/>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={dataLength}
-              rows={rows}
-            />
-            <TableBody>
-              {stableSort(data.books, getSorting(order, orderBy))
-                .map(n => {
-                  const isSelected = this.isSelected(n._id);
-                  return (
-                    <TableRow
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n._id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">                     
-                        <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
-                      </TableCell>
-                      <TableCell component="th" align="right">
-                        {n.title}
-                      </TableCell>
-                      <TableCell align="right">{n.author && n.author.family_name}</TableCell>
-                      <TableCell align="right"><Checked checked={n.photo}/></TableCell>
-                      <TableCell align="right"><Checked checked={n.epub}/></TableCell>
-                      <TableCell align="right"><Checked checked={n.pdf}/></TableCell>
-                      <TableCell align="right">{moment(new Date(n.date_publication)).format('DD MMMM YYYY')}</TableCell>
-                      <TableCell align="right">{n.views}</TableCell>
-                      <TableCell align="right">
-                        <Button className={classes.totalComment} >{n.comments.length}</Button>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Button className={classes.totalNonReadComment} >{n.newComment}</Button>
-                      </TableCell>
-                      <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
-                      <TableCell align="right">                     
-                        <ButtonActions
-                          dataTitle={n.title}
-                          key={n._id}
-                          onShow={() => this.handleShow(n._id)}
-                          onRemove={() => this.handleDelete(n._id)}
-                          onEdit={() => this.handleEdit(n._id)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 10 * emptyRows }}>
-                  <TableCell colSpan={9} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <Pagination
-          currentPage={data.currentPage}
-          total={data.pages}
-          onChange={this.handleChangePage}
-        />
-        <FloatingButtonActions
-            name="livre"
-            add
-            remove={selected.length > 0}
-            onDelete={this.handleDeleteAllClick}
+          <Helmet title="Liste des livres" />
+          <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des livres"/>
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={dataLength}
+                rows={rows}
+              />
+              <TableBody>
+                {stableSort(data.books, getSorting(order, orderBy))
+                  .map(n => {
+                    const isSelected = this.isSelected(n._id);
+                    return (
+                      <TableRow
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n._id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">                     
+                          <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
+                        </TableCell>
+                        <TableCell component="th" align="right">
+                          {n.title}
+                          <Typography variant="subheading" className={classes.subheading}>{n.author && n.author.family_name}</Typography>
+                        </TableCell>
+                        <TableCell align="right"><Checked checked={n.photo}/></TableCell>
+                        <TableCell align="right"><Checked checked={n.epub}/></TableCell>
+                        <TableCell align="right"><Checked checked={n.pdf}/></TableCell>
+                        <TableCell align="right">{n.views}</TableCell>
+                        <TableCell align="right">
+                          <Button className={classes.totalComment} >{n.comments.length}</Button>
+                        </TableCell>
+                        <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
+                        <TableCell align="right">                     
+                          <ButtonActions
+                            dataTitle={n.title}
+                            key={n._id}
+                            onShow={() => this.handleShow(n._id)}
+                            onRemove={() => this.handleDelete(n._id)}
+                            onEdit={() => this.handleEdit(n._id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 10 * emptyRows }}>
+                    <TableCell colSpan={9} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <Pagination
+            currentPage={data.currentPage}
+            total={data.pages}
+            onChange={this.handleChangePage}
           />
-      </Paper>
+          <FloatingButtonActions
+              name="livre"
+              add
+              remove={selected.length > 0}
+              onDelete={this.handleDeleteAllClick}
+            />
+        </Paper>
       : <CustomizedLinearProgress />
     );
   }

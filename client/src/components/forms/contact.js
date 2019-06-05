@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Spinner from '../blocks/spinner';
+import Helmet from '../helmet';
 
 const validate = values => {
   const errors = {};
@@ -43,7 +44,8 @@ const styles = {
 }
 
 const Contact = ({classes, onSubmit}) => {
-  return (
+  return ([
+      <Helmet title="Contact" />,
       <Form
         onSubmit={onSubmit}
         initialValues={{ name: '', email: getStorage('email') || '', message: '' }}
@@ -109,7 +111,7 @@ const Contact = ({classes, onSubmit}) => {
             </Paper>
           </form>
         )}
-      />
+      />]
   );
 }
 

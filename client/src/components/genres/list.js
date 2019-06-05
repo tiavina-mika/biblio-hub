@@ -18,6 +18,7 @@ import { LIST_GENRES_PER_PAGE } from '../../redux/actions/constants';
 import Pagination from '../blocks/pagination';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import NoData from '../blocks/no-data';
+import Helmet from '../helmet';
 
 const styles = theme => ({
     layout: {
@@ -86,6 +87,7 @@ class Genres extends Component {
     return (
       data && data.genres
         ? <div className={classNames(classes.layout, classes.cardGrid)}>
+                <Helmet title="Catégories" />
                     <Grid fluid>
                         <Row center="xs">
                             <Col xs={12} sm={12} md={12} lg={12} start="xs">
@@ -113,8 +115,8 @@ class Genres extends Component {
                                             </Link>
                                         </GridList>
                                         ))}
-                                        </GridList>
-                            { data.currentPage <= data.pages &&
+                                    </GridList>
+                            { data.genres.length >= LIST_GENRES_PER_PAGE &&
                                 <GridList item sm={12} md={12} lg={12} className={classes.title}>
                                     <Pagination
                                         currentPage={data.currentPage}

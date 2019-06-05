@@ -1,8 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { getLocation } from '../../redux/root-reducer';
 
 const styles = theme => ({
     header: {
@@ -12,15 +15,20 @@ const styles = theme => ({
     },
     headerTitle: {
         textTransform: 'uppercase',
+        color: '#616161',
         [theme.breakpoints.down('sm')]: {
             fontSize: 16
         },
+    },
+    mainTitle: {
+        fontweight: 700,
+        fontSize: 36,
+        fontFamily: 'Helvetica'
     },
     link: {
         color: theme.palette.primary.main,
         textDecoration: 'none',
         marginLeft: 15,
-
     },
     linkText: {
         color: theme.palette.primary.main,
@@ -39,10 +47,14 @@ const styles = theme => ({
 });
 
 
-const TitleHeader = ({ classes, title, path }) => {
+const TitleHeader = ({ classes, title, path, location: { pathname } }) => {
     return (
         <div className={classes.header}>
-            <Typography variant='h6' className={classes.headerTitle}>{title}</Typography>
+            <Typography
+                variant='h6'
+                className={classNames(classes.headerTitle, pathname !== '/' && classes.mainTitle)}>
+                {title}
+            </Typography>
             {path &&
                 <Link to={path} className={classes.link}>
                     <Typography variant='title' className={classes.linkText}>(voir tout)</Typography>
@@ -55,4 +67,8 @@ TitleHeader.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(TitleHeader);
+const mapStateToProps = state => ({
+    location: getLocation(state)
+})
+
+export default connect(mapStateToProps, null)(withStyles(styles)(TitleHeader));

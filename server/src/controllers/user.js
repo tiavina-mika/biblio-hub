@@ -80,10 +80,7 @@ const create = async (req, res) => {
             bcrypt.hash(req.body.password, salt, async (err, hash) => {
               const newUser = new User(req.body)
               newUser.password = hash
-                // if(req.file){
-                //   newUser.photo.data = fs.readFileSync(req.file.path)
-                //   newUser.photo.contentType = req.file.mimetype
-                // }
+              newUser.confirmed = true
               const result = await newUser.save()
               res.status(200).json(result)
             })

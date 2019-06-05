@@ -7,6 +7,7 @@ import { getFormData } from '../../../utils/utils';
 import { edit, getGenre, initialize } from '../../../redux/actions/genres';
 import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
+import Helmet from '../../helmet';
 
 class Edit extends React.PureComponent {
   componentDidMount = () => {
@@ -23,7 +24,8 @@ class Edit extends React.PureComponent {
   }
   render() {
     const { data } = this.props;
-    return (
+    return ([
+      <Helmet title="Modifier Genre" />,
       <FormLayout
           title="Modifier ce genre"
           onSubmit={this.onSubmit}
@@ -31,7 +33,7 @@ class Edit extends React.PureComponent {
             <Form initialValues={data} onSubmit={this.onSubmit}/>
             <FloatingButtonActions name="genre" add list />
         </FormLayout>
-    );
+    ]);
   }
 }
 

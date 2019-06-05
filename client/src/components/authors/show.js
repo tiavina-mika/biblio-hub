@@ -13,8 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import Markdown from '../blocks/markdown';
 import { getAuthorState, getAuthorsLoading } from '../../redux/root-reducer';
 import Genres from '../sidebars/genres';
+import Books from '../sidebars/books';
 import { getBooksByAuthor } from '../../redux/actions/books';
 import Spinner from '../blocks/spinner';
+import Helmet from '../helmet';
 
 const styles = theme => ({
   layout: {
@@ -106,45 +108,49 @@ class Author extends React.Component {
       this.setState({data: author, books});
   }
   render() {
-    const { classes, loading, history: { push } } = this.props;
-    const { data } = this.state;
+    const { classes, loading } = this.props;
+    const { data, books } = this.state;
     if(loading) {return <Spinner />};
 
     return (
       data && !loading ?
       <div className={classNames(classes.layout, classes.cardGrid)}>
-        <Grid fluid >
-            <Row center="xs">
-              <Col xs={12} sm={12} md={12} lg={3} start="xs">
-                <Card>
-                  <Genres />
-                </Card>
-              </Col>
-              <Col xs={12} sm={12} md={12} lg={6} start="xs">
-                <Card className={classes.cardMain}>
-                  <Typography variant="h3" className={classes.title}>
-                  {`${data.first_name} ${data.family_name}`}
-                  </Typography>
-                  { data.description &&<Markdown input={data.description}/>}
+          <Helmet title={data.family_name} />
+          <Grid fluid >
+              <Row center="xs">
+                <Col xs={12} sm={12} md={12} lg={3} start="xs">
+                  <Card>
+                    <Genres />
+                  </Card>
+                  <Card style={{marginTop: 30, padding: 10}}>
+                      <Books books={books} headerTitle={`Les livres de ${data.family_name}`}/>
                   </Card>
                 </Col>
+                <Col xs={12} sm={12} md={12} lg={6} start="xs">
+                  <Card className={classes.cardMain}>
+                    <Typography variant="h3" className={classes.title}>
+                    {`${data.first_name} ${data.family_name}`}
+                    </Typography>
+                    { data.description &&<Markdown input={data.description}/>}
+                    </Card>
+                  </Col>
 
-                <Col xs={8} sm={6} md={4} lg={2} start="xs">
-                  { data && data.photo ?
-                      <Card className={classes.cardRightSidebar}>
-                          <CardMedia
-                            component="img"
-                            alt={data.title}
-                            className={classes.media}
-                            height={300}
-                            image={`${BASE_URL}/api/authors/photo/${data._id}`}
-                            title={`${data.first_name} ${data.family_name}`}
-                          />
-                      </Card> : null
-                }
-              </Col>
-            </Row>
-          </Grid>
+                  <Col xs={8} sm={6} md={4} lg={2} start="xs">
+                    { data && data.photo ?
+                        <Card className={classes.cardRightSidebar}>
+                            <CardMedia
+                              component="img"
+                              alt={data.title}
+                              className={classes.media}
+                              height={300}
+                              image={`${BASE_URL}/api/authors/photo/${data._id}`}
+                              title={`${data.first_name} ${data.family_name}`}
+                            />
+                        </Card> : null
+                  }
+                </Col>
+              </Row>
+            </Grid>
       </div>
       : <Spinner />   
     );

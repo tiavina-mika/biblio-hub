@@ -11,7 +11,7 @@ const send = async (user) => {
     html: `
           <p>Nom: <strong>${user.name}</strong></p>
           <p>Email: <strong>${user.email}</strong></p>
-          <p>${moment(new Date(user.updatedAt)).fromNow()}</p>
+          <p>${moment(new Date()).fromNow()}</p>
           <br />
           <p>
             <a href='${CLIENT_ORIGIN}/dashboard/utitlisateur/${user._id}'>

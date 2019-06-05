@@ -11,10 +11,12 @@ import { getUserId } from '../../redux/root-reducer';
 import { notify } from 'react-notify-toast';
 import { changePassword } from '../../redux/actions/users';
 
-const styles = {
+const styles = theme => ({
 	card: {
     borderRadius: 2,
-    paddingTop: 2
+    paddingTop: 2,
+    marginTop: theme.spacing.unit * 5,
+    marginBottom: theme.spacing.unit * 10
 	},
   cardTitle: {
     textTransform: 'uppercase',
@@ -27,7 +29,7 @@ const styles = {
   cardContent: {
     marginTop: 0
   }
-};
+});
 
 class ChangePassword extends React.PureComponent {
   onSubmit = (form) => {

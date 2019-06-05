@@ -19,6 +19,9 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 6,
       }
     },
+    loadingContainer: {
+      padding: theme.spacing.unit * 8,
+    },
     listSubheader: {
         textAlign: 'left'
     },
@@ -36,9 +39,12 @@ const styles = theme => ({
         borderWidth: '.5px'
     },
     link: {
-        textDecoration: 'none'
+      textDecoration: 'none'
     },
-  });
+    seeMore: {
+      color: theme.palette.primary.main
+    },
+});
 
 
 class Genres extends Component {
@@ -48,7 +54,9 @@ class Genres extends Component {
   render() {
     const { classes, data, loading } = this.props;
     if (loading) {
-        return <Spinner local height='25' width='25' color="rgba(0, 0, 0, .5)"/>
+        return <div className={classes.loadingContainer}>
+                  <Spinner local height='25' width='25' color="rgba(0, 0, 0, .5)"/>
+                </div>
     }
 
     return (
@@ -57,18 +65,21 @@ class Genres extends Component {
             <ListSubheader inset className={classes.listSubheader}>Genres</ListSubheader>
             <List style={{padding: 0}}>
                 {data.genres.map(n =>
-                   <Link to={`/genres/${n.slug}`} className={classes.link}>
+                   <Link to={`/genres/${n.slug}`} className={classes.link} key={n._id}>
                       <ListItem
                             divider 
                             button 
                             classes={{divider: classes.divider}} 
                             className={classes.listItem}  
-                            key={`${n.name}`}>
+                            key={n._id}>
                             <ListItemText inset primary={n.name} classes={{primary: classes.primary}}/>
                         </ListItem>
                     </Link>
                 )}
             </List>
+            <ListSubheader inset className={classes.listSubheader}>
+                <Link to="/genres" className={classes.seeMore}>Voir tout</Link>
+            </ListSubheader>
         </div>
     )
   }

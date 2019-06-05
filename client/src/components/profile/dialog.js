@@ -5,8 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { profile } from '../../../redux/actions/users';
-import Form from './form';
+import { profile } from '../../redux/actions/users';
+import Form from '../forms/profile-upload';
 
 class FormDialog extends React.Component {
   state = {

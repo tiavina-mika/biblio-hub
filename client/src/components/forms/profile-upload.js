@@ -6,9 +6,9 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 
-import { renderTextField, fileUpload } from '../../forms/fields';
+import { fileUpload } from '../forms/fields';
 
-import { shallowCompare } from '../../../utils/shallow-compare';
+import { shallowCompare } from '../../utils/shallow-compare';
 
 const styles = {
 	fieldLabel: {

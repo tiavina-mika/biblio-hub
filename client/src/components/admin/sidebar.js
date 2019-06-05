@@ -119,6 +119,24 @@ class Sidebar extends React.Component {
                     link="/"
                     history={history}
                 />   
+                 <CustomizedListItem
+                    icon={<AccountTie />}
+                    text="Auteurs"
+                    link="/auteurs"
+                    history={history}
+                />   
+                 <CustomizedListItem
+                    icon={<NotebookMultiple />}
+                    text="Livres"
+                    link="/livres"
+                    history={history}
+                />   
+                  <CustomizedListItem
+                    icon={<TagOutline />}
+                    text="Genres"
+                    link="/genres"
+                    history={history}
+                />   
             </List>
         </div>
     );

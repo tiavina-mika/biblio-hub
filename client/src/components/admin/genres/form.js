@@ -93,13 +93,14 @@ const validate = (values) => {
 	const errors = {};
 	if (!values.name) {
 		errors.name = "Nom requis";
-	  }
-	  if (values.photo && values.photo[0]) {
-		const fileName = values.photo[0].name.split('.');
-		const extension = fileName[fileName.length - 1];
-		const allowed = /jpeg|jpg|png|gif/i.test(extension);
-		if(!allowed){
-			errors.photo = 'Les images de types jpeg, jpg, png et gif seuls sont permis';
+	}
+	if (values.photo && values.photo[0]) {
+		const file = values.photo[0];
+		if(file.size > 1000000){
+			errors.photo = 'Image trop grand. La limite est de 1Mo';
+		} 
+		else if (!file.type.includes("image/") ) {
+			errors.photo = "Image doit être .jpg, .png ou gif"
 		}
 	}
 	return errors;

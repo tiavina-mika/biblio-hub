@@ -10,6 +10,8 @@ import EditProfileForm from '../forms/edit-profile';
 import { getUserState, getUsersLoading, getUserId } from '../../redux/root-reducer';
 import { edit, getOne, initialize } from '../../redux/actions/users';
 import Spinner from '../blocks/spinner';
+import Helmet from '../helmet';
+
 const styles = {
 	card: {
     borderRadius: 2,
@@ -44,6 +46,7 @@ class EditProfile extends React.PureComponent {
     }
     return (
       <Grid fluid>
+        <Helmet title="Modifier Profil" />
         <Row center="xs">
           <Col xs={12} sm={9} md={7} lg={4} start="xs">
             <Card className={classes.card}>

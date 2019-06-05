@@ -26,10 +26,10 @@ const AsyncShowUser = asyncComponent(() => import('./users/show'));
 const AsyncAddUser = asyncComponent(() => import('./users/add'));
 const AsyncEditUser = asyncComponent(() => import('./users/edit'));
 
-const AsyncProfileAdmin = asyncComponent(() => import('./profile/profile'));
+const AsyncDashboard = asyncComponent(() => import('./pages/dashboard'));
 
 const AdminRoutes = ({path}) => ([
-        <AdminRoute path={`${path}`} exact component={Dashboard}/>,
+        <AdminRoute path={`${path}`} exact component={AsyncDashboard}/>,
 
         <AdminRoute path={`${path}/redirect`} exact component={AsyncAdminRedirect}/>,
 
@@ -46,6 +46,7 @@ const AdminRoutes = ({path}) => ([
         <AdminRoute path={`${path}/modifier/genre/:id`} exact component={AsyncEditGenre}/>,
 
         <AdminRoute path={`${path}/livres/recherche/:search`} exact component={AsyncAdminBooks}/>,
+        <AdminRoute path={`${path}/livres/trier/:sort`} exact component={AsyncAdminBooks}/>,
         <AdminRoute path={`${path}/livres`} exact component={AsyncAdminBooks}/>,
         <AdminRoute path={`${path}/ajouter/livre`} exact component={AsyncAddBook}/>,
         <AdminRoute path={`${path}/livre/:id`} exact component={AsyncShowBook}/>,
@@ -57,9 +58,6 @@ const AdminRoutes = ({path}) => ([
         <AdminRoute path={`${path}/ajouter/utilisateur`} exact component={AsyncAddUser}/>,
         <AdminRoute path={`${path}/utilisateur/:id`} exact component={AsyncShowUser}/>,
         <AdminRoute path={`${path}/modifier/utilisateur/:id`} exact component={AsyncEditUser}/>,
-        <AdminRoute path={`${path}/profile/:id`} exact component={AsyncProfileAdmin}/>,
 ]);
-const Dashboard = ({isAdmin, authenticated}) => {
-	return <h1>Dashboard for Admin, {isAdmin ? 'admin' : 'not admin'}</h1>
-}
+
 export default AdminRoutes;

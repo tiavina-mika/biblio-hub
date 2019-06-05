@@ -13,6 +13,7 @@ import FormLayout from '../pages/form';
 import { post, edit, getAuthor } from '../../../redux/actions/authors';
 
 import FloatingButtonActions from '../components/floating-button-actions';
+import Helmet from '../../helmet';
 
 class Add extends React.PureComponent {
   onSubmit = (form) => {
@@ -27,7 +28,8 @@ class Add extends React.PureComponent {
       this.props.post(formData)
   }
   render() {
-    return (
+    return ([
+      <Helmet title="Ajouter Auteur" />,
      <FormLayout
         title="Ajouter auteur"
         onSubmit={this.onSubmit}
@@ -35,7 +37,7 @@ class Add extends React.PureComponent {
           <Form onSubmit={this.onSubmit}/>
           <FloatingButtonActions name="auteur" list />
       </FormLayout>
-    );
+    ]);
   }
 }
 

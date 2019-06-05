@@ -50,7 +50,7 @@ class Header extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap >
-              Responsive drawer
+              {process.env.REACT_APP_NAME}
             </Typography>
             <div className={classes.grow} />
             <Search />

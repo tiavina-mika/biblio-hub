@@ -31,9 +31,9 @@ const styles = theme => ({
   search: {
     position: 'relative',
     borderRadius: 2,
-    backgroundColor: fade(theme.palette.common.white, 0.5),
+    backgroundColor: fade(theme.palette.common.white, 0.25),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.white, 0.5),
     },
     marginLeft: 0,
     width: '100%',
@@ -54,10 +54,10 @@ const styles = theme => ({
     }
   },
   searchIcon: {
-    color: '#ffff'
+    color: '#fff'
   },
   inputRoot: {
-    color: 'rgba(0, 0, 0, 1)',
+    color: '#fff',
     width: '100%',
   },
   inputInput: {
@@ -101,13 +101,13 @@ class Search extends Component {
         event.preventDefault();
 
       if(/livre/.test(pathname)) {      
-          getAll(LIST_BOOKS_PER_PAGE, 1, true, null, value, `/livres/recherche/${value}`);
+          getAll(LIST_BOOKS_PER_PAGE, 1, true, null, value, null, `/livres/recherche/${value}`);
         } else if (/auteur/.test(pathname)) {
           getAllAuthors(LIST_AUTHORS_PER_PAGE, 1, value, `/auteurs/recherche/${value}`);
         } else if (/genres/.test(pathname)) {
             getAllGenres(LIST_GENRES_PER_PAGE, 1, value, `/genres/recherche/${value}`);
         } else {
-            getAll(LIST_BOOKS_PER_PAGE, 1, true, null, value, `/livres/recherche/${value}`);
+            getAll(LIST_BOOKS_PER_PAGE, 1, true, null, value, null, `/livres/recherche/${value}`);
         }
       }
     render() {

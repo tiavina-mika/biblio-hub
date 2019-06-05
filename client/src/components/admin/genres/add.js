@@ -6,6 +6,7 @@ import FormLayout from '../pages/form';
 import { post, edit, getGenre } from '../../../redux/actions/genres';
 
 import FloatingButtonActions from '../components/floating-button-actions';
+import Helmet from '../../helmet';
 
 class Add extends React.PureComponent {
   onSubmit = (form) => {
@@ -16,15 +17,16 @@ class Add extends React.PureComponent {
     this.props.post(formData)
   }
   render() {
-    return (
-     <FormLayout
-        title="Ajouter genre"
-        onSubmit={this.onSubmit}
-        buttonName="genre">
-          <Form onSubmit={this.onSubmit}/>
-          <FloatingButtonActions name="genre" list />
-      </FormLayout>
-    );
+    return ([
+      <Helmet title="Ajouter Genre" />,
+      <FormLayout
+          title="Ajouter genre"
+          onSubmit={this.onSubmit}
+          buttonName="genre">
+            <Form onSubmit={this.onSubmit}/>
+            <FloatingButtonActions name="genre" list />
+       </FormLayout>
+    ]);
   }
 }
 

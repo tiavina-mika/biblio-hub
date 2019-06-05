@@ -11,26 +11,18 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import GridMaterial from '@material-ui/core/Grid';
 import { BASE_URL } from '../../redux/actions/constants'
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import CommentIcon from '@material-ui/icons/Comment';
 import CommentOutlineIcon from 'mdi-material-ui/CommentOutline';
 import EyeOutlineIcon from 'mdi-material-ui/EyeOutline';
+import DownloadIcon from 'mdi-material-ui/Download';
+
 import { getGenreState, getGenresLoading, getBooksLoading } from '../../redux/root-reducer';
 import { Link } from 'react-router-dom';
 import CardActions from '@material-ui/core/CardActions';
 import { getBooksByGenre } from '../../redux/actions/books';
 import Spinner from '../blocks/spinner';
+import Helmet from '../helmet';
 
 const styles = theme => ({
-    // card: {
-    //     height: '100%',
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     borderRadius: 0,
-    //     boxShadow: 'none',
-    //     backgroundColor: 'transparent',
-    //     padding: `${theme.spacing.unit * 2}px`,
-    // },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
         height: 300,
@@ -39,6 +31,7 @@ const styles = theme => ({
     cardActions: {
       display: 'block',
       paddingTop: `${theme.spacing.unit}px`,
+      paddingBottom: `${theme.spacing.unit * 2}px`,
       textAlign: 'left'
     },
     subtitle: {
@@ -92,7 +85,6 @@ const styles = theme => ({
   },
   cardIcons: {
     borderTop: '1px solid rgba(0, 0, 0, .1)',
-    paddingTop: theme.spacing.unit * 2,
   },
   cardTitle: {
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px`,
@@ -129,15 +121,12 @@ const styles = theme => ({
   eyeIcon: {
     fontSize: 18
   },
-  badge: {
-    marginRight: theme.spacing.unit
-  },
   iconsContainer: {
     display: 'flex',
     alignItems: 'center',
     color: '#7f7f7f',
     marginRight: 10
-  }
+  },
 });
 
 class Genre extends React.Component {
@@ -155,6 +144,7 @@ class Genre extends React.Component {
     return (
       data ?
       <div className={classNames(classes.layout, classes.cardGrid)}>
+        <Helmet title={data.name} />
         <Grid fluid>
             <Row center="xs">
               <Col xs={12} sm={8} md={7} lg={12} start="xs">
@@ -165,7 +155,7 @@ class Genre extends React.Component {
                   </Card>
                   <GridMaterial container spacing={16}>
                       { books && books.map(n => (
-                      <GridMaterial item key={n._id} sm={6} md={3} lg={2}>
+                      <GridMaterial item key={n._id} sm={6} md={3} lg={2} style={{marginRight: 10}}>
                           <Link to={`/livres/${n.slug}`} className={classes.link}>                
                               <Card className={classes.card}>
                                   <CardMedia
@@ -193,6 +183,10 @@ class Genre extends React.Component {
                                     <div className={classes.iconsContainer}>
                                         <EyeOutlineIcon className={classes.eyeIcon}/>
                                         <span className={classes.commentCount}>{n.views}</span>
+                                    </div>
+                                    <div className={classes.iconsContainer}>
+                                        <DownloadIcon className={classes.eyeIcon}/>
+                                        <span className={classes.commentCount}>{n.download}</span>
                                     </div>
                                   </CardActions>
                               </Card>

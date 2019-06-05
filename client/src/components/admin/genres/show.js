@@ -19,6 +19,7 @@ import ListBy  from '../books/list-by';
 import { BASE_URL } from '../../../redux/actions/constants';
 import { Typography } from '@material-ui/core';
 import { getGenreState, getGenresLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 const styles = theme => ({
   table: {
@@ -62,6 +63,7 @@ class Show extends React.Component {
     return (
       data && !loading ?
       <div className={classes.root}>
+        <Helmet title={data.name} />
         <Grid fluid>
           <Row center="xs">
             <Col xs={12} sm={9} md={7} lg={8} start="xs">

@@ -21,10 +21,10 @@ const findAll = async (req, res) => {
             query.title = {$regex: req.query.search, $options: "i"}
         }
         if(req.query.publish) {
-            query.publish = !!req.query.publish
+            query.publish = req.query.publish
         }
         if(req.query.member) {
-            query.member = !!req.query.member
+            query.member = req.query.member
         }
         if(req.query.limit) {
             const resPerPage = parseInt(req.query.limit)
@@ -32,11 +32,11 @@ const findAll = async (req, res) => {
             const books = await Book.find(query)    
                 .skip((resPerPage * page) - resPerPage)
                 .limit(resPerPage)
-                .populate('genres', 'name').populate('author', 'slug first_name family_name')
+                .sort(`-${req.query.sort || 'createdAt'}`)
+                .populate('genres', 'name')
+                .populate('author', 'slug first_name family_name')
             const count = await Book.countDocuments()
-
             res.json({
-                // books: books.map(n => n.newComment), 
                 books, 
                 'currentPage': page, 
                 'pages' : Math.ceil(count / resPerPage), 
@@ -54,11 +54,6 @@ const findAll = async (req, res) => {
 const findOne = async (req, res) => {
     try {
         const book = await req.book
-        // const book = await Book.findById(req.book._id).populate('genres').populate('author').exec()
-
-        // const book = await Book.findByIdAndUpdate(req.book, {$inc: {"views": 1}}, {new: true}).populate('genres').populate('author')
-        // const book = await Book.findById(req.book).populate('genres').populate('author')
-        // book.populate('genres').populate('author'))
         const result = await book.save()
         res.json(result)
     } catch (error) {
@@ -68,14 +63,11 @@ const findOne = async (req, res) => {
 
 const findOneBySlug = async (req, res) => {
     try {
-        // const book = await Book.findOne({slug: req.params.slug})
           const book = await Book.findOneAndUpdate({slug: req.params.slug}, {$inc: {"views": 1}}, {new: true})
-
-            .populate('genres', 'name')
+            .populate('genres', 'name slug')
             .populate('author')
             .populate('comments.postedBy', '_id name')
             .exec()
-        book.views++
         const result = await book.save()
         res.json(result)
     } catch (error) {
@@ -203,8 +195,8 @@ const comment = async (req, res) => {
           .exec()
 
             const lastComment = result.comments[result.comments.length-1]
-            // sendEmail(lastComment, result)
-            //     .then(() => console.log('Email send successfuly'))
+            sendEmail(lastComment, result)
+                .then(() => console.log('Email send successfuly'))
         res.json(result)
     } catch(error) {
         res.status(400).json(error)
@@ -235,10 +227,14 @@ const photo = (req, res, next) => {
     return res.send(req.book.photo.data)
 }
 const pdf = (req, res, next) => {
+    Book.findOneAndUpdate({_id: req.book._id}, {$inc: {"download": 1}}, {new: true})
+        .then(book => book.save())
     res.set("Content-Type", req.book.pdf.contentType)
     return res.send(req.book.pdf.data)
 }
 const epub = (req, res, next) => {
+    Book.findOneAndUpdate({_id: req.book._id}, {$inc: {"download": 1}}, {new: true})
+        .then(book => book.save())
     res.set("Content-Type", req.book.epub.contentType)
     return res.send(req.book.epub.data)
 }

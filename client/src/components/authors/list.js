@@ -8,11 +8,13 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import { getAuthors, getAuthorsLoading } from '../../redux/root-reducer';
 import Genres from '../sidebars/genres';
+import Books from '../sidebars/list-books';
 import { getAllAuthors } from '../../redux/actions/authors';
 import MainList from './main-list';
 import Spinner from '../blocks/spinner';
 import NoData from '../blocks/no-data';
 import { LIST_AUTHORS_PER_PAGE } from '../../redux/actions/constants';
+import Helmet from '../helmet';
 
 const styles = theme => ({
   layout: {
@@ -50,11 +52,15 @@ class List extends React.Component {
     return (
       data ?
         <div className={classNames(classes.layout, classes.cardGrid)}>
+            <Helmet title="Auteurs" />
             <Grid fluid>
                 <Row center="xs">
                 <Col  xs={12} sm={8} md={3} lg={3} start="xs">
                     <Card>
                         <Genres />
+                    </Card>
+                    <Card style={{marginTop: 50}}>
+                        <Books />
                     </Card>
                 </Col>
                 {data && <MainList 
@@ -79,11 +85,11 @@ class List extends React.Component {
 
 List.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
-  
-  const mapStateToProps = (state) => ({
-    data: getAuthors(state),
-    loading: getAuthorsLoading(state),
-  });
-  
-  export default connect(mapStateToProps, { getAllAuthors })(withStyles(styles)(List));
+};
+
+const mapStateToProps = (state) => ({
+  data: getAuthors(state),
+  loading: getAuthorsLoading(state),
+});
+
+export default connect(mapStateToProps, { getAllAuthors })(withStyles(styles)(List));

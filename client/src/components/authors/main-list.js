@@ -87,7 +87,7 @@ class MainList extends React.Component {
                             </Card>
                         </Link>
                     </GridList>))}
-                    { currentPage <= pages &&
+                    { authors.length >= LIST_AUTHORS_PER_PAGE &&
                     <GridList item sm={12} md={12} lg={12} className={classes.title}>
                         <Pagination
                             currentPage={currentPage}

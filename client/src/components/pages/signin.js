@@ -8,15 +8,14 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import Helmet from '../helmet';
 import Notifications from 'react-notify-toast';
 import SigninForm from '../forms/signin';
 
 import { signin } from '../../redux/actions/authentication';
 import { Typography } from '@material-ui/core';
 
-const screenWidth = window.innerWidth;
 
 const styles = theme => ({
   grid: {
@@ -30,13 +29,13 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
 			display: 'none'
     },
-    // backgroundColor: 'red'
   },
   cardLeft: {
     [theme.breakpoints.up('lg')]: {
 			width: '60%',
 			marginLeft: 'auto',
-			marginRight: 'auto',
+      marginRight: 'auto',
+      paddingTop: theme.spacing.unit * 8
     },
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -100,14 +99,14 @@ class Signin extends React.PureComponent {
     const { classes } = this.props;
     return (
       <Grid fluid className={classes.grid}>
+        <Helmet title="Connexion" />
         <Row center="xs">
           <Col xs={12} sm={8} md={8} lg={4} center="xs">
               <Card className={classes.cardLeft}>
                 <Notifications  options={{zIndex: 90000, top: '180px'}}/>
                 <CardHeader
                   classes={{title: classes.cardTitle, subheader: classes.cardSubtitle}}
-                  title="Login"
-                  subheader="Connectez-vous"/>
+                  title={<img src={`${process.env.PUBLIC_URL}/images/logo-inversed.png`} className={classes.logo} alt={process.env.REACT_APP_NAME}/> }/>
                 <CardContent  className={classes.cardContent}>
                   <SigninForm onSubmit={this.onSubmit} />
                 </CardContent>
@@ -126,7 +125,6 @@ class Signin extends React.PureComponent {
                 </CardActions>
               </Card>
           </Col>
-          {/* { screenWidth > 992 && */}
             <Col xs={12} sm={12} md={8} lg={8} start="xs" className={classes.right}>
             </Col>
           </Row>

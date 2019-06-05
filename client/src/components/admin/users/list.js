@@ -21,6 +21,7 @@ import Chip from '@material-ui/core/Chip';
 import { getUsers, getUsersLoading } from '../../../redux/root-reducer';
 import Pagination from '../../blocks/pagination';
 import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
+import Helmet from '../../helmet';
 
 const rows = [
   { id: 'name', disablePadding: false, label: 'Nom' },
@@ -162,81 +163,82 @@ class List extends Component {
     return (
       data && !loading
       ? <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des utilisateurs"/>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={dataLength}
-              rows={rows}
-            />
-            <TableBody>
-              {stableSort(data.users, getSorting(order, orderBy))
-                .map(n => {
-                  const isSelected = this.isSelected(n._id);
-                  return (
-                    <TableRow
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n._id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">                     
-                        <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
-                      </TableCell>
-                      <TableCell component="th" align="right">
-                        {n.name}
-                      </TableCell>
-                      <TableCell align="right">{n.email}</TableCell>
-                      <TableCell align="right"><Checked checked={n.photo}/></TableCell>
-                      <TableCell align="right"><Checked checked={n.checked}/></TableCell>
-                      <TableCell align="right">
-                        <Chip
-                          label={n.role}
-                          className={classes.chip}
-                          classes={{outlined: n.role === 'ADMIN' ? classes.adminChip :classes.userChip}}
-                          variant="outlined"
-                        />
-                      </TableCell>
-                      <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
-                      <TableCell align="right">                     
-                        <ButtonActions
-                          dataTitle={n.name}
-                          key={n._id}
-                          onShow={() => this.handleShow(n._id)}
-                          onRemove={() => this.handleDelete(n._id)}
-                          onEdit={() => this.handleEdit(n._id)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 10 * emptyRows }}>
-                  <TableCell colSpan={9} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <Pagination
-          currentPage={data.currentPage}
-          total={data.pages}
-          onChange={this.handleChangePage}
-        />
-
-        <FloatingButtonActions
-            name="utilisateur"
-            add
-            remove={selected.length > 0}
-            onDelete={this.handleDeleteAllClick}
+          <Helmet title="Liste des utilisateurs" />
+          <EnhancedTableToolbar numSelected={selected.length} handleDeleteAllClick={this.handleDeleteAllClick} title="Liste des utilisateurs"/>
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={dataLength}
+                rows={rows}
+              />
+              <TableBody>
+                {stableSort(data.users, getSorting(order, orderBy))
+                  .map(n => {
+                    const isSelected = this.isSelected(n._id);
+                    return (
+                      <TableRow
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n._id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">                     
+                          <Checkbox checked={isSelected} onChange={event => this.handleClick(event, n._id)} />
+                        </TableCell>
+                        <TableCell component="th" align="right">
+                          {n.name}
+                        </TableCell>
+                        <TableCell align="right">{n.email}</TableCell>
+                        <TableCell align="right"><Checked checked={n.photo}/></TableCell>
+                        <TableCell align="right"><Checked checked={n.checked}/></TableCell>
+                        <TableCell align="right">
+                          <Chip
+                            label={n.role}
+                            className={classes.chip}
+                            classes={{outlined: n.role === 'ADMIN' ? classes.adminChip :classes.userChip}}
+                            variant="outlined"
+                          />
+                        </TableCell>
+                        <TableCell align="right">{moment(new Date(n.createdAt)).format('DD MMMM YYYY')}</TableCell>
+                        <TableCell align="right">                     
+                          <ButtonActions
+                            dataTitle={n.name}
+                            key={n._id}
+                            onShow={() => this.handleShow(n._id)}
+                            onRemove={() => this.handleDelete(n._id)}
+                            onEdit={() => this.handleEdit(n._id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 10 * emptyRows }}>
+                    <TableCell colSpan={9} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <Pagination
+            currentPage={data.currentPage}
+            total={data.pages}
+            onChange={this.handleChangePage}
           />
-      </Paper>
+
+          <FloatingButtonActions
+              name="utilisateur"
+              add
+              remove={selected.length > 0}
+              onDelete={this.handleDeleteAllClick}
+            />
+        </Paper>
       : <CustomizedLinearProgress />
     );
   }

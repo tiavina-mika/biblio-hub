@@ -16,6 +16,7 @@ import { getAllAuthors } from '../../../redux/actions/authors';
 import { getAllGenres } from '../../../redux/actions/genres';
 
 import FloatingButtonActions from '../components/floating-button-actions';
+import Helmet from '../../helmet';
 
 class Add extends React.PureComponent {
   componentDidMount() {
@@ -43,15 +44,16 @@ class Add extends React.PureComponent {
     const { authors, genres, loading } = this.props;
     
     const initialValues = {genres: []};
-    return (
-     <FormLayout
-        title="Ajouter livre"
-        onSubmit={this.onSubmit}
-        buttonName="livre">
-          <Form onSubmit={this.onSubmit} authors={authors} authorLoading={loading} genres={genres} initialValues={initialValues}/>
-          <FloatingButtonActions name="livre" list />
-      </FormLayout>
-    );
+    return ([
+        <Helmet title="Ajouter Livre" />,
+        <FormLayout
+          title="Ajouter livre"
+          onSubmit={this.onSubmit}
+          buttonName="livre">
+            <Form onSubmit={this.onSubmit} authors={authors} authorLoading={loading} genres={genres} initialValues={initialValues}/>
+            <FloatingButtonActions name="livre" list />
+        </FormLayout>
+    ]);
   }
 }
 

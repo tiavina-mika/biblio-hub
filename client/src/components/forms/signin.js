@@ -50,7 +50,7 @@ class SigninForm extends React.Component {
         return shallowCompare(this, nextProps, nextState, nextContext);
 	}
 	onForgotPassword = () => {
-		this.props.history.push('/forgot');
+		this.props.history.push('/mot-de-passe-oublie');
 	}
 	onSubmit = (form) => {
 		this.props.onSubmit(form);		
@@ -104,8 +104,8 @@ const validate = (values) => {
 	const errors = {};
 	if (!values.email || values.email.length === 0) {
          errors.email = "Email requis";
-    } else if (!/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(values.email)) {
-        errors.email = "Email requis";
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+		 errors.email = "Email requis";
     }
 	if (!values.password || values.password.length === 0) {
 		errors.password = "Mot de passe requis";

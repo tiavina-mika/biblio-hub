@@ -9,6 +9,7 @@ import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
 import CustomizedLinearProgress  from '../components/progress';
 import { getUserState, getUsersLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 class Edit extends React.PureComponent {
   componentDidMount = () => {
@@ -18,10 +19,10 @@ class Edit extends React.PureComponent {
   onSubmit = (form) => {
     const formData = new FormData();
     const id = form._id;
-    // getFormData(formData, 'name', form.name);
-    // getFormData(formData, 'email', form.email);
-    // getFormData(formData, 'role', form.role);
-    // form.photo && formData.append('photo', form.photo[0]);
+    getFormData(formData, 'name', form.name);
+    getFormData(formData, 'email', form.email);
+    getFormData(formData, 'role', form.role);
+    form.photo && formData.append('photo', form.photo[0]);
     id ? this.props.edit(id, form) : this.props.initialize();
   }
   render() {
@@ -29,7 +30,8 @@ class Edit extends React.PureComponent {
     if(loading) {
       return <CustomizedLinearProgress />
     }
-    return (
+    return ([
+      <Helmet title="Modifier utilisateur" />,
       <FormLayout
           title="Modifier cet utilisateur"
           onSubmit={this.onSubmit}
@@ -37,7 +39,7 @@ class Edit extends React.PureComponent {
             <Form initialValues={data} data={data} onSubmit={this.onSubmit}/>
             <FloatingButtonActions name="utilisateur" add list />
         </FormLayout>
-    );
+    ]);
   }
 }
 

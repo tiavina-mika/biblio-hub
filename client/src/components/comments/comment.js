@@ -87,7 +87,7 @@ class Comment extends React.Component {
           classes={{title: classes.primary, action: classes.action}}
           className={classes.cardHeader}
           avatar={
-            comment.postedBy && comment.postedBy.photo
+            comment.postedBy && comment.postedBy._id
             ? <Avatar src={`${BASE_URL}/api/users/photo/${comment.postedBy._id}`}/>
             : <AccountCircle style={{fontSize: 34, color: '#000'}}/> 
           }

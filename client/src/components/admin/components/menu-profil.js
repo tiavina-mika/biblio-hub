@@ -26,6 +26,18 @@ const styles = {
   },
   menu: {
       width: 300
+  },
+  navLink: {
+    color: "#000",
+    textDecoration: "none",
+    verticalAlign: 'bottom',
+    display: 'flex',
+    width: '100%'
+  },
+  iconButton: {
+    '&:hover': {
+      backgroundColor: 'transparent'
+    }
   }
 };
 
@@ -55,6 +67,7 @@ class MenuAppBar extends React.Component {
                     aria-owns={open ? 'menu-appbar' : undefined}
                     aria-haspopup="true"
                     onClick={this.handleMenu}
+                    className={classes.iconButton}
                     color="inherit">
                     {currentUser.photo
                       ? <Avatar src={`${BASE_URL}/api/users/photo/${currentUser._id}`}/>
@@ -78,30 +91,20 @@ class MenuAppBar extends React.Component {
                 >
                     <MenuItem style={{padding: '11.5px 50px 11.5px 20px'}} onClick={this.handleClose}>
                         <NavLink
-                            style={{
-                            color: "#000",
-                            textDecoration: "none",
-                            verticalAlign: 'bottom',
-                            display: 'flex'
-                            }}
+                            className={classes.navLink}
                             to={admin ? `/dashboard/profile/${currentUser._id}` : `/profil`}>
                                 <User style={{ marginRight: 30 }}/>
                                 <Typography style={{marginTop: '3px', fontSize: 16}}>Profil</Typography>
-                            </NavLink>
-                        </MenuItem>
-                        <MenuItem style={{padding: '11.5px 50px 11.5px 20px'}} onClick={this.handleClose}>
+                        </NavLink>
+                    </MenuItem>
+                    <MenuItem style={{padding: '11.5px 50px 11.5px 20px'}} onClick={this.handleClose}>
                         <NavLink
-                            style={{
-                            color: "#000",
-                            textDecoration: "none",
-                            verticalAlign: 'bottom',
-                            display: 'flex'
-                            }}
-                            to="/logout">
-                                <Power style={{ marginRight: 30 }}/>
-                                <Typography style={{marginTop: '3px', fontSize: 16}}>Deconnecter</Typography>
-                            </NavLink>
-                        </MenuItem>
+                          className={classes.navLink}
+                          to="/logout">
+                              <Power style={{ marginRight: 30 }}/>
+                              <Typography style={{marginTop: '3px', fontSize: 16}}>Deconnecter</Typography>
+                        </NavLink>
+                    </MenuItem>
                 </Menu>
             </div>
     );

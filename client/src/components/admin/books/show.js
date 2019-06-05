@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
+import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { getOne, remove } from '../../../redux/actions/books';
@@ -26,6 +27,7 @@ import { IconButton }  from '../../blocks/buttons';
 import Markdown from '../../blocks/markdown';
 import Comments from './comments';
 import { getBookState, getBooksLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 const styles = theme => ({
   table: {
@@ -103,6 +105,7 @@ class Book extends React.Component {
     return (
       data && !loading ?
       <div className={classes.root}>
+        <Helmet title={data.title} />        
         <Grid fluid>
           <Row center="xs">
             <Col xs={12} sm={12} md={12} lg={8} start="xs">
@@ -200,7 +203,9 @@ class Book extends React.Component {
 
                 </Card>
                 { data.summary &&<Markdown input={data.summary}/>}
-                <Comments data={data.comments} bookId={data._id}/>
+                {data.comments.length > 0
+                ? <Comments data={data.comments} bookId={data._id}/> 
+                : <Paper style={{padding: 20}}>Il n'y a pas encore de commentaire</Paper>}
               </Col>
 
               { data.photo || data.author ?

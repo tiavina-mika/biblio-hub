@@ -171,3 +171,35 @@ export const validateContact = (data) => {
     }
 }
 
+export const validateEmail = (data) => {
+    let errors = {}
+
+    if(validator.isEmpty(data.email)) {
+        errors.EMPTY_EMAIL = "Email is required"
+    }
+    if(!validator.isEmail(data.email)) {
+        errors.INVALID_EMAIL = "Email is invalid"
+    }
+
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
+
+export const validatePassword = (data) => {
+    let errors = {}
+
+    if(validator.isEmpty(data.password)) {
+        errors.EMPTY_PASSWORD = "User password is empty"
+    }
+     if(!validator.isLength(data.password, {min: 6, max: 20})) {
+        errors.PASSWORD_LENGTH = "User new password must be between 6 and 20 caracters"
+    }
+
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
+

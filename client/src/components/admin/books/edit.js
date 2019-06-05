@@ -9,10 +9,9 @@ import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
 import CustomizedLinearProgress  from '../components/progress';
 import { getBookState, getBooksLoading, getAuthors, getGenres } from '../../../redux/root-reducer';
-
+import Helmet from '../../helmet';
 
 class Edit extends React.PureComponent {
-  // state = {data: ''}
   componentDidMount = () => {
     const { id } = this.props.match.params;
     Promise.all([
@@ -50,15 +49,16 @@ class Edit extends React.PureComponent {
     if(loading) {
       return <CustomizedLinearProgress />
     }
-    return (
-      <FormLayout
-          title="Modifier ce livre"
-          onSubmit={this.onSubmit}
-          buttonName="livre">
-            <Form initialValues={data} authors={authors} genres={genres} onSubmit={this.onSubmit}/>
-            <FloatingButtonActions name="livre" add list />
+    return ([
+        <Helmet title="Modifier Livre" />,
+        <FormLayout
+            title="Modifier ce livre"
+            onSubmit={this.onSubmit}
+            buttonName="livre">
+              <Form initialValues={data} authors={authors} genres={genres} onSubmit={this.onSubmit}/>
+              <FloatingButtonActions name="livre" add list />
         </FormLayout>
-    );
+    ]);
   }
 }
 

@@ -7,6 +7,7 @@ import FloatingButtonActions from '../components/floating-button-actions';
 import FormLayout from '../pages/form';
 import CustomizedLinearProgress  from '../components/progress';
 import { getAuthorState, getAuthorsLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 class Edit extends React.PureComponent {
   componentDidMount = () => {
@@ -35,7 +36,8 @@ class Edit extends React.PureComponent {
     if(loading) {
       return <CustomizedLinearProgress />
     }
-    return (
+    return ([
+      <Helmet title="Modifier Auteur" />,
       <FormLayout
           title="Modifier cet auteur"
           onSubmit={this.onSubmit}
@@ -43,7 +45,7 @@ class Edit extends React.PureComponent {
             <Form initialValues={data} onSubmit={this.onSubmit}/>
             <FloatingButtonActions name="auteur" add list />
         </FormLayout>
-    );
+    ]);
   }
 }
 

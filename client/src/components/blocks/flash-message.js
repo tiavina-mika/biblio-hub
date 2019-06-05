@@ -90,23 +90,12 @@ const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 
 const messages = {
 	'MAIL_SEND_SUCCESS':  'Votre message a été envoyé avec succès.' ,
-	'MAIL_SEND_ERROR':  "Votre message n'a pas été envoyé, veuillez contacter l'administrateur" ,	
+  'MAIL_SEND_ERROR':  "Votre message n'a pas été envoyé, veuillez contacter l'administrateur" ,	
+  "MAIL_FORGOTTEN_PASSWORD_SEND_SUCCESS": "Un email vous a été envoyé",
+  "MAIL_FORGOTTEN_PASSWORD_SEND_ERROR": "L'email n'a pas été envoyé. Veuillez contacter l'administrateur"  ,
+  "NEW_PASSWORD_SUCCESS": "Votre mot de passe a été changé avec succès",
+  "NEW_PASSWORD_ERROR": "Changement de mot de passe echoué",
 };
-
-// const getMessageType = (type) => {
-//     let messageType;
-//     if(/info/i.test(type)){
-//         messageType="info"
-//     } else if(/warning/i.test(type)) {
-//         messageType="warning"
-//     } else if(/error/i.test(type)) {
-//         messageType="error"
-//     } else {
-//         messageType="success"
-//     }
-
-//     return messageType;
-// }
 
 const styles2 = theme => ({
   margin: {
@@ -115,11 +104,8 @@ const styles2 = theme => ({
 });
 
 class FlashMessage extends React.Component {
+  state = {open: true}
   handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
     this.setState({ open: false });
   };
 
@@ -132,8 +118,8 @@ class FlashMessage extends React.Component {
             vertical: 'bottom',
             horizontal: 'center',
           }}
-          open
-          autoHideDuration={4000}
+          open={this.state.open}
+          autoHideDuration={3000}
           onClose={this.handleClose}
         >
           <MySnackbarContentWrapper

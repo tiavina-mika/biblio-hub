@@ -78,7 +78,7 @@ class CarouselComponent extends React.Component {
     return (
         <Carousel autoPlay showThumbs={false} showStatus={false}>
             <div className={classes.main}>
-                <img src={`${process.env.PUBLIC_URL}/images/carousel-01.jpg`}/>
+                <img src={`${process.env.PUBLIC_URL}/images/carousel-01.jpg`} alt={process.env.REACT_APP_NAME}/>
                 <div className={classes.legend}>
                     <Typography variant="h3" className={classes.title}>Télécharger gratuitement des Ebooks</Typography>
                     <div className={classes.subtitleContainer}>
@@ -89,7 +89,7 @@ class CarouselComponent extends React.Component {
                 </div>
             </div>
             <div className={classes.main}>
-                <img src={`${process.env.PUBLIC_URL}/images/carousel-02.jpg`} />
+                <img src={`${process.env.PUBLIC_URL}/images/carousel-02.jpg`} alt={process.env.REACT_APP_NAME}/>
                 <div className={classes.legend}>
                     <Typography variant="h3" className={classes.title}>
                         Ebooks gratuits à télécharger en PDF et EPUB
@@ -102,7 +102,7 @@ class CarouselComponent extends React.Component {
                 </div>
             </div>
             <div className={classes.main}>
-                <img src={`${process.env.PUBLIC_URL}/images/carousel-03.jpg`} />
+                <img src={`${process.env.PUBLIC_URL}/images/carousel-03.jpg`} alt={process.env.REACT_APP_NAME}/>
                 <div className={classes.legend}>
                     <Typography variant="h3" className={classes.title}>
                     Parcourez notre collection de livres gratuits et publics

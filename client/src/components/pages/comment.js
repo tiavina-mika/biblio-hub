@@ -9,6 +9,8 @@ import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
 import CommentIcon from '@material-ui/icons/Comment';
 import red from '@material-ui/core/colors/red';
+import ChatIcon from 'mdi-material-ui/Chat';
+
 import CommentForm from '../forms/comment';
 import { comment } from '../../redux/actions/books';
 import { BASE_URL } from '../../redux/actions/constants';
@@ -34,6 +36,23 @@ const styles = theme => ({
   action: {
     marginTop: 10,
     marginRight: 10
+  },
+  cardIcons: {
+    display: 'flex',
+    justifyContent: 'center'
+},
+  commentCount: {
+      marginLeft: 3,
+      fontSize: 20
+  },
+  icon: {
+      fontSize: 20
+  },
+  iconsContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      color: '#7f7f7f',
+      marginRight: 10,
   }
 });
 
@@ -51,12 +70,13 @@ class Comment extends React.Component {
                 classes={{title: classes.primary, action: classes.action}}
                 className={classes.cardHeader}
                 avatar={
-                    <Avatar aria-label="Recipe" src={`${BASE_URL}/api/users/${userId}/photo`} />
+                  userId && <Avatar src={`${BASE_URL}/api/users/photo/${userId}`}/>
                 }
                 action={
-                    <Badge className={classes.margin} badgeContent={book.comments.length} max={99} color="primary">
-                        <CommentIcon />
-                    </Badge>
+                  <div className={classes.iconsContainer}>
+                      <ChatIcon className={classes.icon}/>
+                      <span className={classes.commentCount}>{book.comments.length}</span>
+                  </div>
                 }
                 title="Ajouter un commentaire"
             />

@@ -9,8 +9,8 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        height: '100%',
-        position:'absolute' 
+        height: window.innerHeight,
+        // position:'absolute' 
     },
     local: {
         display: 'flex',

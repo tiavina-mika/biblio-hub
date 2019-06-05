@@ -55,7 +55,6 @@ class CommentForm extends React.Component {
           multiline
           rows={4}
 					placeholder="Votre Commentaire"
-					// label="Entrez votre email"
 					variant="outlined"
 					className={classes.fieldLabel}
 					fullWidth />

@@ -51,7 +51,7 @@ class Books extends Component {
                     button 
                     classes={{divider: classes.divider}} 
                     className={classes.listItem}  
-                    key={`${n.title}`}>
+                    key={n._id}>
                     <ListItemText inset primary={n.title} classes={{primary: classes.primary}}/>
                 </ListItem>
             )}

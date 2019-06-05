@@ -7,7 +7,7 @@ import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
-import { renderTextField, fileUpload, renderSelect } from '../../forms/fields';
+import { renderTextField, renderSelect } from '../../forms/fields';
 import { shallowCompare } from '../../../utils/shallow-compare';
 
 
@@ -57,7 +57,7 @@ class Form extends React.Component {
 	}
 	render() {
 
-		const { handleSubmit, loading, pristine, classes, history: { push } } = this.props;
+		const { handleSubmit, loading, pristine, classes } = this.props;
 		const data = this.props.initialValues;
 
 		return (
@@ -80,24 +80,25 @@ class Form extends React.Component {
 					label="Nom de l'utilisateur"
 					className={classes.fieldLabel}
 					fullWidth />
-					{ !data && loading &&
-						<Field
-							name="password"
-							type="text"
-							component={renderTextField}
-							placeholder="Mot de passe"
-							variant="outlined"
-							label="Mot de passe"
-							className={classes.fieldLabel}
-							fullWidth />}
-				{ !data && loading && <Field
-						name="confirm"
-						type="password"
-						component={renderTextField}
-						placeholder="Confirmation"
-						label="Confirmez votre mot de passe"
-						className={classes.fieldLabel}
-						fullWidth /> }
+				<Field
+					name="password"
+					type="password"
+					component={renderTextField}
+					placeholder="Mot de passe"
+					variant="outlined"
+					label="Mot de passe"
+					className={classes.fieldLabel}
+					fullWidth />
+				<Field
+					name="confirm"
+					type="password"
+					component={renderTextField}
+					placeholder="Confirmation mot de passe"
+					variant="outlined"
+					label="Confirmation Mot de passe"
+					className={classes.fieldLabel}
+					fullWidth />
+
 				<div style={{marginTop: 15, marginBottom: 15, textAlign: 'left'}}>
 					<Field
 						name='role'
@@ -132,10 +133,31 @@ class Form extends React.Component {
 
 const validate = (values) => {
 	const errors = {};
-	if (values.name && values.name.length > 100) {
-		errors.name = "Nom trop long";
-  }	
-
+  if (!values.email) {
+    errors.email = 'Email requis'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Addresse email invalide'
+  }
+	if (!values.password || values.password.length === 0) {
+		errors.password = "Mot de passe requis";
+	}
+	if (!values.confirm || values.confirm.length === 0) {
+		errors.confirm = "Confirmation de mot de passe requis";
+	} else if (values.confirm !== values.password) {
+		errors.confirm = "Confirmation de mot de passe invalide";
+	}
+	if(!/[0-9]/.test(values.password)) {
+		errors.password = "Le mot de passe doit avoir au moins un chiffre";
+	}
+	if(!/[a-z]/i.test(values.password)) {
+		errors.password = "Le mot de passe doit avoir au moins une lettre";
+	}
+	if(values.password && values.password.length < 6) {
+		errors.password = "Le mot de passe doit avoir au moins 6 caractères";
+	}
+	if(values.password && values.password.length > 20) {
+		errors.password = "Le mot de passe doit avoir au plus 20 caractères";
+	}
 	return errors;
 };
 

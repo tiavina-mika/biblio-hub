@@ -5,9 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
+import CardActions from '@material-ui/core/Chip';
 import { BASE_URL } from '../../redux/actions/constants'
 import InfoIcon from '@material-ui/icons/Info';
 import Typography from '@material-ui/core/Typography';
+import CommentOutlineIcon from 'mdi-material-ui/CommentOutline';
+import EyeOutlineIcon from 'mdi-material-ui/EyeOutline';
 import DownloadIcon from 'mdi-material-ui/Download';
 import { IconButton }  from '../blocks/buttons';
 import Markdown from '../blocks/markdown';
@@ -62,9 +65,8 @@ const styles = theme => ({
     fontSize: 14,
   },
   downloadButtons: {
-    padding: `${theme.spacing.unit * 2}px 0`,
+    padding: `${theme.spacing.unit}px 0`,
     display: 'flex',
-    marginTop: 25
   },
   breadcrumbs: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
@@ -103,6 +105,28 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start'
   },
+  commentCount: {
+    marginLeft: 3,
+    fontSize: 14
+  },
+  icon: {
+    fontSize: 16
+  },
+  eyeIcon: {
+    fontSize: 18
+  },
+  iconsContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    color: '#7f7f7f',
+    marginRight: 10
+  },
+  cardIcons: {
+    display: 'flex',
+    paddingTop: `${theme.spacing.unit}px`,
+    paddingBottom: `${theme.spacing.unit * 2}px`,
+    textAlign: 'left'
+  },
 });
 
 class Header extends Component {
@@ -130,10 +154,7 @@ class Header extends Component {
       const { classes, history } = this.props;
       return ([
         <div className={classes.downloadButtons}>
-              {/* <a href={`${BASE_URL}/signin`} style={{textDecoration: 'none'}}> */}
-                {/* <IconButton label={`Se connecter pour télécharger ce livre`} /> */}
                 <CommentDialog title="Se connecter pour télécharger ce livre" variant="contained" history={history}/>
-              {/* </a> */}
         </div>,
         <div className={classes.info}>
             <InfoIcon style={{fontSize: 14, marginRight: 5}}/>Connectez-vous pour pouvoir télécharger ce livre en plusieurs formats - epup, pdf.
@@ -155,13 +176,27 @@ class Header extends Component {
                           </Link>
                     </Typography>}
 
-                    { authenticated && data.member ?  this.renderDownloadButtons() : this.renderNonAuthenticated() }
+                    <div className={classes.cardIcons}>
+                        <div className={classes.iconsContainer}>
+                            <CommentOutlineIcon className={classes.icon}/>
+                            <span className={classes.commentCount}>{data.comments.length}</span>
+                        </div>
+                        <div className={classes.iconsContainer}>
+                            <EyeOutlineIcon className={classes.eyeIcon}/>
+                            <span className={classes.commentCount}>{data.views}</span>
+                        </div>
+                        <div className={classes.iconsContainer}>
+                            <DownloadIcon className={classes.eyeIcon}/>
+                            <span className={classes.commentCount}>{data.download}</span>
+                        </div>
+                    </div>
+                    { authenticated ?  this.renderDownloadButtons() : this.renderNonAuthenticated() }
                     { data && data.genres && 
                       <div>
                           {data.genres.map(n => (
                             <Chip
                                 className={classes.chip}
-                                onClick={() => push(`/dashboard/genre/${n._id}`)}
+                                onClick={() => push(`/genres/${n.slug}`)}
                                 variant="outlined"
                                 label={n.name} />
                           ))}

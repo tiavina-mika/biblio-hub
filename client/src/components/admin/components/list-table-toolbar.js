@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import Sort from '../components/sort';
 
 const styles = theme => ({
     root: {
@@ -43,27 +44,28 @@ const styles = theme => ({
           [classes.highlight]: numSelected > 0,
         })}
       >
-        <div className={classes.title}>
-          {numSelected > 0 ? (
-            <Typography color="inherit" variant="subtitle1">
-              {`${numSelected} selectionnés`}
-            </Typography>
-          ) : (
-            <Typography variant="h6" id="tableTitle">
-              {title}
-            </Typography>
-          )}
-        </div>
-        <div className={classes.spacer} />
-        <div className={classes.actions}>
-          {numSelected > 0 && (
-            <Tooltip title="Delete">
-              <IconButton aria-label="Delete" onClick={handleDeleteAllClick}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
+          <div className={classes.title}>
+            {numSelected > 0 ? (
+              <Typography color="inherit" variant="subtitle1">
+                {`${numSelected} selectionnés`}
+              </Typography>
+            ) : (
+              <Typography variant="h6" id="tableTitle">
+                {title}
+              </Typography>
+            )}
+          </div>
+          <div className={classes.spacer} />
+          <div className={classes.actions}>
+            {numSelected > 0 && (
+              <Tooltip title="Delete">
+                <IconButton aria-label="Delete" onClick={handleDeleteAllClick}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+          <Sort />
       </Toolbar>
     );
   };

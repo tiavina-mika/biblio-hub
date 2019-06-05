@@ -10,9 +10,12 @@ import ActivateRoute from './routes/activate-route';
 import AdminRoutes from './components/admin/admin-routes';
 import MainRoutes from './components/main-routes';
 import { FONT } from './redux/actions/constants';
+import MainRoute from './routes/main';
+
 const AsyncSignin = asyncComponent(() => import('./components/pages/signin'));
 const AsyncSignup = asyncComponent(() => import('./components/pages/signup'));
 const AsyncLogout = asyncComponent(() => import('./components/pages/logout'));
+const AsyncError404 = asyncComponent(() => import('./components/pages/error-404'));
 
 const theme = createMuiTheme({
 	palette: {
@@ -34,11 +37,12 @@ const App = () => (
 			<Route path="/activate/:email/:token" component={ActivateRoute} />
 			<Route path="/signin" component={AsyncSignin}/>
 			<Route path="/signup" component={AsyncSignup}/>
-			<Route path="/forgot" component={Forgot}/>
+			{/* <Route path="/forgot" component={Forgot}/> */}
 			<Route path="/logout" exact component={AsyncLogout} />
 			<AdminRoutes path="/dashboard" />
 			<MainRoutes />
-			<Route path="*" component={Error404}/>
+			<MainRoute path="*" component={AsyncError404}/>,
+			{/* <Route path="*" component={Error404}/> */}
 		</Switch>
 		<ErrorSnackbar />
 	</MuiThemeProvider>

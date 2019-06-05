@@ -15,8 +15,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { BASE_URL } from '../../redux/actions/constants';
 import CardHeader from '@material-ui/core/CardHeader';
-import FormAddDialog from '../admin/profile/add-profile-dialog';
+import FormDialog from './dialog';
 import { getUserId } from '../../redux/root-reducer';
+import Helmet from '../helmet';
 
 const styles = theme => ({
   grid: {
@@ -82,11 +83,12 @@ class Show extends React.Component {
 
     return (
       currentUser && currentUser._id === userId && !loading ?
-        <Grid fluid style={{marginTop: 100}}>
+        <Grid fluid style={{marginTop: 100, marginBottom: 100}}>
+          <Helmet title="Profil" />
           <Row center="xs">
             <Col xs={12} sm={12} md={12} lg={4} start="xs">
                 { currentUser.photo &&
-                    <img src={`${BASE_URL}/api/users/photo/${currentUser._id}`} className={classes.img}/>
+                    <img src={`${BASE_URL}/api/users/photo/${currentUser._id}`} className={classes.img}  alt={process.env.REACT_APP_NAME}/>
                 }
               <Card className={currentUser.photo && classes.card}>
                   <CardHeader
@@ -130,7 +132,7 @@ class Show extends React.Component {
                       <TableRow className={classes.tableRow}>
                         <TableCell align="left" className={classes.leftCell}>Photo</TableCell>
                         <TableCell align="left"  className={classes.th}>
-                          <FormAddDialog
+                          <FormDialog
                             userId={currentUser._id}
                             history={history}
                             title={currentUser.photo ? 'Modifier votre photo': 'Ajouter une photo'}

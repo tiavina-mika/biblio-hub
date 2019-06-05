@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import { Carousel } from "react-responsive-carousel";
 import Genres from "../home/genres";
 import Books from "../home/books";
 import Authors from "../home/authors";
@@ -52,7 +51,7 @@ class Home extends React.Component {
               <Books
                 member
                 headerTitle='Decouvrez les livres pour les membres'
-                path='/livres'/>
+                path='/livres/connexion/membre'/>
               <Books
                 headerTitle='Decouvrez plus de livres gratuits'
                 path='/livres'/>
@@ -65,7 +64,6 @@ class Home extends React.Component {
                </div>
           </div>
       </div>
-
     );
   }
 }

@@ -20,6 +20,7 @@ import { getBooksByAuthor } from '../../../redux/actions/books';
 import ListBy  from '../books/list-by';
 import Markdown from '../../blocks/markdown';
 import { getAuthorState, getAuthorsLoading } from '../../../redux/root-reducer';
+import Helmet from '../../helmet';
 
 const styles = theme => ({
   table: {
@@ -75,6 +76,7 @@ class Author extends React.Component {
     return (
       data && !loading ?
       <div className={classes.root}>
+        <Helmet title={data.family_name} />
         <Grid fluid>
           <Row center="xs">
             <Col xs={12} sm={12} md={12} lg={8} start="xs">
