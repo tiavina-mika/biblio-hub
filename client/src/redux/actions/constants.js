@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:5000';
+export const BASE_URL = process.env.NODE_ENV ? 'http://localhost:5000': 'https://myendpoint.com';
 export const DASHBOARD_LIST_PER_PAGE = 5;
 export const LIST_BOOKS_PER_PAGE = 6;
 export const LIST_AUTHORS_PER_PAGE = 6;

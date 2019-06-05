@@ -20,7 +20,7 @@ const styles = theme => ({
 });
 
 const Paragraph = (props) => {
-    return <p style={{fontSize: 18, lineHeight: 1.5}}>{props.children}</p>
+    return <p style={{fontSize: 18, lineHeight: 1.5, fontFamily: 'Nunito'}}>{props.children}</p>
 }
 
 const Markdown = ({ classes, input }) =>{
