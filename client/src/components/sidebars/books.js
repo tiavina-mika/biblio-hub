@@ -106,7 +106,7 @@ const Books = props => {
                     <div className={classes.details}>
                         <CardContent className={classes.content}>
                             <Typography component="h5" variant="h5" className={classes.title}>
-                                {data.title}
+                                {data.title.length > 30 ? `${data.title.substring(0, 30)}...` : data.title}
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary" className={classes.secondaryTitle}>
                                 <Link to={`/auteurs/${data.author.slug}`} className={classes.link}>{`${data.author.first_name} ${data.author.family_name}`}</Link>
