@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 import { withStyles } from '@material-ui/core/styles';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -42,6 +42,7 @@ class CollapsedList extends React.Component {
         const { classes, text, icon, collapse } = this.props;
         return ([
             <ListItem
+                key={uuid}
                 button
                 classes={{divider: classes.divider}} 
                 divider 
