@@ -16,7 +16,7 @@ const styles = theme => ({
     borderRadius: 2,
     paddingTop: 2,
     marginTop: theme.spacing.unit * 5,
-    marginBottom: theme.spacing.unit * 10
+    marginBottom: theme.spacing.unit * 22
 	},
   cardTitle: {
     textTransform: 'uppercase',

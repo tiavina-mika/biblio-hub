@@ -12,10 +12,12 @@ import { edit, getOne, initialize } from '../../redux/actions/users';
 import Spinner from '../blocks/spinner';
 import Helmet from '../helmet';
 
-const styles = {
+const styles = theme => ({
 	card: {
     borderRadius: 2,
-    paddingTop: 2
+    paddingTop: 2,
+    marginTop: theme.spacing.unit * 5,
+    marginBottom: theme.spacing.unit * 30,
 	},
   cardTitle: {
     textTransform: 'uppercase',
@@ -28,7 +30,7 @@ const styles = {
   cardContent: {
     marginTop: 0
   }
-};
+});
 
 class EditProfile extends React.PureComponent {
     componentDidMount = () => {

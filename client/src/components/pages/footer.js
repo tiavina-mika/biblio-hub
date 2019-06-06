@@ -16,7 +16,7 @@ const styles = theme => ({
     root: {
         backgroundColor: footerMainColor,
         width: '100%',
-        flexShrink: 0
+        flexShrink: 0,
     },
     layout: {
         width: 'auto',
