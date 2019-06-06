@@ -34,3 +34,9 @@ C'est un projet personnel en cours de développement de gestion de livre et tél
 
 #### Dashboard
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-admin-dashboard.png)
+
+
+## video screenshots
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=aP6y6IWwwOI
+" target="_blank"><img src="http://img.youtube.com/vi/aP6y6IWwwOI/0.jpg" 
+alt="BIBLIO6HUB" width="560" height="315" border="3" /></a>
