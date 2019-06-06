@@ -1,22 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Form from './form';
-import { getFormData } from '../../../utils/utils';
-
-import { editAuthor, getAuthor, initialize } from '../../../redux/actions/authors';
-import FloatingButtonActions from '../components/floating-button-actions';
-
-const styles = theme => ({
+const styles = {
     card: {
         borderRadius: 2,
         paddingTop: 2
@@ -32,11 +22,10 @@ const styles = theme => ({
     cardContent: {
         marginTop: 0
     },
-});
+};
 
-class FormLayout extends React.PureComponent {
-  render() {
-    const { classes, title, children } = this.props;
+const Form = (props) => {
+    const { classes, title, children } = props;
     return (
       <Grid fluid>
         <Row center="xs">
@@ -53,13 +42,10 @@ class FormLayout extends React.PureComponent {
         </Row>
       </Grid>
     );
-  }
 }
 
-
-
-FormLayout.propTypes = {
+Form.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FormLayout);
+export default withStyles(styles)(Form);

@@ -73,7 +73,7 @@ class Show extends React.Component {
       this.props.getOne(this.props.match.params.id).then(d => this.setState({data: d}))
   }
   render() {
-    const { classes, loading, history: { push }, id, profile } = this.props;
+    const { classes, loading } = this.props;
     const { data } = this.state;
     if(loading) {
       return <CustomizedLinearProgress />

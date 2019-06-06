@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import ReactMarkdown from 'react-markdown/with-html';
 import CodeBlock from '../pages/codeBlock';
 

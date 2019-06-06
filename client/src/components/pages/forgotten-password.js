@@ -8,7 +8,6 @@ import { BASE_URL } from '../../redux/actions/constants';
 import ForgottenPasswordForm from '../forms/forgotten-password';
 import FlashMessage from '../blocks/flash-message';
 
-
 const styles = theme => ({
   layout: {
       width: 'auto',
@@ -55,6 +54,5 @@ class ForgottenPassword extends React.Component {
 ForgottenPassword.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 
 export default withStyles(styles)(ForgottenPassword);

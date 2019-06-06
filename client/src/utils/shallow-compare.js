@@ -7,4 +7,3 @@ export const shallowCompare = (current, nextProps, nextState, nextContext) => {
 export const shallowCompareObjects = (current, next) => {
     return JSON.stringify(current) !== JSON.stringify(next);
 };
-  

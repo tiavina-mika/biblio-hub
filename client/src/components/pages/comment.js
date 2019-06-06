@@ -81,7 +81,7 @@ class Comment extends React.Component {
                 title="Ajouter un commentaire"
             />
 
-            <CardContent>
+            <CardContent style={{textAlign: 'center'}}>
                 <CommentForm onSubmit={this.onSubmit} />
                 <ReCaptcha />
             </CardContent>

@@ -1,6 +1,5 @@
 import { ERROR_REMOVE, FETCH_USER_REQUEST,  ERROR_SET } from '../actions/constants';
 
-
 const error = (state = null, action) => {
 	switch (action.type) {
 		case ERROR_REMOVE:

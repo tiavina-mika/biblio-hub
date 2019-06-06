@@ -8,8 +8,8 @@ import upload from '../utils/image-upload'
 const router = express.Router()
 
 router.route('/api/users')
-  .get(userController.findAll)
-  .post(upload.single('photo'), userController.create)
+  .get(authJwt, userController.findAll)
+  .post(authJwt, upload.single('photo'), userController.create)
 
 router.route('/api/users/:userId')
   .get(userController.findOne)
@@ -17,16 +17,16 @@ router.route('/api/users/:userId')
   .delete(userController.remove)
 
 router.route('/api/users/profile/:userId')
-  .put(upload.single('photo'), userController.profile)
+  .put(authJwt, upload.single('photo'), userController.profile)
 router.route('/api/users/photo/:userId')
   .get(userController.photo)
 
 router.route('/api/users/set-admin/:userId')
-  .put(userController.setAdmin)
+  .put(authJwt, userController.setAdmin)
 
 router.route('/api/profiles')
-  .get(userController.findAllProfile)
-  .delete(userController.removeAll)
+  .get(authJwt, userController.findAllProfile)
+  .delete(authJwt, userController.removeAll)
 
 router.param('userId', userController.userByID)
 

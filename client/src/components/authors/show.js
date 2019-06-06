@@ -122,9 +122,9 @@ class Author extends React.Component {
                   <Card>
                     <Genres />
                   </Card>
-                  <Card style={{marginTop: 30, padding: 10}}>
+                  { books && <Card style={{marginTop: 30, padding: 10}}>
                       <Books books={books} headerTitle={`Les livres de ${data.family_name}`}/>
-                  </Card>
+                  </Card>}
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={6} start="xs">
                   <Card className={classes.cardMain}>

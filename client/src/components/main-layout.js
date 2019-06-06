@@ -57,5 +57,4 @@ MainLayout.propTypes = {
   container: PropTypes.object,
   theme: PropTypes.object.isRequired,
 };
-// export default withStyles(styles, { withTheme: true })(MainLayout)
 export default connect(null, { getOne })(withStyles(styles, { withTheme: true })(MainLayout))

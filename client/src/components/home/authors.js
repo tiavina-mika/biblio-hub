@@ -10,6 +10,7 @@ import Author from './author';
 import { AUTHORS_HOME_LIMIT } from '../../redux/actions/constants';
 import Spinner from '../blocks/spinner';
 import NoData from '../blocks/no-data';
+
 const styles = theme => ({
   root: {
       padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 4}px 0`,

@@ -10,7 +10,6 @@ const styles = {
         alignItems: 'center',
         width: '100%',
         height: window.innerHeight,
-        // position:'absolute' 
     },
     local: {
         display: 'flex',
@@ -36,6 +35,5 @@ const Spinner = ({classes, local, height, width, color, backgroundColor, type}) 
 Spinner.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
 
 export default withStyles(styles)(Spinner);

@@ -62,9 +62,6 @@ const styles = theme => ({
 		overflow: 'hidden',
 		marginTop: theme.spacing.unit * 2.5,
 		marginBotton: theme.spacing.unit * 2.5,
-
-		// height:  theme.spacing.unit * 6
-    // width: 400,
   },
   input: {
     paddingLeft: theme.spacing.unit,
@@ -73,7 +70,6 @@ const styles = theme => ({
   iconButton: {
 		padding: 10,
 		backgroundColor: '#e9ecef',
-		// height:  theme.spacing.unit * 6,
 		borderRadius: 0,
 		borderRight: '1px solid #c7c8c9',
 		color: '#5a5b5b'
@@ -215,9 +211,9 @@ SignupForm.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'signup-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(SignupForm))
-	);
+	reduxForm({
+		form: 'signup-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(SignupForm))
+);

@@ -7,18 +7,16 @@ import { push, go } from 'connected-react-router';
 
 export const setAuthHeader = token => {
 	if (token) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        axios.defaults.headers.common['Authorization'] = token;
 	} else {
 		axios.defaults.headers.common['Authorization'] = null;
 	}
 }
 
-export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispatch, getState, token, disableToken, ...rest }) => {
+export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispatch, getState, token, ...rest }) => {
     try {
-        if (!token && !disableToken) {
+        if (token) {
             setAuthHeader(getStorage('token'));
-        } else if (token && !disableToken) {
-            setAuthHeader(token);
         }
 
         dispatch({ type: `${key}_REQUEST` });
@@ -28,7 +26,6 @@ export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispa
         if (body instanceof FormData) {
             axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
         }
-
 
         const response = await axios.post(`${BASE_URL}${url}`, body);
         if (response && response.status !== 200) {
@@ -49,6 +46,7 @@ export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispa
                 return dispatchLogout(dispatch, getState);
             }  else if (error.response.data !== 'UNAUTHORIZED' && error.response.status === 401) {
                 dispatch({ type: `${key}_FAILURE` });
+                dispatch(setError('UNAUTHORIZED'));
                 return dispatchLogout(dispatch, getState);
             } else {
                 dispatch({ type: `${key}_FAILURE` });
@@ -60,12 +58,10 @@ export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispa
     };
 };
 
-export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, getState, token, disableToken, ...rest }) => {
+export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, getState, token, ...rest }) => {
     try {
-        if (!token && !disableToken) {
+        if (token) {
             setAuthHeader(getStorage('token'));
-        } else if (token && !disableToken) {
-            setAuthHeader(token);
         }
 
         dispatch({ type: `${key}_REQUEST` });
@@ -92,6 +88,7 @@ export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, get
                 return dispatch(setError('NETWORK_ERROR'));       
             } else if (error.response.status === 401 && error.response.headers.get('WWW-Authenticate') === 'TokenExpired') {
                 dispatch({ type: `${key}_FAILURE` });
+                dispatch(setError('UNAUTHORIZED'));
                 return dispatchLogout(dispatch, getState);
             }  else if (error.response.data !== 'UNAUTHORIZED' && error.response.status === 401) {
                 dispatch({ type: `${key}_FAILURE` });
@@ -106,12 +103,10 @@ export const apiEdit = async ({ key, name, url, body, redirectUrl, dispatch, get
     };
 };
 
-export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, token, disableToken, ...rest }) => {
+export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, token, ...rest }) => {
     try {
-        if (!token && !disableToken) {
+        if (token) {
             setAuthHeader(getStorage('token'));
-        } else if (token && !disableToken) {
-            setAuthHeader(token);
         }
         
         dispatch({ type: `${key}_REQUEST` });
@@ -122,18 +117,19 @@ export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, 
             return dispatch(setError('NETWORK_ERROR'));       
         } else if (response.statusText !== 'OK' && response.status === 401 && response.headers.get('WWW-Authenticate') === 'TokenExpired') {
             dispatch({ type: `${key}_FAILURE` });
+            dispatch(setError('UNAUTHORIZED'));
             return dispatchLogout(dispatch, getState);
         }  else if (!response.statusText !== 'OK' && response.status === 401) {
             dispatch({ type: `${key}_FAILURE` });
             return dispatchLogout(dispatch, getState);
         } 
         
-            const data = await response.data;
-            dispatch({ type: `${key}_SUCCESS`, [name] : data, getState });
-            if(redirectUrl){
-                return dispatch(push(redirectUrl))
-            }
-            return data;
+        const data = await response.data;
+        dispatch({ type: `${key}_SUCCESS`, [name] : data, getState });
+        if(redirectUrl){
+            return dispatch(push(redirectUrl));
+        }
+        return data;
     } catch(error) {
         if (error.response) {
             if (error.response.status === 404 || error.response.status === 401) {
@@ -144,6 +140,7 @@ export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, 
                 return dispatchLogout(dispatch, getState);
             }  else if (error.response.data !== 'UNAUTHORIZED' && error.response.status === 401) {
                 dispatch({ type: `${key}_FAILURE` });
+                dispatch(setError('UNAUTHORIZED'));
                 return dispatchLogout(dispatch, getState);
             } else {
                 dispatch({ type: `${key}_FAILURE` });
@@ -155,14 +152,10 @@ export const apiGet = async ({ key, name, url, redirectUrl, dispatch, getState, 
     };
 };
 
-
-
-export const apiDelete = async ({ key, name, url, redirectUrl, dispatch, getState, token, disableToken, ...rest }) => {
+export const apiDelete = async ({ key, name, url, redirectUrl, dispatch, getState, token, ...rest }) => {
     try {
-        if (!token && !disableToken) {
+        if (token) {
             setAuthHeader(getStorage('token'));
-        } else if (token && !disableToken) {
-            setAuthHeader(token);
         }
         
         dispatch({ type: `${key}_REQUEST` });
@@ -179,9 +172,9 @@ export const apiDelete = async ({ key, name, url, redirectUrl, dispatch, getStat
             return dispatchLogout(dispatch, getState);
         } 
         
-            const data = await response.data;
-            dispatch({ type: `${key}_SUCCESS`, [name] : data, getState });
-            return data ? dispatch(push(redirectUrl)) : dispatch(push('/'));
+        const data = await response.data;
+        dispatch({ type: `${key}_SUCCESS`, [name] : data, getState });
+        return data ? dispatch(push(redirectUrl)) : dispatch(push('/'));
     } catch(error) {
         if (error.response) {
             if (error.response.status === 404 || error.response.status === 401) {

@@ -30,19 +30,16 @@ AuthorSchema.methods = {
     }
 }
 
-// Virtual for author's full name
 AuthorSchema
     .virtual('name')
     .get( () => {
         return this.family_name + ', ' + this.first_name
     })
 
-// Virtual for author's lifespan
 AuthorSchema
     .virtual('lifespan')
     .get( () => {
         return (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString()
     })
 
-//Export model
 export default mongoose.model('Author', AuthorSchema)

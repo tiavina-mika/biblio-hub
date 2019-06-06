@@ -63,4 +63,3 @@ export default combineReducers({
 export const getBook = state => state.book.get('book');
 export const getBooks = state => state.data.get('books');
 export const getBooksLoading = state => state.loading;
-  

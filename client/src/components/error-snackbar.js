@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { removeError } from '../redux/actions/error';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
@@ -15,7 +14,7 @@ const messages = {
 	'error.NAME_LENGTH':  'Le nom devrait avoir entre 5 et 100 caractères',
 	'error.BAD_CREDENTIALS' : 'Email ou mot de passe incorrect',
 	'error.NETWORK_ERROR' : 'A network error as occured, please contact an administrator',
-	'error.UNAUTHORIZED' : 'Données invalides',
+	'error.UNAUTHORIZED' : 'Accès refusé',
 	'error.EMAIL_WAS_USED' : `L'email que vous avez entré existe déjà`,
 	'error.EMPTY_FIRST_NAME' : `Prenom de l'auteur aquis`,
 	'error.EMPTY_FAMILY_NAME' : `Nom de l'auteur aquis`,

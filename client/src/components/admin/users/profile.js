@@ -13,7 +13,6 @@ import TableRow from '@material-ui/core/TableRow';
 import CustomizedBreadcrumbs from '../components/breadcrumbs';
 import FloatingButtonActions from '../components/floating-button-actions';
 import { BASE_URL } from '../../../redux/actions/constants'
-import ReactMarkdown from 'react-markdown/with-html';
 import Typography from '@material-ui/core/Typography';
 import CustomizedLinearProgress  from '../components/progress';
 

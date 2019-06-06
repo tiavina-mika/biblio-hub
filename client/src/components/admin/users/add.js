@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Form from './form';
-import { getFormData } from '../../../utils/utils';
 import FormLayout from '../pages/form';
 
 import { post, edit, getOne } from '../../../redux/actions/users';
@@ -10,11 +9,6 @@ import Helmet from '../../helmet';
 
 class Add extends React.PureComponent {
   onSubmit = (form) => {
-      // const formData = new FormData();
-      // getFormData(formData, 'name', form.name);
-      // getFormData(formData, 'email', form.email);
-      // getFormData(formData, 'role', form.role);
-      // getFormData(formData, 'password', form.password);
       this.props.post(form);
   }
   render() {

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import GridList from '@material-ui/core/Grid';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
@@ -20,7 +19,6 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 3
     }
 });
-
 
 const NoData = props => {
     const { classes, title, link } = props;

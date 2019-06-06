@@ -36,7 +36,7 @@ class AlertDialog extends React.Component {
 
     
     render() {
-        const { component : Component, onClick, classes, icon, title, content, submitButtonText, tooltip, color, key } = this.props;
+        const { component : Component, classes, icon, title, content, submitButtonText, tooltip, color, key } = this.props;
         return ([
                 <Tooltip
                     title={tooltip}

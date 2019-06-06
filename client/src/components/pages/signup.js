@@ -9,7 +9,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import SignupForm from '../forms/signup';
 import Helmet from '../helmet';
-
 import { signup } from '../../redux/actions/authentication';
 
 const styles = theme => ({

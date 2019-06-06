@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { Link } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
-import CardActions from '@material-ui/core/Chip';
 import { BASE_URL } from '../../redux/actions/constants'
 import InfoIcon from '@material-ui/icons/Info';
 import Typography from '@material-ui/core/Typography';

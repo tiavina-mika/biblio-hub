@@ -58,9 +58,8 @@ const styles = theme => ({
     }
 });
 
-class MainList extends React.Component {
-    render() {
-        const { classes, authors, headerTitle, currentPage, total, pages, onChange, path, xs, sm, md, lg, listSm, listMd, listLg } = this.props;  
+const MainList = props => {
+        const { classes, authors, headerTitle, currentPage, pages, onChange, path, xs, sm, md, lg, listSm, listMd, listLg } = props;  
 
         return (
             <Col xs={xs || 12} sm={sm || 12} md={md || 12} lg={lg || 12} start="xs">
@@ -101,7 +100,6 @@ class MainList extends React.Component {
                 </GridList>
             </Col>
         );
-    }
 }
 
 MainList.propTypes = {

@@ -266,12 +266,12 @@ Form.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'book-form',
-			// initialValues: {
-			// 	genres: []
-			// },
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(Form))
-	);
+	reduxForm({
+		form: 'book-form',
+		// initialValues: {
+		// 	genres: []
+		// },
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(Form))
+);

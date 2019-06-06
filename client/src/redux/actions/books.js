@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { push } from 'connected-react-router';
-import { FETCH_BOOKS_SUCCESS, FETCH_BOOKS_REQUEST, FETCH_BOOKS_FAILURE, FETCH_BOOK_REQUEST, BASE_URL } from './constants';
+import { FETCH_BOOK_REQUEST } from './constants';
 
 import { apiGet, apiDelete, apiPost, apiEdit } from './api';
 
@@ -55,7 +53,6 @@ export const getOneBySlug = (slug) => (dispatch, getState) => {
   });
 };
 
-
 export const post = (body) => (dispatch, getState) => {
 	return apiPost({
 		key: 'FETCH_BOOK',
@@ -63,6 +60,7 @@ export const post = (body) => (dispatch, getState) => {
 		redirectUrl: '/dashboard/livre',
 		params: true,
 		url: `/api/books`,
+		token: true,
 		body,
 		dispatch,
 		getState
@@ -75,6 +73,7 @@ export const edit = (id, body) => (dispatch, getState) => {
 		name: 'book',
 		redirectUrl: `/dashboard/livre/${id}`,
 		url: `/api/books/${id}`,
+		token: true,
 		body,
 		dispatch,
 		getState
@@ -87,6 +86,7 @@ export const comment = (userId, bookId, body) => (dispatch, getState) => {
 		name: 'book',
 		url: `/api/books/comment`,
 		body: {userId, bookId, comment: {text: body}},	
+		token: true,
 		dispatch,
 		getState
     });
@@ -98,20 +98,19 @@ export const uncomment = (userId, bookId, comment) => (dispatch, getState) => {
 		name: 'book',
 		url: `/api/books/uncomment`,
 		body: {userId, bookId, comment},	
+		token: true,
 		dispatch,
 		getState
     });
 };
 
-
-
 export const remove = (id) => (dispatch, getState) => {
-
 	return apiDelete({
 		key: 'DELETE_BOOK',
 		name: 'books',
 		redirectUrl: '/dashboard/livres',
 		url: `/api/books/${id}`,
+		token: true,
 		id: id,
 		dispatch,
 		getState
@@ -146,10 +145,6 @@ export const getBooksByAuthor = (id) => (dispatch, getState) => {
   });
 };
 
-
 export const initialize  = () => (dispatch, getState) => {
 	return dispatch({type: FETCH_BOOK_REQUEST})
 }
-
-
-

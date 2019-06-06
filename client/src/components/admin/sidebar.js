@@ -23,9 +23,8 @@ const styles = theme => ({
     }
 });
 
-class Sidebar extends React.Component {
-    render() {
-    const { classes, history } = this.props;
+const Sidebar = props => {
+    const { classes, history } = props;
 
     return (
         <div>
@@ -140,7 +139,6 @@ class Sidebar extends React.Component {
             </List>
         </div>
     );
-  }
 }
 
 Sidebar.propTypes = {

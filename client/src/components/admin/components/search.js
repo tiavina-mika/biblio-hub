@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import { getAll } from '../../../redux/actions/books';
 import { getAllAuthors } from '../../../redux/actions/authors';
 import { getAllGenres } from '../../../redux/actions/genres';
 import { getAllUsers } from '../../../redux/actions/users';
+import { getLocation } from '../../../redux/root-reducer';
 import { connect } from 'react-redux';
 import { DASHBOARD_LIST_PER_PAGE } from '../../../redux/actions/constants';
 
@@ -104,24 +100,24 @@ class Search extends Component {
         this.setState({value: event.target.value});
     }
     handleSubmit = (event) => {
-        const { pathname, getAll, getAllAuthors, getAllGenres, getAllUsers } = this.props;
+        const { location: { pathname }, getAll, getAllAuthors, getAllGenres, getAllUsers } = this.props;
         const { value } = this.state;
         event.preventDefault();
 
-        if(/livre/.test(pathname)) {      
-          getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, `/dashboard/livres/recherche/${value}`);
+        if (/livre/.test(pathname)) {      
+          getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, null, `/dashboard/livres/recherche/${value}`);
         } else if (/auteur/.test(pathname)) {
           getAllAuthors(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/auteurs/recherche/${value}`);
         } else if (/genre/.test(pathname)) {
           getAllGenres(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/genres/recherche/${value}`);
-        } else if (/utilisateur/.test(pathname)) {
-          getAllUsers(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/utilisateurs/recherche/${value}`);
+        }  else if (/utilisateur/.test(pathname)) {
+            getAllUsers(DASHBOARD_LIST_PER_PAGE, 1, value, `/dashboard/utilisateurs/recherche/${value}`);
         } else {
-          getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, `/dashboard/livres/recherche/${value}`);
+            getAll(DASHBOARD_LIST_PER_PAGE, 1, null, null, value, null, `/dashboard/livres/recherche/${value}`);
         }
     }
     render() {
-    const { classes, pathname } = this.props;
+    const { classes, location: { pathname } } = this.props;
     
     const placeholder = getPlaceholder(pathname);
     return (
@@ -148,6 +144,7 @@ Search.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    pathname: state.router.location.pathname,
-})
+    location: getLocation(state),
+});
+
 export default connect(mapStateToProps, { getAll, getAllAuthors, getAllGenres, getAllUsers })(withStyles(styles)(Search));

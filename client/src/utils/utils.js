@@ -24,10 +24,7 @@ export const getSorting = (order, orderBy) => {
 
 export const getFormData = (formData, name, field) => {
   if(field) return formData.append(name, field);
-  // if(field && Array.isArray(field)) return formData.append(name, field[0]);
   return null;
-
-// this.props.postAuthor(formData)
 }
 
 export const getMessageType = (type) => {

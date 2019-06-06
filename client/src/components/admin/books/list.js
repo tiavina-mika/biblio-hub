@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import { desc, stableSort, getSorting } from '../../../utils/utils';
+import { stableSort, getSorting } from '../../../utils/utils';
 import FloatingButtonActions from '../components/floating-button-actions';
 import CustomizedLinearProgress  from '../components/progress';
 import EnhancedTableToolbar  from '../components/list-table-toolbar';

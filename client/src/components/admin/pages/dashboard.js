@@ -1,9 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import axios from 'axios';
-import { withStyles } from '@material-ui/core/styles';
 import Card from './dashboard-card';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Row, Col } from 'react-flexbox-grid';
 
 import CustomizedLinearProgress  from '../components/progress';
 import { BASE_URL } from '../../../redux/actions/constants';
@@ -14,33 +12,7 @@ import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import People from '@material-ui/icons/People';
 import VerifiedUser from '@material-ui/icons/VerifiedUser';
 
-
-const styles = theme => ({
-  table: {
-    minWidth: 700,
-  },
-  th: {
-    fontWeight: 700
-  },
-  cardTable: {
-    marginTop: 5,
-    marginBottom: 55,
-  },
-  cardTitle: {
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px`,
-    marginBottom: 5
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 700
-  },
-  breadcrumbs: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
-    marginBottom: 25
-  },
-});
-
-class Dashboard extends React.Component {
+class Dashboard extends Component {
   state = {books: '', authors: '', genres: '', users: '', forMembers: '', nonConfirmed: '', loading: true};
   async componentDidMount() {
     const response = await axios.get(`${BASE_URL}/api/count`);
@@ -48,7 +20,6 @@ class Dashboard extends React.Component {
     response && this.setState({books, authors, genres, users, forMembers, nonConfirmed,loading: false});
   }
    render() {
-    const { classes } = this.props;
     const { books, authors, genres, users, forMembers, nonConfirmed, loading } = this.state;
 
     if(loading) {
@@ -122,8 +93,4 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Dashboard);
+export default Dashboard;

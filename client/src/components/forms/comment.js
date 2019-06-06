@@ -66,7 +66,7 @@ class CommentForm extends React.Component {
             disabled={loading}
             className={classNames(classes.buttonLabel,classes.containedButton)}
             fullWidth>
-              Ajouter
+              Commenter
           </Button>
 			</form>
 		);
@@ -78,9 +78,9 @@ const validate = (values) => {
 	if (!values.comment || values.comment.length === 0) {
          errors.comment = "Vous devriez écrire quelque chose";
   }
-	// if (values.comment.length > 1000) {
-	// 	errors.comment = "Votre commentaire dépasse le nombre de caractère maximum";
-	// }
+	if (values.comment && values.comment.length > 5000) {
+		errors.comment = "Votre commentaire dépasse le nombre de caractère maximum";
+	}
 	return errors;
 };
 

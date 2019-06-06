@@ -12,10 +12,8 @@ import Button from '@material-ui/core/Button';
 import Helmet from '../helmet';
 import Notifications from 'react-notify-toast';
 import SigninForm from '../forms/signin';
-
 import { signin } from '../../redux/actions/authentication';
 import { Typography } from '@material-ui/core';
-
 
 const styles = theme => ({
   grid: {
@@ -132,7 +130,6 @@ class Signin extends React.PureComponent {
     );
   }
 }
-
 
 Signin = connect(null, { signin })(Signin);
 

@@ -10,6 +10,7 @@ import { getAllAuthors } from '../../redux/actions/authors';
 import { getAllGenres } from '../../redux/actions/genres';
 import { connect } from 'react-redux';
 import { LIST_AUTHORS_PER_PAGE, LIST_BOOKS_PER_PAGE, LIST_GENRES_PER_PAGE } from '../../redux/actions/constants';
+import { getLocation } from '../../redux/root-reducer';
 
 const styles = theme => ({
   root: {
@@ -96,7 +97,7 @@ class Search extends Component {
         this.setState({value: event.target.value});
     }
     handleSubmit = (event) => {
-        const { pathname, getAll, getAllAuthors, getAllGenres} = this.props;
+        const { location: { pathname }, getAll, getAllAuthors, getAllGenres} = this.props;
         const { value } = this.state;
         event.preventDefault();
 
@@ -111,7 +112,7 @@ class Search extends Component {
         }
       }
     render() {
-    const { classes, pathname } = this.props;
+    const { classes, location: { pathname } } = this.props;
     
     const placeholder = getPlaceholder(pathname);
     return (
@@ -138,6 +139,6 @@ Search.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    pathname: state.router.location.pathname,
+  location: getLocation(state),
 });
 export default connect(mapStateToProps, { getAll, getAllAuthors, getAllGenres })(withStyles(styles)(Search));

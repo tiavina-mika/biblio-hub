@@ -34,9 +34,8 @@ const styles = theme => ({
   },
 });
 
-class Header extends React.Component {
-  render() {
-    const { classes, theme, children, authenticated, currentUser, handleDrawerToggle, ...rest } = this.props;
+const Header = props => {
+    const { classes, theme, children, authenticated, currentUser, handleDrawerToggle, ...rest } = props;
 
     return (
         <AppBar position="fixed" className={classes.appBar}>
@@ -59,7 +58,6 @@ class Header extends React.Component {
           </Toolbar>
         </AppBar>
     );
-  }
 }
 
 Header.propTypes = {

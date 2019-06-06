@@ -19,7 +19,6 @@ const rootReducer = (history) => combineReducers({
   users : usersReducer,
 })
 
-
 export const getLocation = state => state.router.location;
 
 export const getAuthenticated = state => fromAuth.getAuthenticated(state.user);
@@ -43,6 +42,4 @@ export const getUsers = state => fromUsers.getUsers(state.users);
 export const getUserState = state => fromUsers.getUser(state.users);
 export const getUsersLoading = state => fromUsers.getUsersLoading(state.users);
 
-
 export default rootReducer
-

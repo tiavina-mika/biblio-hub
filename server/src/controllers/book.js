@@ -120,7 +120,6 @@ const edit = async (req, res) => {
         book.set(req.body)
         book.updatedAt = Date.now()
         book.genres = [...new Set(req.body.genres.split(','))]
-        // console.log('reqMod2', [...req.body.genres.split(',').filter(n => !!n && !/\W/g.test(n))])
         book.publish = !!req.body.publish
         book.member = !!req.body.member
          if(req.files) {

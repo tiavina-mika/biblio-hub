@@ -130,9 +130,9 @@ ChangePasswordForm.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'signup-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(ChangePasswordForm))
-	);
+	reduxForm({
+		form: 'signup-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(ChangePasswordForm))
+);

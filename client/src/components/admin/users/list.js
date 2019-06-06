@@ -10,7 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { desc, stableSort, getSorting } from '../../../utils/utils';
+import { stableSort, getSorting } from '../../../utils/utils';
 import FloatingButtonActions from '../components/floating-button-actions';
 import CustomizedLinearProgress  from '../components/progress';
 import EnhancedTableToolbar  from '../components/list-table-toolbar';
@@ -105,6 +105,7 @@ class List extends Component {
       const selectedValues = Object.values(this.state.selected);
       selectedValues.map(n => this.props.remove(n));
       this.setState({ selected: [] });
+      this.props.history.go(0);
   };
 
 

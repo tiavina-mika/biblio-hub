@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import { FETCH_AUTH_SUCCESS, FETCH_AUTH_FAILURE } from '../actions/constants';
 
-const user = (state = ImmutableMap({ authenticated: false, isAdmin: false, email: '', id: '' }), action) => {
+const auth = (state = ImmutableMap({ authenticated: false, isAdmin: false, email: '', id: '' }), action) => {
 	switch (action.type) {
 		case FETCH_AUTH_SUCCESS:
 			return state
@@ -20,7 +20,7 @@ const user = (state = ImmutableMap({ authenticated: false, isAdmin: false, email
 	}
 };
 
-export default user;
+export default auth;
 
 export const getAuthenticated = state => state.get('authenticated');
 export const getUserEmail = state => state.get('email');

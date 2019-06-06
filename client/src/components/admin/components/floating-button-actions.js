@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import { withRouter } from 'react-router-dom';
-
 import Pencil from 'mdi-material-ui/Pencil';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -11,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import Tooltip from '@material-ui/core/Tooltip';
 import AlertDialog from './alert-dialog';
+
 const styles = theme => ({
     root: {
         position: 'fixed',
@@ -51,7 +50,6 @@ class FloatingButtonOnShowActions extends React.Component {
     render() {
         const { classes, name, onDelete, add, list, title, edit, remove } = this.props;
         return (
-            // <Card className={classes.root}>
             <div className={classes.root}>
                 { add &&
                     <Tooltip
@@ -91,7 +89,6 @@ class FloatingButtonOnShowActions extends React.Component {
                     onClick={onDelete}
                 /> }
             </div>
-            // </Card>
         )
     }
 }

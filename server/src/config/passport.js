@@ -26,10 +26,10 @@ const jwtOpts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET
 }
-const jwtStrategy = new JWTStrategy(jwtOpts, async (payload, done) => {
+const jwtStrategy = new JWTStrategy(jwtOpts, async (jwt_playload, done) => {
     try {
-            //Identify user by ID
-        const user = await User.findById(payload._id)
+        const user = await User.findById(jwt_playload.id)
+
         if (!user) {
             return done(null, false)
         }

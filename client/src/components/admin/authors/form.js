@@ -12,9 +12,9 @@ import { shallowCompare } from '../../../utils/shallow-compare';
 
 const styles = {
 	fieldLabel: {
-			textTransform: 'uppercase',
-			paddingBottom: 0,
-		},
+		textTransform: 'uppercase',
+		paddingBottom: 0,
+	},
 	buttonLabel: {
 		textTransform: 'uppercase',
 	},
@@ -135,19 +135,16 @@ const validate = (values) => {
 	const errors = {};
 	if (!values.first_name) {
 		errors.first_name = "Prenom requis";
-  }
+  	}
 	if (!values.family_name) {
 		errors.family_name = "Nom requis";
 	}
 	if (values.first_name && values.first_name.length > 100) {
 		errors.first_name = "Prenom trop long";
-  }
-	if (values.family_name && values.family_name.length > 100) {
-		errors.first_name = "Nom trop long";
-  }
-	// if (values.date_of_birth && typeof(values.date_of_birth.length) !== 'date') {
-	// 	errors.date_of_birth = "Pas date";
-  // }
+	}
+		if (values.family_name && values.family_name.length > 100) {
+			errors.first_name = "Nom trop long";
+	}
 
 	if (values.date_of_birth && values.date_of_death) {
 		if (values.date_of_birth > values.date_of_death) {
@@ -175,9 +172,9 @@ Form.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'author-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(Form))
-	);
+	reduxForm({
+		form: 'author-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(Form))
+);

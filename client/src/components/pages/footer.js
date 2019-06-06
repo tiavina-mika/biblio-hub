@@ -15,8 +15,6 @@ const greyColor = '#cbd0d3';
 const styles = theme => ({
     root: {
         backgroundColor: footerMainColor,
-        // position: 'absolute',
-        // bottom: 0,
         width: '100%',
         flexShrink: 0
     },

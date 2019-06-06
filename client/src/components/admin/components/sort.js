@@ -4,14 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import User from '@material-ui/icons/Person';
 import { Link } from "react-router-dom";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Avatar from '@material-ui/core/Avatar';
-import Power from 'mdi-material-ui/Power';
-import { BASE_URL } from '../../../redux/actions/constants';
 
 const styles = {
   root: {

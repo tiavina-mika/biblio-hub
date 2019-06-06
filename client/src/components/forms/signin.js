@@ -12,7 +12,6 @@ import { shallowCompare } from '../../utils/shallow-compare';
 
 const styles = {
 	fieldLabel: {
-		// textTransform: 'uppercase',
 		paddingBottom: 10,
 		marginBottom: 25
 	},
@@ -118,9 +117,9 @@ SigninForm.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'signin-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(SigninForm))
-	);
+	reduxForm({
+		form: 'signin-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(SigninForm))
+);

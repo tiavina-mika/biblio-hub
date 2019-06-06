@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const TEST_SITE_KEY = "6LebcaQUAAAAAPA591TTcaYALfIS84o06QftbZGd";
@@ -24,7 +23,6 @@ class ReCaptcha extends React.Component {
   }
 
   handleChange = value => {
-    console.log("Captcha value:", value);
     this.setState({ value });
     // if value is null recaptcha expired
     if (value === null) this.setState({ expired: "true" });
@@ -39,7 +37,7 @@ class ReCaptcha extends React.Component {
     return (
         load && (
           <ReCAPTCHA
-            style={{ display: "inline-block" }}
+            style={{ display: "inline-block", marginTop: 15 }}
             theme="dark"
             ref={this._reCaptchaRef}
             sitekey={TEST_SITE_KEY}

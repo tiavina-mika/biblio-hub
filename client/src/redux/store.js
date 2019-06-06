@@ -24,7 +24,6 @@ const initialState = {
   })
 };
 
-
 const configStore = () => {
   const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   const store = createStore(
@@ -39,6 +38,5 @@ const configStore = () => {
   ); 
   return store;
 }
-
 
 export default configStore;

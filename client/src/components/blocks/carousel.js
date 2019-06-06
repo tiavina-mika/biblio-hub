@@ -71,9 +71,8 @@ const styles = theme => ({
     },
 });
 
-class CarouselComponent extends React.Component {
-  render() {
-    const { classes } = this.props;
+const CarouselComponent = props => {
+    const { classes } = props;
 
     return (
         <Carousel autoPlay showThumbs={false} showStatus={false}>
@@ -112,7 +111,6 @@ class CarouselComponent extends React.Component {
             </div>
         </Carousel>
     );
-  }
 }
 
 CarouselComponent.propTypes = {

@@ -14,8 +14,8 @@ import CardActions from '@material-ui/core/CardActions';
 import TitleHeader from '../blocks/title-header';
 import { LIST_BOOKS_PER_PAGE } from '../../redux/actions/constants';
 import { getLocation } from '../../redux/root-reducer';
-
 import Pagination from '../blocks/pagination';
+
 const styles = theme => ({
     card: {
         height: '100%',
@@ -99,9 +99,8 @@ const styles = theme => ({
     }
 });
 
-class MainList extends React.Component {
-  render() {
-    const { classes, books, headerTitle, currentPage, pages, onChange, path, xs, sm, md, lg, listXs, listSm, listMd, listLg, location: { pathname } } = this.props;  
+const MainList = props => {
+    const { classes, books, headerTitle, currentPage, pages, onChange, path, xs, sm, md, lg, listXs, listSm, listMd, listLg, location: { pathname } } = props;  
 
     return (
             <Col xsOffset={12} xs={xs || 12} sm={sm || 12} md={md || 12} lg={lg || 12} start="xs">
@@ -124,7 +123,7 @@ class MainList extends React.Component {
                         <Link 
                             to={`/livres/trier/telechargement`}
                             className={classNames(classes.linkSortedBy, pathname.endsWith('/telechargement') && classes.active)}>
-                                Le plus télélacharger
+                                Le plus télélachargé
                         </Link>
                         <Link 
                             to={`/livres/trier/vues`}
@@ -169,7 +168,6 @@ class MainList extends React.Component {
                 </GridList>
             </Col>
         );
-    }
 }
 
 MainList.propTypes = {
@@ -178,6 +176,6 @@ MainList.propTypes = {
 
 const mapStateToProps = state => ({
     location: getLocation(state)
-})
+});
 
 export default connect(mapStateToProps, null)(withStyles(styles)(MainList));

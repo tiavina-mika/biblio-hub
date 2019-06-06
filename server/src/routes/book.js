@@ -3,14 +3,13 @@ import bookController from '../controllers/book'
 import genreController from '../controllers/genre'
 import authorController from '../controllers/author'
 import upload from '../utils/book-files-upload'
+import { authJwt } from '../config/passport'
 
 const router = express.Router()
 
 router.route('/api/books')
   .get(bookController.findAll)
-  // .post(bookController.create)
-  // .post(upload.single('photo'), bookController.create)
-  .post(upload.fields([
+  .post(authJwt, upload.fields([
 		{ name: 'photo', maxCount: 1 }, 
 		{ name: 'epub', maxCount: 1 },
 		{ name: 'pdf', maxCount: 1 },
@@ -31,18 +30,18 @@ router.route('/api/books/filter/:slug')
   .get(bookController.findOneBySlug)
 
 router.route('/api/books/comment')
-  .put(bookController.comment)
+  .put(authJwt, bookController.comment)
 router.route('/api/books/uncomment')
-  .put(bookController.uncomment)
+  .put(authJwt, bookController.uncomment)
 
 router.route('/api/books/:bookId')
   .get(bookController.findOne)
-  .put(upload.fields([
+  .put(authJwt, upload.fields([
 		{ name: 'photo', maxCount: 1 }, 
 		{ name: 'epub', maxCount: 1 },
 		{ name: 'pdf', maxCount: 1 },
 	]), bookController.edit)
-  .delete(bookController.remove)
+  .delete(authJwt, bookController.remove)
 
 router.param('bookId', bookController.bookByID)
 router.param('genreId', genreController.genreByID)

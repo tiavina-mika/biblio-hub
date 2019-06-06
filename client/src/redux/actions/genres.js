@@ -43,12 +43,12 @@ export const getGenre = (id) => (dispatch, getState) => {
     });
 };
 
-
 export const post = (body) => (dispatch, getState) => {
 	return apiPost({
 		key: 'FETCH_GENRE',
 		name: 'genre',
 		redirectUrl: '/dashboard/genre',
+		token: true,
 		params: true,
 		url: `/api/genres`,
 		body,
@@ -63,6 +63,7 @@ export const edit = (id, body) => (dispatch, getState) => {
 		name: 'genre',
 		redirectUrl: `/dashboard/genre/${id}`,
 		url: `/api/genres/${id}`,
+		token: true,
 		body,
 		dispatch,
 		getState
@@ -76,6 +77,7 @@ export const remove = (id) => (dispatch, getState) => {
 		name: 'genres',
 		redirectUrl: '/dashboard/genres',
 		url: `/api/genres/${id}`,
+		token: true,
 		id: id,
 		dispatch,
 		getState
@@ -85,6 +87,3 @@ export const remove = (id) => (dispatch, getState) => {
 export const initialize  = () => (dispatch, getState) => {
 	return dispatch({type: FETCH_GENRE_REQUEST})
 }
-
-
-

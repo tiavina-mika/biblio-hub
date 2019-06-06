@@ -48,7 +48,7 @@ const styles1 = theme => ({
   },
 });
 
-function MySnackbarContent(props) {
+const MySnackbarContent = props => {
   const { classes, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
@@ -105,12 +105,12 @@ const styles2 = theme => ({
 
 class FlashMessage extends React.Component {
   state = {open: true}
-  handleClose = (event, reason) => {
+  handleClose = (event) => {
     this.setState({ open: false });
   };
 
   render() {
-    const { classes, message } = this.props;
+    const { message } = this.props;
 
     return (
         <Snackbar

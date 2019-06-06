@@ -10,11 +10,6 @@ export const resetStorage = () => {
   localStorage.removeItem(`biblio${suffix}-token`);
 };
 
-export const resetSettingStorage = () => {
-  localStorage.removeItem(`biblio${suffix}-main-color`);
-  localStorage.removeItem(`biblio${suffix}-drawer-width`);
-};
-
 export const setStorage = (values = {}) => {
   Object.keys(values).forEach((key) => {
     localStorage.setItem(`biblio${suffix}-${key}`, values[key]);

@@ -26,25 +26,13 @@ const authors = (state = ImmutableMap({ authors: null }), action) => {
 	switch (action.type) {
 
 		case FETCH_AUTHORS_REQUEST:
-		return state.clear()
-		// case FETCH_AUTHORS_SUCCESS:
-		// 	return {
-		// 		...state,
-		// 		authors: action.authors
-		// 	}
-
+			return state.clear()
 		case FETCH_AUTHORS_SUCCESS:
 			return state
 				.set('authors', action.authors)
 		case FETCH_AUTHORS_FAILURE:
 			return state
 				.set('authors', null)
-		// case 'DELETE_AUTHOR_SUCCESS':
-		// 	const fileDeletedIndex = state.get('authors').findIndex(k => k.id=== action.authors._id);
-		// 	if (fileDeletedIndex !== -1) {
-		// 		return state.delete(fileDeletedIndex);
-		// 	}
-		// 	return state;
 		default:
 			return state
   }
@@ -74,4 +62,3 @@ export default combineReducers({
 export const getAuthor = state => state.author.get('author');
 export const getAuthors = state => state.data.get('authors');
 export const getAuthorsLoading = state => state.loading;
-  

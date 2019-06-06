@@ -19,11 +19,6 @@ const styles = theme => ({
         boxShadow: 'none',
         backgroundColor: 'transparent',
         padding: `${theme.spacing.unit * 2}px`,
-
-        // transition: 'box-shadow 150ms ease-out',
-        // '&:hover': {
-        //     boxShadow: '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
-        // }
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
@@ -47,11 +42,6 @@ const styles = theme => ({
     link: {
         textDecoration: 'none'
     },
-    // title: {
-    //     [theme.breakpoints.down('sm')]: {
-    //         fontSize: 18
-    //     },
-    // }
     subtitle: {
         fontWeight: 300,
         marginTop: 5,

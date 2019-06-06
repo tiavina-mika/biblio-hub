@@ -45,7 +45,6 @@ const signup = async (req, res) => {
               }),
             sendEmailToAdmin(result, 'Nouvel utilisateur').then(() => console.log('Email notification send successfully'))
           ]
-          // res.status(200).json(result)
         })
       })
   } catch (error) {
@@ -71,13 +70,13 @@ const signin = async (req, res) => {
               errors.USER_NOT_CONFIRMED = 'User not confirmed'
               return res.status(400).json(Object.keys(errors))
           }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 * 30 })
 
         sendEmailToAdmin(user, `${user.name} est connecté il y ${moment(new Date(user.createdAt)).fromNow()}`)
           .then(() => console.log('Email notification send successfully'))
         return res.json({
           success: true,
-          token: token,
+          token: "Bearer " + token,
           isAdmin: user.role ==="ADMIN" ? true : false,
           user: {id: user._id, name: user.name, email: user.email, confirmed: user.confirmed},
         })
@@ -87,8 +86,6 @@ const signin = async (req, res) => {
       }
 
   } catch (error) {
-    // const errors = {INVALID_CREDENTIALS: 'Invalid credentials'}
-    //   res.status(400).json(Object.keys(errors))
     res.status(401).json(error)
   }
 }
@@ -131,7 +128,6 @@ const changePassword = async (req, res) => {
                   user.updatedAt = Date.now()
                   const result = await user.save()
                   if(result) {
-                      // res.json({CHANGE_PASSWORD_SUCCESS: 'Your password has changed successfully'})
                       res.json(result)
                   } else {
                       errors.CHANGE_PASSWORD_FAILED = 'Your password has not changed'
@@ -211,7 +207,6 @@ const countAll = async (req, res) => {
 }
 
 const signout = (req, res) => {
-  // res.clearCookie("t")
   return res.status(200).json({
     message: "signed out"
   })

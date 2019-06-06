@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -8,9 +7,6 @@ import { Link } from 'react-router-dom';
 
 import { BASE_URL } from '../../redux/actions/constants'
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
@@ -39,6 +35,9 @@ const styles = theme => ({
     marginBottom: 15
   },
   button: {
+    textTransform: 'initial',
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+
   },
   cardActions: {
     display: 'flex',
@@ -75,6 +74,7 @@ const styles = theme => ({
   },
   cardActions: {
       flexGrow: 1,
+      justifyContent: 'center',
       paddingTop: `${theme.spacing.unit}px`
   },
 });
@@ -95,13 +95,13 @@ const AuthorPhoto = ({classes, data, push }) => (
             </Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-            <Button
-                size="small"
-                className={classes.button}
-                onClick={() => push(`/dashboard/auteur/${data.author._id}`)}
-                >
-                Voir plus
-                </Button>
+              <Button
+                  size="small"
+                  className={classes.button}
+                  onClick={() => push(`/dashboard/auteur/${data.author._id}`)}
+                  >
+                  Voir plus
+              </Button>
             </CardActions>
         </Card>
 );

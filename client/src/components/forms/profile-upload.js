@@ -100,9 +100,9 @@ Form.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'profile-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(Form))
-	);
+	reduxForm({
+		form: 'profile-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(Form))
+);

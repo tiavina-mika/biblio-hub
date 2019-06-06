@@ -12,7 +12,7 @@ const AdminRoute = ({ component: Component, authenticated, isAdmin, id, ...rest 
           : <Redirect to={{ pathname: '/', state: { from: props.location }}}/>
         : <Redirect to={{ pathname: '/signin', state: { from: props.location }}}/>
     }/>
-  )
+);
 
 const mapStateToProps = state => ({
 	authenticated: state.user.get('authenticated'),
@@ -20,6 +20,5 @@ const mapStateToProps = state => ({
 	email: state.user.get('email'),
 	id: state.user.get('id'),
 });
-
 
 export default connect(mapStateToProps)(AdminRoute);

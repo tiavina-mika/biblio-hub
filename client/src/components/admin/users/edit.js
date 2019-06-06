@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from 'react-flexbox-grid';
-
 import Form from './form';
 import { getFormData } from '../../../utils/utils';
 import { edit, getOne, initialize } from '../../../redux/actions/users';

@@ -55,7 +55,6 @@ const genre = (state = ImmutableMap({ genre: null }), action) => {
   }
 }
 
-
 export default combineReducers({
   loading: loading,
   data: genres,

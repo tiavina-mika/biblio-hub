@@ -10,7 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { renderTextField, renderSelect } from '../../forms/fields';
 import { shallowCompare } from '../../../utils/shallow-compare';
 
-
 const styles = theme => ({
 	fieldLabel: {
 			textTransform: 'uppercase',
@@ -166,9 +165,9 @@ Form.propTypes = {
 };
 
 export default withRouter(
-		reduxForm({
-			form: 'admin-user-form',
-			touchOnBlur: false,
-			validate
-		})(withStyles(styles)(Form))
-	);
+	reduxForm({
+		form: 'admin-user-form',
+		touchOnBlur: false,
+		validate
+	})(withStyles(styles)(Form))
+);

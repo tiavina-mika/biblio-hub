@@ -39,9 +39,8 @@ const styles = theme => ({
   },
 });
 
-class Home extends React.Component {
-  render() {
-    const { classes, children, history, authenticated, ...rest } = this.props;
+const Home = props => {
+    const { classes, children, history, authenticated, ...rest } = props;
 
     return (
       <div className={classes.root}>
@@ -65,7 +64,6 @@ class Home extends React.Component {
           </div>
       </div>
     );
-  }
 }
 
 Home.propTypes = {
