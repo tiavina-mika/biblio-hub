@@ -126,27 +126,20 @@ const renderCustomInput = ({
   variant,
   meta: { touched, error },
   ...custom
-}) =>[
+}) =><FormControl style={{width: '80%'}}>
       <InputBase
         error={touched && error}
         label={label}
         placeholder={placeholder}
-        helperText={touched && error ? error : helperText}
+        helperText={touched ? error : helperText}
         {...input}
         {...custom}
         variant={variant}
-        InputProps={{
-          style: {
-            '&:hover': {
-              borderBottomColor: 'rgba(0, 0, 0, .5)',
-            },
-          },
-        }}
-      />,
-      touched && error && <FormHelperText style={{color: '#d8000c', marginBottom: -50, width: '100%', fontSize: 14, textShadow: '1px 0 0 #000'}}>
+      />
+      {touched && error && <FormHelperText style={{color: '#d8000c', position: 'absolute', top: 35,width: '100%', fontSize: 14, textShadow: '1px 0 0 #000'}}>
         {touched && error}
-      </FormHelperText>
-      ]
+      </FormHelperText>}
+      </FormControl>
   ;
 renderCustomInput.propTypes = {
   classes: PropTypes.object.isRequired,

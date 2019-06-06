@@ -45,27 +45,28 @@ const styles = theme => ({
 		color: '#fff'
 	},
 	form: {
-		[theme.breakpoints.up('md')]: {
+		[theme.breakpoints.up('lg')]: {
 			width: '50%',
 			marginLeft: 'auto',
 			marginRight: 'auto',
     }
 	},
 	formFullWidth: {
-		[theme.breakpoints.up('md')]: {
+		[theme.breakpoints.up('lg')]: {
 			width: '100%',
     }
 	},
 	paper: {
     display: 'flex',
-		alignItems: 'center',
+		alignItems: 'top',
 		// overflow: 'hidden',
 		marginTop: theme.spacing.unit * 2.5,
 		marginBotton: theme.spacing.unit * 2.5,
   },
   input: {
-    paddingLeft: theme.spacing.unit,
-		flex: 1,
+		paddingLeft: theme.spacing.unit,
+		marginTop: 7,
+		marginBottom: -7,
   },
   iconButton: {
 		padding: 10,
