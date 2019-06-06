@@ -26,7 +26,7 @@ C'est un projet personnel en cours de développement de gestion de livre et tél
 #### Connexion
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-login.png)
 
-#### Enregistrement
+#### Creation de compte
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-signup.png)
 
 #### Voir livre
