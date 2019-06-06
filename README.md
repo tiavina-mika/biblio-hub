@@ -20,4 +20,17 @@ C'est un projet personnel en cours de développement de gestion de livre et tél
   * npm start
 
 ## screenshots
+#### Accueil
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-home.png)
+
+#### Connexion
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-login.png)
+
+#### Enregistrement
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-signup.png)
+
+#### Voir livre
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-book-show.png)
+
+#### Dashboard
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-admin-dashboard.png)
