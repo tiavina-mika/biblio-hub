@@ -79,14 +79,8 @@ export const logout = () => (dispatch, getState) => {
 };
 
 export const dispatchLogout = (dispatch, getState, path = '/') => {
-	const location = getLocation(getState());
 	resetStorage();
 
     dispatch({ type: FETCH_AUTH_FAILURE });
-	if (location.pathname !== '/logout' && path === '/signin') {
-		return dispatch(push(`${path}?redirect=${encodeURIComponent(location.pathname + location.search)}`));
-	} else if (location.pathname !== '/logout') {
-		return dispatch(push(path));
-	}
 	return dispatch(push(path));
 }

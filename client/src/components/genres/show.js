@@ -165,7 +165,7 @@ class Genre extends React.Component {
                                   />
                                   <CardActions className={classes.cardActions}>
                                       <Typography gutterBottom variant="h6" component="h2">
-                                          {n.title}
+                                          {n.title.length > 30 ? `${n.title.substring(0, 30)}...` : n.title}
                                       </Typography>
                                       {n.author &&
                                           <Typography variant="title" className={classes.subtitle}>

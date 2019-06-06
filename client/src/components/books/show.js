@@ -66,7 +66,7 @@ class Book extends React.Component {
                   <Card>
                       <Genres />
                   </Card>
-                  {books.filter(n => n._id != data._id).length < 0 && <Card style={{marginTop: 30, padding: 10}}>
+                  {books.filter(n => n._id != data._id).length > 0 && <Card style={{marginTop: 30, padding: 10}}>
                      <Books books={books.filter(n => n._id != data._id)} headerTitle={`Les autres livres de ${data.author.family_name}`}/>
                 </Card> }
               </Col>

@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs'
 import { validateUser } from '../utils/validation'
 import sendEmailToAdmin from '../mailer/edit-user'
 
-
 const userByID = async (req, res, next, id) => {
     try {
         const user = await User.findById(id).populate('profile').exec()
@@ -98,6 +97,7 @@ const edit = async (req, res) => {
         }
         const user = await req.user
         user.set(req.body)
+        user.confirmed = true
         user.updatedAt = Date.now()
         const result = await user.save()
         res.json(result)
@@ -119,7 +119,6 @@ const remove = async (req, res) => {
 
 const removeAll = async (req, res) => {
     try {
-        // const profile = await Profile.find().exec()
         const removedUser = await Profile.deleteMany()
         res.json(removedUser)
     } catch (error) {

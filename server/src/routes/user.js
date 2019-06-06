@@ -8,7 +8,7 @@ import upload from '../utils/image-upload'
 const router = express.Router()
 
 router.route('/api/users')
-  .get(authJwt, userController.findAll)
+  .get(userController.findAll)
   .post(authJwt, upload.single('photo'), userController.create)
 
 router.route('/api/users/:userId')

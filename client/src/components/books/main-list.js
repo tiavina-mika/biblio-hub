@@ -117,7 +117,7 @@ const MainList = props => {
                         </Link>
                         <Link 
                             to={`/livres/trier/date`}
-                            className={classNames(classes.linkSortedBy, pathname.endsWith('/livres') || pathname.endsWith('/date') && classes.active)}>
+                            className={classNames(classes.linkSortedBy, (pathname.endsWith('/livres') || pathname.endsWith('/date')) && classes.active)}>
                                 Récent
                         </Link>
                         <Link 

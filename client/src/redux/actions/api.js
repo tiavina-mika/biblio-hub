@@ -41,10 +41,7 @@ export const apiPost = async ({ key, name, url, body, params, redirectUrl, dispa
             if (error.response.status === 404 || error.response.status === 401) {
                 dispatch({ type: `${key}_FAILURE` });
                 return dispatch(setError('NETWORK_ERROR'));       
-            } else if (error.response.status === 401 && error.response.headers.get('WWW-Authenticate') === 'TokenExpired') {
-                dispatch({ type: `${key}_FAILURE` });
-                return dispatchLogout(dispatch, getState);
-            }  else if (error.response.data !== 'UNAUTHORIZED' && error.response.status === 401) {
+            } else if (error.response.data !== 'UNAUTHORIZED') {
                 dispatch({ type: `${key}_FAILURE` });
                 dispatch(setError('UNAUTHORIZED'));
                 return dispatchLogout(dispatch, getState);
