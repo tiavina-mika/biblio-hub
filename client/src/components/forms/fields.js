@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import SelectField from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputBase from '@material-ui/core/InputBase';
@@ -124,23 +126,28 @@ const renderCustomInput = ({
   variant,
   meta: { touched, error },
   ...custom
-}) =>
-  <InputBase
-    error={touched && error}
-    label={label}
-    placeholder={placeholder}
-    helperText={touched ? error : helperText}
-    {...input}
-    {...custom}
-    variant={variant}
-    InputProps={{
-      style: {
-        '&:hover': {
-          borderBottomColor: 'rgba(0, 0, 0, .5)',
-        },
-      },
-    }}
-  />;
+}) =>[
+      <InputBase
+        error={touched && error}
+        label={label}
+        placeholder={placeholder}
+        helperText={touched && error ? error : helperText}
+        {...input}
+        {...custom}
+        variant={variant}
+        InputProps={{
+          style: {
+            '&:hover': {
+              borderBottomColor: 'rgba(0, 0, 0, .5)',
+            },
+          },
+        }}
+      />,
+      touched && error && <FormHelperText style={{color: '#d8000c', marginBottom: -50, width: '100%', fontSize: 14, textShadow: '1px 0 0 #000'}}>
+        {touched && error}
+      </FormHelperText>
+      ]
+  ;
 renderCustomInput.propTypes = {
   classes: PropTypes.object.isRequired,
 };

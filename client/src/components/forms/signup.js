@@ -59,18 +59,21 @@ const styles = theme => ({
 	paper: {
     display: 'flex',
 		alignItems: 'center',
-		overflow: 'hidden',
+		// overflow: 'hidden',
 		marginTop: theme.spacing.unit * 2.5,
 		marginBotton: theme.spacing.unit * 2.5,
   },
   input: {
     paddingLeft: theme.spacing.unit,
-    flex: 1,
+		flex: 1,
   },
   iconButton: {
 		padding: 10,
 		backgroundColor: '#e9ecef',
-		borderRadius: 0,
+		borderTopLeftRadius: 5,
+		borderBottomLeftRadius: 5,
+		borderBottomRightRadius: 0,
+		borderTopRightRadius: 0,
 		borderRight: '1px solid #c7c8c9',
 		color: '#5a5b5b'
   },
