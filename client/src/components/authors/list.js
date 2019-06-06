@@ -50,7 +50,7 @@ class List extends React.Component {
       return <NoData title="Il n'y a pas encore d'auteur" link/>
     }
     return (
-      data ?
+      data && data.authors ?
         <div className={classNames(classes.layout, classes.cardGrid)}>
             <Helmet title="Auteurs" />
             <Grid fluid>
