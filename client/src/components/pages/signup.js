@@ -52,7 +52,7 @@ const styles = theme => ({
 
 class Signup extends React.PureComponent {
   onSubmit = (form) => {
-		this.props.signup(form.name, form.email, form.password);
+		this.props.signup(form.name, form.email, form.password, true);
   }
   render() {
     const { classes } = this.props;
