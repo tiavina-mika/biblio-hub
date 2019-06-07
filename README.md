@@ -16,8 +16,8 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
 ```sh
 git clone https://github.com/SanzenDev/biblio-hub.git
 mongod                                    # run the database
-cd ../server && npm install               # install the despendencies for the server
-cd ../client && npm install               # install the despendencies for the client
+cd ../server && npm install               # install the dependencies for the server
+cd ../client && npm install               # install the dependencies for the client
 cd ../server && npm start                 # run the server
 cd ../client && npm start                 # run React
 ```
