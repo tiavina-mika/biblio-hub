@@ -32,12 +32,10 @@ const App = () => (
 		<Switch>
 			<Route path="/signin" component={AsyncSignin}/>
 			<Route path="/signup" component={AsyncSignup}/>
-			{/* <Route path="/forgot" component={Forgot}/> */}
 			<Route path="/logout" exact component={AsyncLogout} />
 			<AdminRoutes path="/dashboard" />
 			<MainRoutes />
 			<MainRoute path="*" component={AsyncError404}/>,
-			{/* <Route path="*" component={Error404}/> */}
 		</Switch>
 		<ErrorSnackbar />
 	</MuiThemeProvider>
