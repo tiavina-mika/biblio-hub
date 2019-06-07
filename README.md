@@ -1,5 +1,5 @@
 # biblioHUB
-C'est un projet personnel de développement de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
+C'est un projet personnel de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
 > Une app de gestion et de téléchargement de livre developpé en MERN-Stack.
 
 **Hey!** :blush: C'est mon premier projet personnel complet en React, NodeJs et MongoDB. Si vous avez trouvé des bugs, de nouvelles idées n'hesitez pas à me les faire connaître et fais moi savoir ce qu'il faut améliorer.
