@@ -1,5 +1,8 @@
 # biblioHUB
-C'est un projet personnel en cours de développement de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
+C'est un projet personnel de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
+> Une app de gestion et de téléchargement de livre developpé en MERN-Stack.
+
+**Hey!** :blush: C'est mon premier projet personnel complet en React, NodeJs et MongoDB. Si vous avez trouvé des bugs, de nouvelles idées n'hesitez pas à me les faire connaître et fais moi savoir ce qu'il faut améliorer.
 
 ## stack:
  1. Front-End:
@@ -9,17 +12,17 @@ C'est un projet personnel en cours de développement de gestion de livre et tél
  3. Base de données:
      * MongoDB
 
-## set up et installation:
- 1. database:
-  * mongod
- 2. server: 
-  * npm install
-  * npm start
- 3. client: 
-  * npm install
-  * npm start
+## :cloud: Set up et Installation:
+```sh
+git clone https://github.com/SanzenDev/biblio-hub.git
+mongod                                    # run the database
+cd ../server && npm install               # install the despendencies for the server
+cd ../client && npm install               # install the despendencies for the client
+cd ../server && npm start                 # run the server
+cd ../client && npm start                 # run React
+```
 
-## screenshots
+## :computer: screenshots
 #### Accueil
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-home.png)
 
@@ -34,3 +37,9 @@ C'est un projet personnel en cours de développement de gestion de livre et tél
 
 #### Dashboard
 ![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-admin-dashboard.png)
+
+
+## :movie_camera: video screenshots
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=aP6y6IWwwOI
+" target="_blank"><img src="http://img.youtube.com/vi/aP6y6IWwwOI/0.jpg" 
+alt="BIBLIO6HUB" width="560" height="315" border="3" /></a>
