@@ -4,7 +4,7 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
 
 **Hey!** :blush: C'est mon premier projet personnel complet en React, NodeJs et MongoDB. Si vous avez trouvé des bugs, de nouvelles idées n'hesitez pas à me les faire connaître et fais moi savoir ce qu'il faut améliorer.
 
-## stack:
+## :file_folder: Stack:
  1. Front-End:
      * React (Redux, Redux Thunk, Redux Form, Material-UI, Axios, Connected React Router, React Router, ...)
  2. Back-end:
