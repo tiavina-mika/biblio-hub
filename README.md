@@ -2,7 +2,7 @@
 C'est un projet personnel de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
 > Une app de gestion et de téléchargement de livre developpé en MERN-Stack.
 
-**Hey!** :blush: C'est mon premier projet personnel complet en React, NodeJs et MongoDB. Si vous avez trouvé des bugs, de nouvelles idées n'hesitez pas à me les faire connaître et fais moi savoir ce qu'il faut améliorer.
+**Hey!** :blush: il y a encore pas mal de bug à corriger et d'amélioration que j'essayerai de corriger quand j'aurai le temps.
 
 ## :file_folder: Stack:
  1. Front-End:
@@ -43,3 +43,7 @@ cd ../client && npm start                 # run React
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=aP6y6IWwwOI
 " target="_blank"><img src="http://img.youtube.com/vi/aP6y6IWwwOI/0.jpg" 
 alt="BIBLIO6HUB" width="560" height="315" border="3" /></a>
+
+## :boy: Contact:
+- Linkedin: https://www.linkedin.com/in/tiavina-michael-ralainirina/
+- Skype: live:ralainirina
