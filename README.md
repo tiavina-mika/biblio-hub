@@ -2,7 +2,7 @@
 C'est un projet personnel de gestion de livre et téléchargement d'ebook en plusieurs format avec une partie administration et authentification.
 > Une app de gestion et de téléchargement de livre developpé en MERN-Stack.
 
-**Hey!** :blush: il y a encore pas mal de bug à corriger et d'amélioration que j'essayerai de corriger quand j'aurai le temps.
+**Hey!** :blush: il y a encore pas mal de bug à corriger et d'amélioration que j'essayerai de corriger plus tard quand j'aurai le temps.
 
 ## :file_folder: Stack:
  1. Front-End:
