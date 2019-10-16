@@ -14,7 +14,7 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
 
 ## :cloud: Set up et Installation:
 ```sh
-git clone https://github.com/tiavina-mika/biblio-hub.git
+git clone https://github.com/SanzenDev/biblio-hub.git
 mongod                                    # run the database
 cd ../server && npm install               # install the dependencies for the server
 cd ../client && npm install               # install the dependencies for the client
@@ -24,19 +24,19 @@ cd ../client && npm start                 # run React
 
 ## :computer: screenshots
 #### Accueil
-![Accueil](https://github.com/tiavina-mika/biblio-hub/tree/master/client/public/screenshots/biblio-home.png)
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-home.png)
 
 #### Connexion
-![Accueil](https://github.com/tiavina-mika/biblio-hub/tree/master/client/public/screenshots/biblio-login.png)
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-login.png)
 
 #### Creation de compte
-![Accueil](https://github.com/tiavina-mika/biblio-hub/tree/master/client/public/screenshots/biblio-signup.png)
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-signup.png)
 
 #### Voir livre
-![Accueil](https://github.com/tiavina-mika/biblio-hub/tree/master/client/public/screenshots/biblio-book-show.png)
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-book-show.png)
 
 #### Dashboard
-![Accueil](https://github.com/tiavina-mika/biblio-hub/tree/master/client/public/screenshots/biblio-admin-dashboard.png)
+![Accueil](https://github.com/SanzenDev/biblio/blob/master/client/public/screenshots/biblio-admin-dashboard.png)
 
 
 ## :movie_camera: video screenshots
