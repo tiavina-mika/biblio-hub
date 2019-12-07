@@ -11,7 +11,7 @@ C'est un projet personnel de gestion de livre et téléchargement d'ebook en plu
      * NodeJs (Mongoose, Express, Passport, JsonWebToken, Multer, ...)
  3. Base de données:
      * MongoDB
- 4 Webservice:
+ 4. Webservice:
     * REST 
 ## :cloud: Set up et Installation:
 ```sh
